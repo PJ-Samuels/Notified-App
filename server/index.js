@@ -12,6 +12,10 @@ app.get('/', (req, res) => {
     res.json(data);
   });
 
+app.get('/login', (req, res) => {
+    console.log("login")
+    // res.json("login");
+});
 app.listen(5000, () => {
     console.log('Server is running on port 5000');
 })
