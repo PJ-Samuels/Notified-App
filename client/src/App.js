@@ -1,24 +1,26 @@
 import './App.css';
+import React, { useEffect, useState } from 'react';
 
-function App() {
+
+const App = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+      fetch("http://localhost:5000/")
+        .then((res) => res.json())
+        .then((data) => setData(data));
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        {/* <img src={logo} className="App-logo" /> */}
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Data from Express Server</h1>
+        <ul>
+          {data.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
+
     </div>
   );
-}
+};
 
 export default App;
