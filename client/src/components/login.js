@@ -1,12 +1,16 @@
-// import "/login.css";
 import React,{ useEffect}  from 'react';
 import {useNavigate} from 'react-router-dom';
 
 
-export default function Login(){
+export default function Login() {
     useEffect(() => {
-        fetch("http://localhost:5000/login")
-          .then((res) => res.json())
+      fetch('http://localhost:5000/login')
+      .then((res) => res.text())
+      .then((spotifyAuthUrl) => {
+        window.location.href = spotifyAuthUrl;
+      })
+      .catch((error) => {
+      });
     }, []);
     const navigate = useNavigate();
     const handleLogout = () => {

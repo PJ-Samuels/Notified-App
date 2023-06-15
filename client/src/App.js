@@ -2,7 +2,6 @@ import './App.css';
 import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 
-
 const App = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
