@@ -6,6 +6,7 @@ import App from './App';
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 import Callback from './components/callback';
 import UserDashboard from './components/user_dashboard';
+import ArtistSearch from './components/artist_search';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,6 +17,7 @@ root.render(
         <Route path ="/login" element = {<Login/>}/>"   
         <Route path ="/callback" element = {<Callback/>}/>"   
         <Route path = "/user_dashboard" element = {<UserDashboard/>}/> 
+        <Route path = "/artist_search" element = {<ArtistSearch/>}/>
       </Routes>
     </BrowserRouter>
   </React.StrictMode> 

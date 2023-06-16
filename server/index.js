@@ -3,9 +3,9 @@ const cors = require('cors');
 const request = require('request');
 const querystring = require('querystring')
 const app = express();
-
-var client_id = 'b9bd5d60afce4b29bc880a786130628e';
-var client_secret = '7474fdee3b1c441c9b71f0210a51a898';
+const config = require('./config.js');
+var client_id = config.CLIENT_ID;
+var client_secret = config.CLIENT_SECRET;
 var redirect_uri = 'http://localhost:3000/callback';
 
 
