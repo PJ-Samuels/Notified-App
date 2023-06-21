@@ -66,14 +66,11 @@ app.get('/callback', function(req, res) {
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
         var access_token = body.access_token;
-        res.send('http://localhost:3000/user_dashboard')
+        res.send('http://localhost:3000/user_dashboard?accesstoken=' + access_token);
       }
     });
   }
 
-});
-app.get('/user_dash', (req, res) => {
-  console.log("user_dash reached")
 });
 
 app.listen(5000, () => {

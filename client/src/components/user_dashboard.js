@@ -5,17 +5,15 @@ import {useNavigate} from 'react-router-dom';
 export default function UserDashboard() {
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("user_dash reached")
-    fetch('http://localhost:5000/user_dash')
-    .then((res) => res.text())
-    .catch((error) => {
-    });
+    const params = new URLSearchParams(window.location.search);
+    const access_token = params.get('accesstoken');
+    console.log(access_token);
+    sessionStorage.setItem('access_token', access_token);
     }, []);
    
-    const handleClick = () => {
-      navigate("/artist_search")
-      console.log("button clicked")
-    }
+  const handleClick = () => {
+    navigate("/artist_search")
+  }
   handleClick();
   return( 
     <div>
