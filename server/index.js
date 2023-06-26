@@ -10,7 +10,6 @@ var client_secret = config.CLIENT_SECRET;
 var redirect_uri = 'http://localhost:3000/callback';
 
 
-
 var generateRandomString = function(length) {
     var text = '';
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -30,7 +29,22 @@ app.get('/', (req, res) => {
   });
 app.post('/',(req,res) =>{
   console.log("checking email")
+  const result = pool.query('SELECT email, password FROM "Users" WHERE email = $1 AND password = $2', [req.body.email, req.body.password])
+  if (result.rowCount > 0) {
+    console.log("valid")
+    res.json("Valid Password");
+  } 
+  else{
+    console.log("invalid")
+    res.json("Invalid Password");
+  }
 })
+
+app.post('/signup', (req, res) => {
+  console.log("signup reached")
+  const result = pool.query('INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3)', [req.body.username, req.body.email, req.body.password])
+
+});
 
 
 app.get('/login', function(req, res) {
@@ -40,7 +54,7 @@ app.get('/login', function(req, res) {
         response_type: "code",
         client_id: client_id,
         scope: scope,
-        redirect_uri: "http://localhost:3000/callback",
+        redirect_uri: redirect_uri,
         state: state
       })
       spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
@@ -60,7 +74,7 @@ app.get('/callback', function(req, res) {
       url: 'https://accounts.spotify.com/api/token',
       form: {
         code: code,
-        redirect_uri: "http://localhost:3000/callback",
+        redirect_uri: redirect_uri,
         grant_type: 'authorization_code'
       },
       headers: {
@@ -86,7 +100,7 @@ app.post('/add_artist', (req, res) => {
   //   artist_id: "test",
   //   artist_image: "test"
   // }
-  // const newArtistQuery  =  pool.query('INSERT INTO "Artists" (artist_id, artist_name, artist_image) VALUES ($1, $2, $3) RETURNING *', [newArtist.artist_id, newArtist.artist_name, newArtist.artist_image], (err, result) => {
+  // const newArtistQuery  =  pool.query('INSERT INTO "Subscribed_Artists" (artist_id, artist_name, artist_image) VALUES ($1, $2, $3) RETURNING *', [newArtist.artist_id, newArtist.artist_name, newArtist.artist_image], (err, result) => {
   //   if (err) {
   //     console.error('Error inserting new artist:', err);
   //   } else {
@@ -95,6 +109,7 @@ app.post('/add_artist', (req, res) => {
   // });
 
 });
+
 
 app.listen(5000, () => {
     console.log('Server is running on port 5000');

@@ -1,18 +1,18 @@
 CREATE DATABASE Notified;
 
-CREATE TABLE "User"(
+CREATE TABLE "Users"(
     id SERIAL,
     username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
 );
-create table "Artists"(
-	artist_id VARCHAR(225) NOT NULL,
-	artist_name VARCHAR(225) NOT NULL,
-	artist_image VARCHAR(225) NOT NULL,
-	primary key (artist_id)
-);
+-- create table "Artists"(
+-- 	artist_id VARCHAR(225) NOT NULL,
+-- 	artist_name VARCHAR(225) NOT NULL,
+-- 	artist_image VARCHAR(225) NOT NULL,
+-- 	primary key (artist_id)
+-- );
 CREATE TABLE "Subscribed_Artists"
 (
     user_id int NOT NULL,

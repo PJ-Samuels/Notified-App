@@ -5,24 +5,38 @@ import {useNavigate} from 'react-router-dom';
 const App = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
-  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [account_info, setAccountInfo] = useState("")
 
   useEffect(() => {
       fetch("http://localhost:5000/")
         .then((res) => res.json())
         .then((data) => setData(data));
   }, []);
-  const handleUserChange = (event) => {
-    setUsername(event.target.value)
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value)
   }
   const handlePassChange = (event) => {
     setPassword(event.target.value)
   }
   const handleClick = () => {
-    //make post call to see if posgress has data for login if it doesnt then show an error
-    navigate('/login');
-    console.log("button clicked")
+    //make post call to see if posgres has data for login if it doesnt then show an error
+    fetch("http://localhost:5000/",{
+      method: "POST",
+      headers: {'Content-Type': "application/json"},
+      body: JSON.stringify({email,password})
+    })
+    .then((res) => res.json())
+    .then((account_info) => setAccountInfo(account_info))
+    if(account_info === "Valid Password"){
+      navigate('/login');
+      console.log("button clicked")
+    }
+    else{
+      console.log("Not valid Password")
+    }
+      
   }
   const handleSignup = (event) => {
     navigate('/signup')
@@ -33,7 +47,7 @@ const App = () => {
       <h1>Notified Home page</h1>
       <h2>Login here</h2>
       <form onSubmit = {handleClick}>
-        <input type = "text" placeholder='Username' value = {username} onChange = {handleUserChange}></input>
+        <input type = "text" placeholder='email' value = {email} onChange = {handleEmailChange}></input>
         <input type = "text" placeholder='password' value = {password} onChange = {handlePassChange}></input>
         <input type = "submit" value = "Spotify Login"></input>
       </form>
