@@ -23,7 +23,10 @@ export default function ArtistSearch() {
     };
     
     const handleRoute = () => {
-        navigate('/artist_page'); 
+        navigate('/artist_page', {state: {data: data}}); 
+    }
+    const fetchAlbums = async() => {
+        
     }
 
     const fetchData = async () => {
@@ -47,6 +50,8 @@ export default function ArtistSearch() {
             console.log("Updated Data:", data);
         }
     }, [data]);
+
+
     
     return(
     <div>

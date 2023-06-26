@@ -4,9 +4,11 @@ const request = require('request');
 const querystring = require('querystring')
 const app = express();
 const config = require('./config.js');
+const pool = require('./db.js');
 var client_id = config.CLIENT_ID;
 var client_secret = config.CLIENT_SECRET;
 var redirect_uri = 'http://localhost:3000/callback';
+
 
 
 var generateRandomString = function(length) {
@@ -26,6 +28,9 @@ app.get('/', (req, res) => {
     const data = ["This is the server"];
     res.json(data);
   });
+app.post('/',(req,res) =>{
+  console.log("checking email")
+})
 
 
 app.get('/login', function(req, res) {
@@ -70,6 +75,24 @@ app.get('/callback', function(req, res) {
       }
     });
   }
+
+});
+
+
+app.post('/add_artist', (req, res) => {
+  console.log("add artist reached")
+  // const newArtist = {
+  //   artist_name: "test",
+  //   artist_id: "test",
+  //   artist_image: "test"
+  // }
+  // const newArtistQuery  =  pool.query('INSERT INTO "Artists" (artist_id, artist_name, artist_image) VALUES ($1, $2, $3) RETURNING *', [newArtist.artist_id, newArtist.artist_name, newArtist.artist_image], (err, result) => {
+  //   if (err) {
+  //     console.error('Error inserting new artist:', err);
+  //   } else {
+  //     console.log('New artist inserted:', result.rows[0]);
+  //   }
+  // });
 
 });
 

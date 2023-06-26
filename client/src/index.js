@@ -8,6 +8,7 @@ import Callback from './components/callback';
 import UserDashboard from './components/user_dashboard';
 import ArtistSearch from './components/artist_search';
 import ArtistPage from './components/artist_page';
+import Signup from './components/signup';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,6 +16,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path= "/signup" element = {<Signup/>}/>
         <Route path ="/login" element = {<Login/>}/>"   
         <Route path ="/callback" element = {<Callback/>}/>"   
         <Route path = "/user_dashboard" element = {<UserDashboard/>}/> 

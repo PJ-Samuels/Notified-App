@@ -20,5 +20,6 @@ export default function Login() {
     return(<div>
         <h1>Notified Login page</h1>
         <button onClick = {handleLogout}>Logout</button>
+
     </div>);
 };
