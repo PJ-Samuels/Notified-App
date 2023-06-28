@@ -7,7 +7,7 @@ export default function UserDashboard() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const access_token = params.get('accesstoken');
-    console.log(access_token);
+    // console.log(access_token);
     sessionStorage.setItem('access_token', access_token);
     }, []);
    
@@ -21,7 +21,7 @@ export default function UserDashboard() {
       <button onClick = {handleClick}>Search for artist</button>
       <h2>Artists</h2>
       <h2>Notifications</h2>
-      <h2>Discovoer</h2>
+      <h2>Discover</h2>
     </div>
   );
 }

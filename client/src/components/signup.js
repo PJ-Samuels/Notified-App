@@ -15,15 +15,22 @@ export default function Signup(){
           [name]: value
         }));
       };
-    const handleSubmit = () =>{
+    const handleClick = () => {
+        window.location.href = "http://localhost:3000/"
+    }
+    const handleSubmit = (event) =>{
+        event.preventDefault();
         console.log("submit clicked")
         fetch("http://localhost:5000/signup",{
             method: "POST",
             headers: {'Content-Type': "application/json"},
             body: JSON.stringify({account})
         })
-        .then((res) => res.json())
-        .then((data) => console.log(data))
+        .then((res) => res.text())
+        .then((spotifyAuthUrl) => {
+            console.log(spotifyAuthUrl)
+            window.location.href = spotifyAuthUrl;
+          })
     }
     return (
     <div>
@@ -34,6 +41,7 @@ export default function Signup(){
             <input type = "text" placeholder= 'password' name = "password" value = {account.password} onChange = {handleAccount}></input><br></br>
             <input type = "submit"></input>
         </form>
+        <button onClick = {handleClick}>Go back</button>
         
     </div>)
 }

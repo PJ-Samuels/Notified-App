@@ -21,7 +21,6 @@ const App = () => {
     setPassword(event.target.value)
   }
   const handleClick = () => {
-    //make post call to see if posgres has data for login if it doesnt then show an error
     fetch("http://localhost:5000/",{
       method: "POST",
       headers: {'Content-Type': "application/json"},
@@ -31,7 +30,6 @@ const App = () => {
     .then((account_info) => setAccountInfo(account_info))
     if(account_info === "Valid Password"){
       navigate('/login');
-      console.log("button clicked")
     }
     else{
       console.log("Not valid Password")
@@ -51,7 +49,6 @@ const App = () => {
         <input type = "text" placeholder='password' value = {password} onChange = {handlePassChange}></input>
         <input type = "submit" value = "Spotify Login"></input>
       </form>
-      {/* <button onClick = {handleClick}>Spotify Login</button><br></br> */}
       <h2>Sign Up here</h2>
         <button onClick = {handleSignup}>Sign Up</button>
       {/* {data.map((item, index) => (

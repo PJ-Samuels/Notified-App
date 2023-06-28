@@ -1,7 +1,5 @@
 import React from "react";
 import { useEffect } from "react";
-import {useNavigate} from 'react-router-dom';
-
 
 export default function ArtistSearch() {
     const access_token = sessionStorage.getItem('access_token');
@@ -9,7 +7,6 @@ export default function ArtistSearch() {
     const [artistName, setArtistName] = React.useState("");
     const [data, setData] = React.useState([]);
     const [bool, setBool] = React.useState(false);
-    const navigate = useNavigate();
     
     const handleInputChange = (event) => {
         setArtistName(event.target.value);
@@ -22,11 +19,21 @@ export default function ArtistSearch() {
         console.log(artistName);
     };
     
-    const handleRoute = () => {
-        navigate('/artist_page', {state: {data: data}}); 
-    }
-    const fetchAlbums = async() => {
-        
+    const handleRoute = async ()=> {
+        console.log(data.id)
+        const response = await fetch(`https://api.spotify.com/v1/artists/${data.id}/albums?limit=3`,{
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + access_token,
+            }
+        });
+        console.log(response)
+        const response_data = await response.json();
+        const dataToEncode = JSON.stringify(response_data);
+        const base64Data = btoa(dataToEncode)
+        const url = `/artist_page?data=${encodeURIComponent(base64Data)}`;
+        console.log(window.location.href)
+        window.location.href = url;
     }
 
     const fetchData = async () => {
@@ -38,6 +45,7 @@ export default function ArtistSearch() {
         });
         if (response.ok) {
             const response_data = await response.json();
+            console.log(response_data);
             setData(response_data.artists.items[0]);
             }     
         else {

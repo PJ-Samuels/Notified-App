@@ -28,21 +28,29 @@ app.get('/', (req, res) => {
     res.json(data);
   });
 app.post('/',(req,res) =>{
-  console.log("checking email")
   const result = pool.query('SELECT email, password FROM "Users" WHERE email = $1 AND password = $2', [req.body.email, req.body.password])
   if (result.rowCount > 0) {
-    console.log("valid")
+    // console.log("valid")
     res.json("Valid Password");
   } 
   else{
-    console.log("invalid")
+    // console.log("invalid")
     res.json("Invalid Password");
   }
 })
 
 app.post('/signup', (req, res) => {
-  console.log("signup reached")
-  const result = pool.query('INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3)', [req.body.username, req.body.email, req.body.password])
+  // console.log(req.body)
+  const account = req.body.account
+  const result = pool.query('INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3)', [account.username, account.email, account.password], (err, result) => {
+    if (err) {
+      console.log(err)
+      res.redirect('/signup');  
+    }
+    else {
+      res.redirect('/login');  
+    }
+  });
 
 });
 
@@ -93,13 +101,14 @@ app.get('/callback', function(req, res) {
 });
 
 
+app.get('/add_artist', (req, res) => {
+
+});
 app.post('/add_artist', (req, res) => {
   console.log("add artist reached")
-  // const newArtist = {
-  //   artist_name: "test",
-  //   artist_id: "test",
-  //   artist_image: "test"
-  // }
+  const newArtist = req.body.artist;
+  console.log(newArtist);
+
   // const newArtistQuery  =  pool.query('INSERT INTO "Subscribed_Artists" (artist_id, artist_name, artist_image) VALUES ($1, $2, $3) RETURNING *', [newArtist.artist_id, newArtist.artist_name, newArtist.artist_image], (err, result) => {
   //   if (err) {
   //     console.error('Error inserting new artist:', err);
@@ -107,7 +116,6 @@ app.post('/add_artist', (req, res) => {
   //     console.log('New artist inserted:', result.rows[0]);
   //   }
   // });
-
 });
 
 
