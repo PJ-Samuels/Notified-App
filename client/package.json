@@ -5,6 +5,7 @@
   "dependencies": {
     "@atlaskit/atlassian-navigation": "^2.6.13",
     "@atlaskit/button": "^16.8.1",
+    "@atlaskit/form": "^8.11.8",
     "@atlaskit/tokens": "^1.11.3",
     "@carbon/react": "^1.32.0",
     "@testing-library/jest-dom": "^5.16.5",

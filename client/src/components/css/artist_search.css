@@ -9,3 +9,10 @@ h1,h2{
     align-items: center;
     text-align: center;
 }
+.text{
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+

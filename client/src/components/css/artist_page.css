@@ -31,6 +31,11 @@
 h2{
     text-align: center;
 }
+
 .not_implemented{
+    color: black !important;
     text-align: center;
+}
+.album_card a{
+    color: white !important;;
 }

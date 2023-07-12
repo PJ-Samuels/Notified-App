@@ -13,6 +13,8 @@ import ArtistSearch from "./artist_search";
 
 
 export default function UserNav(){
+    const access_token = sessionStorage.getItem('access_token');
+    sessionStorage.setItem("access_token", access_token);
     const navigate = useNavigate();
     const artistSearchClick = () => {
         navigate("/artist_search")
@@ -31,10 +33,8 @@ export default function UserNav(){
 
     //style={{backgroundColor: token('elevation.surface')}}
     return(
-    <>
-        {/* <div>UserNavBar</div> */}        
+      <>      
         <AtlassianNavigation
-
         label="site"
         primaryItems={[
           <PrimaryButton onClick={homeClick}>Home</PrimaryButton>,
@@ -43,7 +43,7 @@ export default function UserNav(){
           <PrimaryButton>Dashboard</PrimaryButton>,
         ]}
         // renderProductHome={AtlassianProductHome}
-      />
+        />
       </>
     )
 }

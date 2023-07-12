@@ -1,7 +1,12 @@
 import React from "react";
+
 import { useEffect, useState } from "react";
 import {useNavigate} from 'react-router-dom';
+
 import './css/artist_search.css'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+
 
 export default function ArtistSearch() {
     const access_token = sessionStorage.getItem('access_token');
@@ -82,16 +87,23 @@ export default function ArtistSearch() {
     return(
     <div>
         <h1>Artist Search</h1>
-        <form onSubmit = {handleSubmit}>
-            <input type = "text" placeholder="Type Artist Name here" value = {artistName} onChange = {handleInputChange}/><br/>
-            <input type = "submit" value = "Search"></input>
-        </form>
+        <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Control type="text" placeholder="Enter Artist Name" value={artistName} onChange={handleInputChange}autoComplete="off" />
+        </Form.Group>
+        <Button variant="primary" type="submit" value="Search">Submit</Button>
+      </Form>
+
+        {/* <form onSubmit = {handleSubmit}>
+            <input className = "text" type = "text" placeholder="Type Artist Name here" value = {artistName} onChange = {handleInputChange}/><br/>
+            <input className = "submit" type = "submit" value = "Search"></input>
+        </form> */}
         {/* <button onClick = {handleBack}> go back </button> */}
         {data && Object.keys(data).length > 0 && (
         <div className="top_artist">
             <h2>{data.name}</h2>
             <img src={data.images[1].url} alt="artist"/><br/>
-            <button onClick = {handleRoute}>Subscribe </button>
+            <Button onClick = {handleRoute}>Subscribe </Button>
         </div>
       )}
     </div>);

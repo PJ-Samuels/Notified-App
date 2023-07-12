@@ -1,16 +1,16 @@
 import React, { useEffect , useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import './css/artist_page.css';
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 export default function ArtistPage() {
     const [artist_data, setArtistData] = useState([]);
     const [artist_name, setArtistName] = useState("");
     const [artist_image, setArtistImg] = useState("");
     const [artist_id, setArtistId] = useState("");
-
     const [subscribe_status, setSubscribeStatus] = useState(true);
-
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const access_token = sessionStorage.getItem("access_token");
     sessionStorage.setItem("access_token", access_token);
 
@@ -65,13 +65,15 @@ export default function ArtistPage() {
             <div className='artist_header'>
                 <h1>{artist_name}</h1><br/>
                 <img src = {artist_image}></img><br/>
-                <form onSubmit={handleSubmit}>
-                <input type="submit" value={subscribe_status ? "Subscribed" : "Unsubscribed"} />
-            </form>
+                {/* <form onSubmit={handleSubmit}>
+                    <input type="submit" value={subscribe_status ? "Subscribed" : "Unsubscribed"} />
+                </form> */}
+                <Form onSubmit={handleSubmit}>
+                    <Button type="submit" variant={subscribe_status ? "success" : "danger"}>
+                        {subscribe_status ? "Subscribed" : "Unsubscribed"}
+                    </Button>
+                </Form>
             </div>
-            {/* <button onClick = {handleClick}> GET Add Artist</button> */}
-
-            {/* <button onClick = {handleBack}>Go back</button><br/> */}
             <h2>Latest Albums</h2>
             <div className='albums'>
             {artist_data && Array.isArray(artist_data.items)  > 0 && (artist_data.items.map((album) => (

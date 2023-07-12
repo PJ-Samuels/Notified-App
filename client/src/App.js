@@ -1,8 +1,11 @@
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
-import Button from '@atlaskit/button';
- 
+import Button from 'react-bootstrap/button';
+import Form from 'react-bootstrap/Form'
+
 const App = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
@@ -50,20 +53,24 @@ const App = () => {
 
   
   return (
-    <div>
-      <h1>Notified Home page</h1>
-      <h2>Login here</h2>
-      <form onSubmit = {handleClick}>
+    <div className = "login_page">
+      <h1>Notified</h1>
+      <h2>Login</h2>
+      <Form onSubmit={handleClick}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Control type="text" placeholder="email" value={email} onChange={handleEmailChange} autoComplete="off"/><br/>
+          <Form.Control type="text" placeholder="password" value={password} onChange={handlePassChange} autoComplete="off"/>
+        </Form.Group>
+        <Button variant="primary" type="submit" value="Spotify Login">Login</Button>
+      </Form>
+      {/* <form onSubmit = {handleClick}>
         <input type = "text" placeholder='email' value = {email} onChange = {handleEmailChange}/><br/>
         <input type = "text" placeholder='password' value = {password} onChange = {handlePassChange}/><br/>
         <input type = "submit" value = "Spotify Login"/><br/>
-      </form>
-      {wrongPass && <a>email or password</a>}
-      <h2>Sign Up here</h2>
-        <Button appearance = "primary" onClick = {handleSignup}>Sign Up</Button>
-      {/* {data.map((item, index) => (
-        <a key={index}>{item}</a>
-      ))} */}
+      </form> */}
+      {wrongPass && <a className = "error_msg">incorrect email or password try again</a>}
+      <h3>Sign Up</h3>
+      <Button className = "signup" appearance = "primary" onClick = {handleSignup}>Sign Up</Button>
     </div>
   );
 };

@@ -8,13 +8,15 @@ export default function UserDashboard() {
   const [artists, setArtists] = useState([]);
   const [data, setData] = useState([]);
   const [token, setAccessToken] = useState('');
-
+  // sessionStorage.setItem('access_token', access_token);
+  // var access_token = sessionStorage.getItem('access_token');
+  // setAccessToken(access_token);
+  
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     var access_token = params.get('accesstoken');
     sessionStorage.setItem('access_token', access_token);
     access_token = sessionStorage.getItem('access_token');
-
     setAccessToken(access_token);
     fetch("http://localhost:5000/user_dashboard")
     .then(res => res.json())
