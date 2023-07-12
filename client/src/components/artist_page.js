@@ -1,5 +1,6 @@
 import React, { useEffect , useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import './css/artist_page.css';
 
 export default function ArtistPage() {
     const [artist_data, setArtistData] = useState([]);
@@ -56,27 +57,33 @@ export default function ArtistPage() {
             setSubscribeStatus(data);
         });
     }
-    const handleBack = () => {
-        navigate("/artist_search")
-    }
-    return(<div> 
-        <h1>Artist Page</h1>
-
-        <h1>{artist_name}</h1>
-        <img src = {artist_image}></img>
-        <h2>Artist Albums</h2>
-        {/* <button onClick = {handleClick}> GET Add Artist</button> */}
-        <form onSubmit={handleSubmit}>
-            <input type = "submit"></input>
-        </form>
-        {subscribe_status && <h3>Subscribed</h3>}
-        {!subscribe_status && <h3>Not Subscribed</h3>}
-        <button onClick = {handleBack}>Go back</button>
-        {artist_data && Array.isArray(artist_data.items)  > 0 && (artist_data.items.map((album) => (
-            <div key = {album.id}>
-                <a>{album.name}</a><br/>
-                <img src = {album.images[1].url}></img>
+    // const handleBack = () => {
+    //     navigate("/artist_search")
+    // }
+    return(
+        <div> 
+            <div className='artist_header'>
+                <h1>{artist_name}</h1><br/>
+                <img src = {artist_image}></img><br/>
+                <form onSubmit={handleSubmit}>
+                <input type="submit" value={subscribe_status ? "Subscribed" : "Unsubscribed"} />
+            </form>
             </div>
-        )))}
+            {/* <button onClick = {handleClick}> GET Add Artist</button> */}
+
+            {/* <button onClick = {handleBack}>Go back</button><br/> */}
+            <h2>Latest Albums</h2>
+            <div className='albums'>
+            {artist_data && Array.isArray(artist_data.items)  > 0 && (artist_data.items.map((album) => (
+                <div className = "album_card" key = {album.id}>
+                    <a>{album.name}</a><br/>
+                    <img src = {album.images[1].url}></img>
+                </div>
+            )))}
+            </div>
+            <h2>Latest Singles</h2>
+            <h3 className= "not_implemented">to be added</h3>
+            <h2>Latest Features</h2>
+            <h3 className = "not_implemented">to be added</h3>
         </div>) ;
 }

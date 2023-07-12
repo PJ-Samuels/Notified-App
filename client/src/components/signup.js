@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
+import Button from '@atlaskit/button';
 
 export default function Signup(){
-    
     const [account, setAccount] = useState({
             username: '',
             email: '',
@@ -36,12 +36,12 @@ export default function Signup(){
     <div>
         <h1>Sign up Page</h1>
         <form onSubmit = {handleSubmit}>
-            <input type ="text" placeholder = 'username' name = "username" value = {account.username} onChange = {handleAccount}></input><br></br>
-            <input type = "text" placeholder= 'email' name = "email" value = {account.email} onChange = {handleAccount}></input><br></br>
-            <input type = "text" placeholder= 'password' name = "password" value = {account.password} onChange = {handleAccount}></input><br></br>
-            <input type = "submit"></input>
+            <input type ="text" placeholder = 'username' name = "username" value = {account.username} onChange = {handleAccount}/><br/>
+            <input type = "text" placeholder= 'email' name = "email" value = {account.email} onChange = {handleAccount}/><br/>
+            <input type = "text" placeholder= 'password' name = "password" value = {account.password} onChange = {handleAccount}/><br/>
+            <input type = "submit"/>
         </form>
-        <button onClick = {handleClick}>Go back</button>
+        <Button onClick = {handleClick}>Go back</Button>
         
     </div>)
 }

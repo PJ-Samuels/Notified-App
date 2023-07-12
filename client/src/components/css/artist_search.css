@@ -1,0 +1,11 @@
+h1,h2{
+    text-align: center;
+    color: white
+}
+.top_artist, form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

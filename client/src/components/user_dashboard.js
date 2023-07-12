@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect , useState} from "react";
 import {useNavigate} from 'react-router-dom';
+import './css/user_dashboard.css'
 
 export default function UserDashboard() {
   const navigate = useNavigate();
@@ -26,9 +27,9 @@ export default function UserDashboard() {
 
     }, []);
    
-  const handleClick = () => {
-    navigate("/artist_search")
-  }
+  // const handleClick = () => {
+  //   navigate("/artist_search")
+  // }
   const handleArtist = async () => {
     // console.log(data.id)
     const response = await fetch(`https://api.spotify.com/v1/artists/${data.id}/albums?limit=3`,{
@@ -47,16 +48,18 @@ export default function UserDashboard() {
   }
   return( 
     <div>
-      <h1>User Dashboard</h1>
-      <button onClick = {handleClick}>Search for artist</button>
-      <h2>Artists</h2>
+      <h1>Your Dashboard</h1>
+      {/* <button onClick = {handleClick}>Search for artist</button> */}
+      <h2>Subscribed Artists</h2>
       {/* {artists && Array.isArray(artists)  > 0 && (artists.map((artist) => ()} */}
+      <div className = "artists">
       {artists.map((artist) => (
-        <div key={artist.artist_id}>
+        <div className= "artist_card" key={artist.artist_id}>
           <a>{artist.artist_name}</a><br/>
           <img onClick={handleArtist} src={artist.artist_img} alt={artist.artist_name} />
         </div>
       ))}
+      </div>
       <h2>Notifications</h2>
       <h2>Discover</h2>
     </div>

@@ -13,7 +13,9 @@
     "cron": "^2.3.1",
     "express": "^4.18.2",
     "json": "^11.0.0",
+    "moment-timezone": "^0.5.43",
     "node-cron": "^3.0.2",
+    "nodemailer": "^6.9.3",
     "pg": "^8.11.0",
     "request": "^2.88.2"
   }

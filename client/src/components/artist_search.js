@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import {useNavigate} from 'react-router-dom';
+import './css/artist_search.css'
 
 export default function ArtistSearch() {
     const access_token = sessionStorage.getItem('access_token');
@@ -73,21 +74,21 @@ export default function ArtistSearch() {
             // console.log("Updated Data:", data);
         }
     }, [data]);
-    const handleBack = () => {
-        navigate('/user_dashboard')
-    }
+    // const handleBack = () => {
+    //     navigate('/user_dashboard')
+    // }
 
     
     return(
     <div>
         <h1>Artist Search</h1>
         <form onSubmit = {handleSubmit}>
-            <input type = "text" placeholder="Type Artist Name here" value = {artistName} onChange = {handleInputChange}/>
+            <input type = "text" placeholder="Type Artist Name here" value = {artistName} onChange = {handleInputChange}/><br/>
             <input type = "submit" value = "Search"></input>
         </form>
-        <button onClick = {handleBack}> go back </button>
+        {/* <button onClick = {handleBack}> go back </button> */}
         {data && Object.keys(data).length > 0 && (
-        <div>
+        <div className="top_artist">
             <h2>{data.name}</h2>
             <img src={data.images[1].url} alt="artist"/><br/>
             <button onClick = {handleRoute}>Subscribe </button>

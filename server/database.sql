@@ -26,6 +26,6 @@ CREATE TABLE "Notifications"(
     release_img varchar(255) NOT NULL,
     latest_release varchar(100) NOT NULL,
     notification_day DATE,
-    PRIMARY KEY (user_id, latest_release),
+    PRIMARY KEY (user_id, artist_name,latest_release),
     FOREIGN KEY (user_id) REFERENCES "Users"(id)
 );

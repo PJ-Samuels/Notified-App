@@ -1,7 +1,8 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
-
+import Button from '@atlaskit/button';
+ 
 const App = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
@@ -9,9 +10,6 @@ const App = () => {
   const [password, setPassword] = useState("")
   const [account_info, setAccountInfo] = useState(0)
   const [wrongPass, setWrongPass] = useState(false)
-
-
-
 
   useEffect(() => {
       fetch("http://localhost:5000/")
@@ -35,7 +33,7 @@ const App = () => {
     .then((account_info) => {
       // console.log("account info ", account_info);
       setAccountInfo(account_info);
-  
+
       if (account_info === 1) {
         navigate('/login');
       } else {
@@ -56,13 +54,13 @@ const App = () => {
       <h1>Notified Home page</h1>
       <h2>Login here</h2>
       <form onSubmit = {handleClick}>
-        <input type = "text" placeholder='email' value = {email} onChange = {handleEmailChange}></input>
-        <input type = "text" placeholder='password' value = {password} onChange = {handlePassChange}></input>
-        <input type = "submit" value = "Spotify Login"></input>
+        <input type = "text" placeholder='email' value = {email} onChange = {handleEmailChange}/><br/>
+        <input type = "text" placeholder='password' value = {password} onChange = {handlePassChange}/><br/>
+        <input type = "submit" value = "Spotify Login"/><br/>
       </form>
       {wrongPass && <a>email or password</a>}
       <h2>Sign Up here</h2>
-        <button onClick = {handleSignup}>Sign Up</button>
+        <Button appearance = "primary" onClick = {handleSignup}>Sign Up</Button>
       {/* {data.map((item, index) => (
         <a key={index}>{item}</a>
       ))} */}
