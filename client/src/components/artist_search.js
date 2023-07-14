@@ -1,16 +1,21 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {useNavigate} from 'react-router-dom';
+import './css/artist_search.css'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 
 export default function ArtistSearch() {
     const access_token = sessionStorage.getItem('access_token');
     sessionStorage.setItem("access_token", access_token);
-    const [artistName, setArtistName] = React.useState("");
+    const [artistName, setArtistName] = useState("");
+    const [artistImg, setArtistImg] = useState("");
+    const [artistId, setArtistId] = useState("");
     const [data, setData] = React.useState([]);
     const [bool, setBool] = React.useState(false);
-    const navigate = useNavigate();
-    
+
+
     const handleInputChange = (event) => {
         setArtistName(event.target.value);
       };
@@ -18,15 +23,27 @@ export default function ArtistSearch() {
     const handleSubmit = (event) => {
         event.preventDefault();
         fetchData()
-        setBool(true);
-        console.log(artistName);
+        setBool(true)
     };
     
-    const handleRoute = () => {
-        navigate('/artist_page', {state: {data: data}}); 
-    }
-    const fetchAlbums = async() => {
-        
+    const handleRoute = async ()=> {
+        const response = await fetch(`https://api.spotify.com/v1/artists/${data.id}/albums?limit=3`,{
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + access_token,
+            }
+        });
+        const query = new URLSearchParams(window.location.search);
+        const user_id = query.get('user_id');
+        const response_data = await response.json();
+        const dataToEncode = JSON.stringify(response_data);
+        const encodedData = encodeURIComponent(dataToEncode);
+        const encodedName = encodeURIComponent(JSON.stringify(artistName));
+        const encodedImg = encodeURIComponent(JSON.stringify(artistImg));
+        const encodedID = encodeURIComponent(JSON.stringify(artistId));
+        const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
+        const url = `/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
+        window.location.href = url;
     }
 
     const fetchData = async () => {
@@ -38,7 +55,13 @@ export default function ArtistSearch() {
         });
         if (response.ok) {
             const response_data = await response.json();
+            setArtistName(response_data.artists.items[0].name);
+            console.log("response data",response_data);
+            console.log("response data",response_data.artists.items[0].images[1].url);
+            console.log("response data",response_data.artists.items[0].name);
             setData(response_data.artists.items[0]);
+            setArtistImg(response_data.artists.items[0].images[1].url);
+            setArtistId(response_data.artists.items[0].id);
             }     
         else {
             console.log('Error:', response.status);
@@ -47,7 +70,7 @@ export default function ArtistSearch() {
     }
     useEffect(() => {
         if(bool === true){
-            console.log("Updated Data:", data);
+            // console.log("Updated Data:", data);
         }
     }, [data]);
 
@@ -56,15 +79,23 @@ export default function ArtistSearch() {
     return(
     <div>
         <h1>Artist Search</h1>
-        <form onSubmit = {handleSubmit}>
-            <input type = "text" placeholder="Type Artist Name here" value = {artistName} onChange = {handleInputChange}/>
-            <input type = "submit" value = "Search"></input>
-        </form>
+        <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Control type="text" placeholder="Enter Artist Name" value={artistName} onChange={handleInputChange}autoComplete="off" />
+        </Form.Group>
+        <Button variant="primary" type="submit" value="Search">Submit</Button>
+      </Form>
+
+        {/* <form onSubmit = {handleSubmit}>
+            <input className = "text" type = "text" placeholder="Type Artist Name here" value = {artistName} onChange = {handleInputChange}/><br/>
+            <input className = "submit" type = "submit" value = "Search"></input>
+        </form> */}
+        {/* <button onClick = {handleBack}> go back </button> */}
         {data && Object.keys(data).length > 0 && (
-        <div>
+        <div className="top_artist">
             <h2>{data.name}</h2>
-            <img src={data.images[1].url} alt="artist"/>
-            <button onClick = {handleRoute}>Subscribe </button>
+            <img src={data.images[1].url} alt="artist"/><br/>
+            <Button onClick = {handleRoute}>Subscribe </Button>
         </div>
       )}
     </div>);

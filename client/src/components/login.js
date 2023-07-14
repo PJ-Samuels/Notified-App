@@ -3,8 +3,11 @@ import {useNavigate} from 'react-router-dom';
 
 
 export default function Login() {
+
     useEffect(() => {
-      fetch('http://localhost:5000/login')
+      const user_id = sessionStorage.getItem('user_id');
+      sessionStorage.setItem('user_id', user_id);
+      fetch(`http://localhost:5000/login?user_id=${user_id}`)
       .then((res) => res.text())
       .then((spotifyAuthUrl) => {
         window.location.href = spotifyAuthUrl;

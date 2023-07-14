@@ -9,19 +9,23 @@ import UserDashboard from './components/user_dashboard';
 import ArtistSearch from './components/artist_search';
 import ArtistPage from './components/artist_page';
 import Signup from './components/signup';
+import UserNav from './components/user_nav';
+import HomeNav from './home_nav';
+import LandingPage from './components/landing_page';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
-        <Route path= "/signup" element = {<Signup/>}/>
-        <Route path ="/login" element = {<Login/>}/>"   
-        <Route path ="/callback" element = {<Callback/>}/>"   
-        <Route path = "/user_dashboard" element = {<UserDashboard/>}/> 
-        <Route path = "/artist_search" element = {<ArtistSearch/>}/>
-        <Route path = "/artist_page" element = {<ArtistPage/>}/>
+        <Route path="/" element={<><HomeNav/><App/></>} />
+        <Route path = "/landing_page" element = {<><HomeNav/><LandingPage/></>}/>
+        <Route path= "/signup" element = {<><HomeNav/><Signup/></>}/>
+        <Route path ="/login" element = {<><HomeNav/><Login/></>}/>   
+        <Route path ="/callback" element = {<Callback/>}/>   
+        <Route path = "/user_dashboard" element = {<><UserNav/><UserDashboard/></>}/> 
+        <Route path = "/artist_search" element = {<><UserNav/><ArtistSearch/></>}/>
+        <Route path = "/artist_page" element = {<><UserNav/><ArtistPage/></>}/>
       </Routes>
     </BrowserRouter>
   </React.StrictMode> 
