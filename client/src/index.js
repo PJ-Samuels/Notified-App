@@ -11,6 +11,7 @@ import ArtistPage from './components/artist_page';
 import Signup from './components/signup';
 import UserNav from './components/user_nav';
 import HomeNav from './home_nav';
+import LandingPage from './components/landing_page';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,6 +19,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<><HomeNav/><App/></>} />
+        <Route path = "/landing_page" element = {<><HomeNav/><LandingPage/></>}/>
         <Route path= "/signup" element = {<><HomeNav/><Signup/></>}/>
         <Route path ="/login" element = {<><HomeNav/><Login/></>}/>   
         <Route path ="/callback" element = {<Callback/>}/>   

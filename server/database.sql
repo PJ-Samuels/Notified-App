@@ -29,3 +29,10 @@ CREATE TABLE "Notifications"(
     PRIMARY KEY (user_id, artist_name,latest_release),
     FOREIGN KEY (user_id) REFERENCES "Users"(id)
 );
+
+CREATE TABLE "unique_identifiers" (
+    user_state varchar(255) NOT NULL,
+    user_id int NOT NULL,
+    PRIMARY KEY (user_state, user_id),
+    FOREIGN KEY (user_id) REFERENCES "Users"(id)
+);

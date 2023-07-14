@@ -20,6 +20,9 @@ export default function HomeNav(){
     //     navigate("/artist_search")
     // }
     const homeClick = () => {
+        navigate("/landing_page")
+    }
+    const handleLogin = () => {
         navigate("/")
     }
 
@@ -42,7 +45,7 @@ export default function HomeNav(){
             <PrimaryDropdownButton>Releases</PrimaryDropdownButton>,
             <PrimaryButton>News</PrimaryButton>,
             <PrimaryButton>FAQ</PrimaryButton>,
-            <PrimaryButton>login</PrimaryButton>,
+            <PrimaryButton onClick = {handleLogin}>login</PrimaryButton>,
         ]}
         // renderProductHome={AtlassianProductHome}
         />

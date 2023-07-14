@@ -9,40 +9,45 @@ const pool = require('./db.js');
 var client_id = config.CLIENT_ID;
 var client_secret = config.CLIENT_SECRET;
 var redirect_uri = 'http://localhost:3000/callback';
-var user_id;
+
+const session = require('express-session');
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 const moment = require('moment-timezone');
 moment.tz.setDefault('UTC');
 
-
-
-
 var generateRandomString = function(length) {
-    var text = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < length; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-  };
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
 
 app.use(cors());
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: true
+}))
 app.use(express.json());
 app.use(bodyParser.json())
+
 
 app.get('/', (req, res) => {
     const data = ["This is the server"];
     res.json(data);
   });
 app.post('/',async (req,res) =>{
+  var user_id;
   pool.query('SELECT email, password FROM "Users" WHERE email = $1 AND password = $2', [req.body.email, req.body.password])
   .then(result => {
     if (result.rowCount > 0) {
       pool.query('SELECT id FROM "Users" WHERE email = $1 AND password = $2', [req.body.email, req.body.password])
         .then(result2 => {
           user_id = result2.rows[0].id;
-          res.json(1);
+          res.json([1,user_id]);
         });
     } else {
       throw new Error('Invalid credentials');
@@ -50,11 +55,12 @@ app.post('/',async (req,res) =>{
   })
   .catch(error => {
     console.error(error);
-    res.json(0);
+    res.json([0,null]);
   });
 })
 
 app.post('/signup', (req, res) => {
+  var user_id;
   const account = req.body.account;
   const result = pool.query('INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3)', [account.username, account.email, account.password], (err, result) => {
     if (err) {
@@ -65,29 +71,63 @@ app.post('/signup', (req, res) => {
         const new_result = pool.query('SELECT id FROM "Users" WHERE username = $1 AND email = $2 AND password = $3', [account.username, account.email, account.password], (err, result) => {
         user_id = result.rows[0].id;
       });
-      res.redirect('/login');
+      req.session.user_id = user_id;
+      res.redirect('/login?user_id=' + user_id);
     }
   });
 });
 
+function generateUniqueIdentifier(req, state, user_id) {
+  const query = 'INSERT INTO unique_identifiers (user_state, user_id) VALUES ($1, $2)';
+  pool.query(query, [state, user_id])
+    .then(result => {
+      // Handle success if needed\
+      console.log("inserted")
+    })
+    .catch(error => {
+      // Handle error if needed
+    });
+  return state;
+}
 
 app.get('/login', function(req, res) {
-    var state = generateRandomString(16);
-    var scope = 'user-read-private user-read-email';
-      var auth_query_parameters = new URLSearchParams({
-        response_type: "code",
-        client_id: client_id,
-        scope: scope,
-        redirect_uri: redirect_uri,
-        state: state
-      })
-      spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
-    res.send(spotifyAuthUrl);
-  });
+  req.session.user_id = req.query.user_id;
+  const user_id = req.query.user_id;  
+  var state = generateRandomString(16);
+  const uniqueIdentifier = generateUniqueIdentifier(req, state, user_id);
+  var scope = 'user-read-private user-read-email';
+  var auth_query_parameters = new URLSearchParams({
+    response_type: "code",
+    client_id: client_id,
+    scope: scope,
+    redirect_uri: redirect_uri,
+    state: state,
+  })
+  spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
+  res.send(spotifyAuthUrl);
+});
   
 app.get('/callback', function(req, res) {
   var code = req.query.code || null;
   var state = req.query.state || null;
+  var user_id;
+  const query = 'SELECT user_id FROM unique_identifiers WHERE user_state = $1';
+  pool.query(query, [state])
+  .then(result => {
+    if (result.rows.length > 0) {
+      user_id = result.rows[0].user_id;
+      console.log('Retrieved user_id:', user_id);
+      req.session.user_id = user_id;
+      console.log("session user_id",req.session.user_id)
+      const deleteQuery = 'DELETE FROM unique_identifiers WHERE user_state = $1';
+      pool.query(deleteQuery, [state])
+        .then(() => {
+          console.log("deleted")
+        })
+        .catch(error => {
+        });
+      }
+  })
   if (state === null) {
     res.redirect('/callback' +
       querystring.stringify({
@@ -109,7 +149,7 @@ app.get('/callback', function(req, res) {
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
         var access_token = body.access_token;
-        res.send('http://localhost:3000/user_dashboard?accesstoken=' + access_token);
+        res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&user_id=${user_id}`);
       }
     });
   }
@@ -117,6 +157,8 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/user_dashboard', (req, res) => {
+  console.log("user_id",req.query.user_id)
+  const user_id = req.query.user_id;
   const subscribed_artist = pool.query('SELECT * FROM "Subscribed_Artists" WHERE user_id = $1', [user_id], (err, result) => {
     res.json(result.rows);
 
@@ -130,7 +172,6 @@ app.get('/add_artist', (req, res) => {
     } else {
       res.json(false);
     }
-  
   });
 });
 app.post('/artist_subscription', (req, res) => {
@@ -149,6 +190,7 @@ app.post('/artist_subscription', (req, res) => {
 });
 
 app.get('/notification', (req, res) => {
+  const user_id = req.query.user_id;
   const subscribed_artist = pool.query('SELECT * FROM "Subscribed_Artists" WHERE user_id = $1', [user_id], (err, result) => {
   });
 });
@@ -176,6 +218,7 @@ function sendEmail(bool){
   }
 }
 
+
 const timeZone = 'America/New_York';
 const cronSchedule = `${moment().tz(timeZone).startOf('hour').format('m')} * * * *`;
 cron.schedule(cronSchedule, () => {
@@ -192,7 +235,6 @@ cron.schedule(cronSchedule, () => {
 
   request.post(authOptions, function(error, response, body) {
     const currentHour = moment().format('HH:mm');
-  
     if (!error && response.statusCode === 200) {
       var token = body.access_token;
       pool.query(('SELECT artist_id, MAX(latest_release) AS latest_release FROM "Subscribed_Artists" GROUP BY artist_id'), (err, result) => {

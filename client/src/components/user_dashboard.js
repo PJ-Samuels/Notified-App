@@ -8,6 +8,7 @@ export default function UserDashboard() {
   const [artists, setArtists] = useState([]);
   const [data, setData] = useState([]);
   const [token, setAccessToken] = useState('');
+  const [user_id, setUserId] = useState('');
   // sessionStorage.setItem('access_token', access_token);
   // var access_token = sessionStorage.getItem('access_token');
   // setAccessToken(access_token);
@@ -15,10 +16,13 @@ export default function UserDashboard() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     var access_token = params.get('accesstoken');
+    var user_id = params.get('user_id');
+    console.log(user_id)
     sessionStorage.setItem('access_token', access_token);
     access_token = sessionStorage.getItem('access_token');
     setAccessToken(access_token);
-    fetch("http://localhost:5000/user_dashboard")
+    setUserId(user_id);
+    fetch("http://localhost:5000/user_dashboard?user_id="+user_id)
     .then(res => res.json())
     .then(data => {
       setArtists(data)

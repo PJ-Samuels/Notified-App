@@ -35,9 +35,11 @@ const App = () => {
     .then((res) => res.json())
     .then((account_info) => {
       // console.log("account info ", account_info);
-      setAccountInfo(account_info);
-
-      if (account_info === 1) {
+      setAccountInfo(account_info[0]);
+      // console.log("User_id ", account_info[1]);
+      
+      if (account_info[0] === 1) {
+        sessionStorage.setItem('user_id', account_info[1]);
         navigate('/login');
       } else {
         setWrongPass(true);
