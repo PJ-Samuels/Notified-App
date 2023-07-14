@@ -1,8 +1,6 @@
 import React from "react";
-
 import { useEffect, useState } from "react";
 import {useNavigate} from 'react-router-dom';
-
 import './css/artist_search.css'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -16,8 +14,6 @@ export default function ArtistSearch() {
     const [artistId, setArtistId] = useState("");
     const [data, setData] = React.useState([]);
     const [bool, setBool] = React.useState(false);
-    const navigate = useNavigate();
-
 
 
     const handleInputChange = (event) => {
@@ -27,28 +23,26 @@ export default function ArtistSearch() {
     const handleSubmit = (event) => {
         event.preventDefault();
         fetchData()
-        setBool(true);
-        // console.log(artistName);
+        setBool(true)
     };
     
     const handleRoute = async ()=> {
-        // console.log(data.id)
         const response = await fetch(`https://api.spotify.com/v1/artists/${data.id}/albums?limit=3`,{
             method: "GET",
             headers: {
                 'Authorization': 'Bearer ' + access_token,
             }
         });
-
+        const query = new URLSearchParams(window.location.search);
+        const user_id = query.get('user_id');
         const response_data = await response.json();
         const dataToEncode = JSON.stringify(response_data);
         const encodedData = encodeURIComponent(dataToEncode);
         const encodedName = encodeURIComponent(JSON.stringify(artistName));
         const encodedImg = encodeURIComponent(JSON.stringify(artistImg));
         const encodedID = encodeURIComponent(JSON.stringify(artistId));
-        const url = `/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}`;
-
-        // console.log(window.location.href)
+        const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
+        const url = `/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
         window.location.href = url;
     }
 
@@ -79,9 +73,7 @@ export default function ArtistSearch() {
             // console.log("Updated Data:", data);
         }
     }, [data]);
-    // const handleBack = () => {
-    //     navigate('/user_dashboard')
-    // }
+
 
     
     return(

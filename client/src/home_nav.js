@@ -46,6 +46,7 @@ export default function HomeNav(){
             <PrimaryButton>News</PrimaryButton>,
             <PrimaryButton>FAQ</PrimaryButton>,
             <PrimaryButton onClick = {handleLogin}>login</PrimaryButton>,
+
         ]}
         // renderProductHome={AtlassianProductHome}
         />

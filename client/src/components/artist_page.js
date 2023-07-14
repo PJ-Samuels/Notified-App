@@ -8,9 +8,9 @@ export default function ArtistPage() {
     const [artist_data, setArtistData] = useState([]);
     const [artist_name, setArtistName] = useState("");
     const [artist_image, setArtistImg] = useState("");
+    const [user_id, setUserId] = useState(null);
     const [artist_id, setArtistId] = useState("");
     const [subscribe_status, setSubscribeStatus] = useState(true);
-    // const navigate = useNavigate();
     const access_token = sessionStorage.getItem("access_token");
     sessionStorage.setItem("access_token", access_token);
 
@@ -24,20 +24,24 @@ export default function ArtistPage() {
         setArtistName(decodedName);
         setArtistId(JSON.parse(decodeURIComponent(query.get('artistID'))));
         setArtistImg(JSON.parse(decodeURIComponent(query.get('artistImg'))));
+        setUserId(JSON.parse(decodeURIComponent(query.get('user_id'))));
 
-        // const artistName = artist_name;
-        // console.log(decodedName)
-        const queryParams = new URLSearchParams({ artist_name: decodedName }).toString();
-        fetch(`http://localhost:5000/add_artist?${queryParams}`)
+    },[]);
+    useEffect(() => {
+        if (user_id !== null) {
+          const queryParams = new URLSearchParams({ artist_name: artist_name, user_id: user_id }).toString();
+          fetch(`http://localhost:5000/add_artist?${queryParams}`)
             .then(response => response.json())
             .then(data => {
-                setSubscribeStatus(data);
-            })
-    },[]);
+              setSubscribeStatus(data);
+            });
+        }
+      }, [user_id]);
+      
+      
+      
 
     const handleSubmit = (event) =>{
-        // console.log("artist data" ,artist_data.items[0])
-        // console.log(artist_name)
         event.preventDefault();
         const artist_info = {
             artist_name: artist_name,
@@ -49,11 +53,10 @@ export default function ArtistPage() {
         fetch("http://localhost:5000/artist_subscription",{
             method: "POST",
             headers: {'Content-Type': "application/json"},
-            body: JSON.stringify({ artist_info: artist_info, subscribe_status: subscribe_status })
+            body: JSON.stringify({ artist_info: artist_info, subscribe_status: subscribe_status, user_id: user_id })
         })
         .then(response => response.json())
         .then(data => {
-            // console.log(data)
             setSubscribeStatus(data);
         });
     }

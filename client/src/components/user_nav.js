@@ -15,14 +15,20 @@ import ArtistSearch from "./artist_search";
 export default function UserNav(){
     const access_token = sessionStorage.getItem('access_token');
     sessionStorage.setItem("access_token", access_token);
+    const user_id = sessionStorage.getItem('user_id');
+    sessionStorage.setItem("user_id", user_id);
     const navigate = useNavigate();
     const artistSearchClick = () => {
-        navigate("/artist_search")
+        navigate("/artist_search?user_id="+user_id)
     }
     const homeClick = () => {
-        navigate("/user_dashboard")
+        navigate("/user_dashboard?user_id="+user_id)
     }
 
+    const handleLogout = () => {
+        sessionStorage.clear();
+        navigate("/")
+    }
     // setGlobalTheme({
     //     light: 'light',
     //     dark: 'dark',
@@ -41,6 +47,7 @@ export default function UserNav(){
           <PrimaryDropdownButton onClick = {artistSearchClick}>Artist Search</PrimaryDropdownButton>,
           <PrimaryDropdownButton>Discover</PrimaryDropdownButton>,
           <PrimaryButton>Dashboard</PrimaryButton>,
+          <PrimaryButton onClick = {handleLogout}>logout</PrimaryButton>,
         ]}
         // renderProductHome={AtlassianProductHome}
         />

@@ -9,12 +9,13 @@ const pool = require('./db.js');
 var client_id = config.CLIENT_ID;
 var client_secret = config.CLIENT_SECRET;
 var redirect_uri = 'http://localhost:3000/callback';
-
 const session = require('express-session');
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 const moment = require('moment-timezone');
 moment.tz.setDefault('UTC');
+var validator = require("email-validator");
+const bcrypt = require("bcrypt")
 
 var generateRandomString = function(length) {
   var text = '';
@@ -34,59 +35,91 @@ app.use(session({
 app.use(express.json());
 app.use(bodyParser.json())
 
-
 app.get('/', (req, res) => {
     const data = ["This is the server"];
     res.json(data);
   });
 app.post('/',async (req,res) =>{
   var user_id;
-  pool.query('SELECT email, password FROM "Users" WHERE email = $1 AND password = $2', [req.body.email, req.body.password])
-  .then(result => {
-    if (result.rowCount > 0) {
-      pool.query('SELECT id FROM "Users" WHERE email = $1 AND password = $2', [req.body.email, req.body.password])
-        .then(result2 => {
-          user_id = result2.rows[0].id;
-          res.json([1,user_id]);
-        });
-    } else {
-      throw new Error('Invalid credentials');
-    }
-  })
-  .catch(error => {
-    console.error(error);
-    res.json([0,null]);
-  });
-})
+  if (validator.validate(req.body.email)) {
+    console.log("Valid email");
+    const password = req.body.password;
+    pool.query('SELECT email, password FROM "Users" WHERE email = $1', [req.body.email])
+      .then(result => {
+        if (result.rowCount > 0) {
+          const hashedPassword = result.rows[0].password;
+          bcrypt.compare(password, hashedPassword, (err, isValid) => {
+            if (isValid) {
+              pool.query('SELECT id FROM "Users" WHERE email = $1', [req.body.email])
+                .then(result2 => {
+                  user_id = result2.rows[0].id;
+                  res.json([1, user_id]);
+                })
+                .catch(error => {
+                  console.error(error);
+                  res.json([0, null]);
+                });
+            } else {
+              throw new Error('Invalid credentials');
+            }
+          });
+        } else {
+          throw new Error('Invalid credentials');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        res.json([0, null]);
+      });
+  } else {
+    console.log("Invalid email");
+    res.json([0, null]);
+  }
+});
 
 app.post('/signup', (req, res) => {
   var user_id;
   const account = req.body.account;
-  const result = pool.query('INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3)', [account.username, account.email, account.password], (err, result) => {
-    if (err) {
-      console.log(err);
-      res.redirect('/signup');
-    } else {
-      console.log("success");
-        const new_result = pool.query('SELECT id FROM "Users" WHERE username = $1 AND email = $2 AND password = $3', [account.username, account.email, account.password], (err, result) => {
-        user_id = result.rows[0].id;
-      });
-      req.session.user_id = user_id;
-      res.redirect('/login?user_id=' + user_id);
-    }
-  });
+  console.log(account.email)
+  if (validator.validate(account.email)) {
+    console.log("Valid email");
+    const password = account.password;
+    bcrypt.hash(password, 10, (err, hash) => {
+      if (err) {
+        console.error(err);
+        res.redirect('/signup');
+      } else {
+        pool.query('INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3)', [account.username, account.email, hash], (err, result) => {
+          if (err) {
+            console.error(err);
+            res.redirect('/signup');
+          } else {
+            console.log("Success");
+            pool.query('SELECT id FROM "Users" WHERE username = $1 AND email = $2 AND password = $3', [account.username, account.email, hash], (err, result) => {
+              if (err) {
+                console.error(err);
+                res.redirect('/signup');
+              } else {
+                user_id = result.rows[0].id;
+                req.session.user_id = user_id;
+                res.redirect('/login?user_id=' + user_id);
+              }
+            });
+          }
+        });
+      }
+    });
+  } else {
+    console.log("Invalid email");
+    res.redirect('/signup');
+  }
 });
 
 function generateUniqueIdentifier(req, state, user_id) {
   const query = 'INSERT INTO unique_identifiers (user_state, user_id) VALUES ($1, $2)';
   pool.query(query, [state, user_id])
     .then(result => {
-      // Handle success if needed\
-      console.log("inserted")
     })
-    .catch(error => {
-      // Handle error if needed
-    });
   return state;
 }
 
@@ -116,13 +149,11 @@ app.get('/callback', function(req, res) {
   .then(result => {
     if (result.rows.length > 0) {
       user_id = result.rows[0].user_id;
-      console.log('Retrieved user_id:', user_id);
       req.session.user_id = user_id;
-      console.log("session user_id",req.session.user_id)
       const deleteQuery = 'DELETE FROM unique_identifiers WHERE user_state = $1';
       pool.query(deleteQuery, [state])
         .then(() => {
-          console.log("deleted")
+          // console.log("deleted")
         })
         .catch(error => {
         });
@@ -157,7 +188,6 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/user_dashboard', (req, res) => {
-  console.log("user_id",req.query.user_id)
   const user_id = req.query.user_id;
   const subscribed_artist = pool.query('SELECT * FROM "Subscribed_Artists" WHERE user_id = $1', [user_id], (err, result) => {
     res.json(result.rows);
@@ -166,6 +196,7 @@ app.get('/user_dashboard', (req, res) => {
 });
 app.get('/add_artist', (req, res) => {
   const artist_name = req.query.artist_name;
+  const user_id = req.query.user_id;
   pool.query('SELECT * FROM "Subscribed_Artists" WHERE user_id = $1 AND artist_name = $2', [user_id, artist_name], (err, result) => {
     if (result.rowCount > 0) {
       res.json(true);
@@ -177,6 +208,7 @@ app.get('/add_artist', (req, res) => {
 app.post('/artist_subscription', (req, res) => {
   const newArtist = req.body.artist_info;
   const subscribe_status = req.body.subscribe_status;
+  const user_id = req.body.user_id;
   if (subscribe_status === false) {
     const newArtistQuery  =  pool.query(`INSERT INTO "Subscribed_Artists" (user_id, artist_id, artist_name, artist_img, latest_release) VALUES ($1, $2, $3, $4, $5) RETURNING *`, [user_id, newArtist.artist_id, newArtist.artist_name, newArtist.artist_image, newArtist.latest_release, ], (err, result) => {
       res.json((true))
@@ -257,7 +289,7 @@ cron.schedule(cronSchedule, () => {
                 pool.query('SELECT user_id FROM "Subscribed_Artists" WHERE artist_id = $1', [artist_id], (err, result) => {
                   const users = result.rows;
                   for (let i = 0; i < users.length; i++) {
-                    console.log("user_id",users[i].user_id)
+                    // console.log("user_id",users[i].user_id)
                     pool.query('INSERT INTO "Notifications" (user_id, artist_id, artist_name, release_img, latest_release) VALUES ($1, $2, $3, $4, $5)', [users[i].user_id,artist_id,artist_name,release_img,latest_release], (err, result) => {
                       console.log("Notification added")
                       sendEmail(true);

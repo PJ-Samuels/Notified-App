@@ -61,7 +61,7 @@ const App = () => {
       <Form onSubmit={handleClick}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control type="text" placeholder="email" value={email} onChange={handleEmailChange} autoComplete="off"/><br/>
-          <Form.Control type="text" placeholder="password" value={password} onChange={handlePassChange} autoComplete="off"/>
+          <Form.Control type="password" placeholder="password" value={password} onChange={handlePassChange} autoComplete="off"/>
         </Form.Group>
         <Button variant="primary" type="submit" value="Spotify Login">Login</Button>
       </Form>
