@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:postgres/postgres.dart';
 import 'package:flutter/services.dart';
 import 'artistSearch.dart';
+import 'secrets.dart';
 
 class UserDashboard extends StatefulWidget {
   final int user_id;
@@ -14,7 +15,7 @@ class UserDashboard extends StatefulWidget {
 }
 
 class _UserDashboardState extends State<UserDashboard> {
-  var spotifyClientId = "b9bd5d60afce4b29bc880a786130628e";
+  var spotifyClientId = spotifyClientIdImport;
   var spotifyRedirectUrl = "spotify-ios-quick-start://spotify-login-callback";
   final int user_id;
   _UserDashboardState({required this.user_id});
@@ -25,15 +26,14 @@ class _UserDashboardState extends State<UserDashboard> {
   void initState() {
     super.initState();
     _connection = PostgreSQLConnection(
-      '192.168.1.173',
+      databaseHost,
       5432,
       'Notified',
       username: 'postgres',
-      password: 'Oliver29',
+      password: databasePassword,
     );
     retrieve_artists();
   }
-
 
   Future<void> retrieve_artists() async {
     await _connection.open();
@@ -58,12 +58,14 @@ class _UserDashboardState extends State<UserDashboard> {
       // Handle the error
     }
   }
-  void _handleSearch({required String user_id}){
+
+  void _handleSearch({required String user_id}) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ArtistSearch(user_id: user_id)),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +74,7 @@ class _UserDashboardState extends State<UserDashboard> {
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
-            onPressed:() => _handleSearch(user_id: user_id.toString()),
+            onPressed: () => _handleSearch(user_id: user_id.toString()),
           ),
         ],
       ),

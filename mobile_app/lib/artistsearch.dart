@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/secrets.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
-// import 'package:spotify_ios_plugin/ios/Classes/SpotifyIosPlugin.swift';
+// import "secrets.dart";
 
 class ArtistSearch extends StatefulWidget {
   final int user_id;
@@ -13,7 +14,7 @@ class ArtistSearch extends StatefulWidget {
 }
 
 class _ArtistSearchState extends State<ArtistSearch> {
-  var spotifyClientId = "b9bd5d60afce4b29bc880a786130628e";
+  var spotifyClientId = spotifyClientIdImport;
   var spotifyRedirectUrl = "spotify-ios-quick-start://spotify-login-callback";
   late int user_id;
 

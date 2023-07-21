@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:postgres/postgres.dart';
 import 'package:bcrypt/bcrypt.dart';
 import 'userdashboard.dart';
+import 'secrets.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -13,47 +14,6 @@ class _LoginState extends State<Login> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   late PostgreSQLConnection _connection;
-
-  // Future<void> testPostgreSQLConnection() async {
-  //   PostgreSQLConnection connection = PostgreSQLConnection(
-  //     '192.168.1.173', // Replace with the actual network IP of your PostgreSQL server.
-  //     5432, // The port number should be 5432 for PostgreSQL.
-  //     'Notified', // The database name.
-  //     username: 'postgres',
-  //     password: 'Oliver29',
-  //   );
-
-  //   try {
-  //     await connection.open(); // Open the connection.
-  //     print('Connection successful!');
-  //     final results = await connection.query(
-  //       'SELECT email, password FROM "Users" WHERE email = @email',
-  //       substitutionValues: {'email': 'osamuels@bu.edu'},
-  //     );
-  //     String password = "123";
-  //     final storedPassword = results[0][1];
-  //     final bool isPasswordCorrect = BCrypt.checkpw(password, storedPassword);
-  //     if (isPasswordCorrect) {
-  //       print('Password is correct');
-  //       final results = await connection.query(
-  //         'SELECT id FROM "Users" WHERE email = @email AND password = @password',
-  //         substitutionValues: {
-  //           'email': 'osamuels@bu.edu',
-  //           'password': storedPassword
-  //         },
-  //       );
-  //       print(results[0][0]);
-  //       valid_login(user_id: (results[0][0]).toString());
-  //     }
-  //     print("results" + results[0][0]);
-
-  //     // Perform database operations here if needed.
-
-  //     //await connection.close(); // Close the connection when done.
-  //   } catch (e) {
-  //     print('Error during connection: $e');
-  //   }
-  // }
 
   @override
   void initState() {
@@ -78,11 +38,11 @@ class _LoginState extends State<Login> {
     });
     _connection = PostgreSQLConnection(
       // final String apiUrl = 'http://192.168.1.173:your_port_number';
-      '192.168.1.173',
+      databaseHost,
       5432,
       'Notified',
       username: 'postgres',
-      password: 'Oliver29',
+      password: databasePassword,
     );
   }
 
