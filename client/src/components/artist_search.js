@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import {useNavigate} from 'react-router-dom';
+// import {useNavigate} from 'react-router-dom';
 import './css/artist_search.css'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
