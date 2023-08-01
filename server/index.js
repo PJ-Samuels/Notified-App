@@ -223,11 +223,12 @@ app.post('/artist_subscription', (req, res) => {
 
 app.get('/notification', (req, res) => {
   const user_id = req.query.user_id;
-  const subscribed_artist = pool.query('SELECT * FROM "Subscribed_Artists" WHERE user_id = $1', [user_id], (err, result) => {
+  const subscribed_artist = pool.query('SELECT * FROM "Notifications" WHERE user_id = $1', [user_id], (err, result) => {
+    res.json(result.rows);
   });
 });
 
-function sendEmail(bool){
+function sendEmail(bool, latest_release, artist_name, release_img){
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -240,8 +241,9 @@ function sendEmail(bool){
     const mailOptions = {
       from: 'pjsamuels3@gmail.com',
       to: 'osamuels@bu.edu',
-      subject: 'Test Email',
-      text: 'This is a test email sent from Nodemaile for new releases.',
+      subject: 'New Release',
+      // text: `${artist_name} just Released a new album: ${latest_release}`,
+      html: `<p>${artist_name} just Released a new album: ${latest_release}</p><img src="${imageUrl}" alt="Album Cover" />`,
     };
     transporter.sendMail(mailOptions, (error, info) => {
       // console.log('Email sent: ' + info.response);
@@ -253,6 +255,7 @@ function sendEmail(bool){
 
 const timeZone = 'America/New_York';
 const cronSchedule = `${moment().tz(timeZone).startOf('hour').format('m')} * * * *`;
+const cronSchedule2 = `*/1 * * * *`;
 cron.schedule(cronSchedule, () => {
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
@@ -292,7 +295,7 @@ cron.schedule(cronSchedule, () => {
                     // console.log("user_id",users[i].user_id)
                     pool.query('INSERT INTO "Notifications" (user_id, artist_id, artist_name, release_img, latest_release) VALUES ($1, $2, $3, $4, $5)', [users[i].user_id,artist_id,artist_name,release_img,latest_release], (err, result) => {
                       console.log("Notification added")
-                      sendEmail(true);
+                      sendEmail(true, latest_release, artist_name, release_img);
                     });
                   }
                 })
