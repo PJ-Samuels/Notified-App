@@ -15,6 +15,7 @@ import {
 export default function HomeNav(){
     const access_token = sessionStorage.getItem('access_token');
     sessionStorage.setItem("access_token", access_token);
+    // console.log(access_token)
     const navigate = useNavigate();
     // const artistSearchClick = () => {
     //     navigate("/artist_search")

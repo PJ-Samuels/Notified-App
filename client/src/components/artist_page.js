@@ -37,9 +37,6 @@ export default function ArtistPage() {
             });
         }
       }, [user_id]);
-      
-      
-      
 
     const handleSubmit = (event) =>{
         event.preventDefault();
@@ -87,8 +84,8 @@ export default function ArtistPage() {
             )))}
             </div>
             <h2>Latest Singles</h2>
-            <h3 className= "not_implemented">to be added</h3>
+            <h3 className= "not_implemented">Coming Soon!</h3>
             <h2>Latest Features</h2>
-            <h3 className = "not_implemented">to be added</h3>
-        </div>) ;
+            <h3 className = "not_implemented">Coming Soon!</h3>
+        </div>);
 }

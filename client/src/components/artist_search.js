@@ -7,8 +7,21 @@ import Button from 'react-bootstrap/Button'
 
 
 export default function ArtistSearch() {
-    const access_token = sessionStorage.getItem('access_token');
-    sessionStorage.setItem("access_token", access_token);
+    const [access_token, setAccessToken] = useState('');
+    useEffect(() => {
+        if (access_token) {
+            // console.log("stored access token", access_token)
+            sessionStorage.setItem('access_token', access_token);
+            setAccessToken(access_token);
+          } else {
+            const storedAccessToken = sessionStorage.getItem('access_token');
+            if (storedAccessToken) {
+            //   console.log("stored access token",storedAccessToken)
+              setAccessToken(storedAccessToken);
+            } 
+          }
+    })
+
     const [artistName, setArtistName] = useState("");
     const [artistImg, setArtistImg] = useState("");
     const [artistId, setArtistId] = useState("");
