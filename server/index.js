@@ -198,7 +198,7 @@ app.get('/add_artist', (req, res) => {
   const artist_name = req.query.artist_name;
   const user_id = req.query.user_id;
   pool.query('SELECT * FROM "Subscribed_Artists" WHERE user_id = $1 AND artist_name = $2', [user_id, artist_name], (err, result) => {
-    if (result.rowCount > 0) {
+    if (result.rowCount && result.rowCount > 0) {
       res.json(true);
     } else {
       res.json(false);

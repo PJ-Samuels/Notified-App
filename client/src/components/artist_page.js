@@ -1,8 +1,9 @@
 import React, { useEffect , useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+// import {useNavigate} from 'react-router-dom';
 import './css/artist_page.css';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import { ToggleSlider }  from "react-toggle-slider";
 
 export default function ArtistPage() {
     const [artist_data, setArtistData] = useState([]);
@@ -60,20 +61,40 @@ export default function ArtistPage() {
     // const handleBack = () => {
     //     navigate("/artist_search")
     // }
+    const handleEmail = () => {
+        // console.log("Emails");
+    }
+    const handleText = () => {
+        // console.log("Texts");
+    }   
+    const handleBanner = () => {
+        // console.log("Banners");
+    }
     return(
         <div> 
             <div className='artist_header'>
                 <h1>{artist_name}</h1><br/>
+                <div className= 'notifications'>
+                    <h3>Notification settings</h3>
+                    <a>Emails</a>
+                    <ToggleSlider onToggle = {handleEmail}/>
+                    <a>Texts</a>
+                    <ToggleSlider onToggle = {handleText}/>
+                    <a>Banners</a>
+                    <ToggleSlider onToggle = {handleBanner}/>
+
+                </div>
                 <img src = {artist_image}></img><br/>
                 {/* <form onSubmit={handleSubmit}>
                     <input type="submit" value={subscribe_status ? "Subscribed" : "Unsubscribed"} />
                 </form> */}
                 <Form onSubmit={handleSubmit}>
                     <Button type="submit" variant={subscribe_status ? "success" : "danger"}>
-                        {subscribe_status ? "Subscribed" : "Unsubscribed"}
+                        {subscribe_status ? "Subscribed" : "Subscribe"}
                     </Button>
                 </Form>
             </div>
+
             <h2>Latest Albums</h2>
             <div className='albums'>
             {artist_data && Array.isArray(artist_data.items)  > 0 && (artist_data.items.map((album) => (
