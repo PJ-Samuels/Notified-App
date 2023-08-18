@@ -1,33 +1,37 @@
 import React from "react";
 import { useEffect, useState } from "react";
-// import {useNavigate} from 'react-router-dom';
 import './css/artist_search.css'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
-
 export default function ArtistSearch() {
     const [access_token, setAccessToken] = useState('');
-    useEffect(() => {
-        if (access_token) {
-            // console.log("stored access token", access_token)
-            sessionStorage.setItem('access_token', access_token);
-            setAccessToken(access_token);
-          } else {
-            const storedAccessToken = sessionStorage.getItem('access_token');
-            if (storedAccessToken) {
-            //   console.log("stored access token",storedAccessToken)
-              setAccessToken(storedAccessToken);
-            } 
-          }
-    })
-
+    const [refresh_token, setRefreshToken] = useState('');
     const [artistName, setArtistName] = useState("");
     const [artistImg, setArtistImg] = useState("");
     const [artistId, setArtistId] = useState("");
     const [data, setData] = React.useState([]);
     const [bool, setBool] = React.useState(false);
-
+    useEffect(() => {
+        if (access_token) {
+            sessionStorage.setItem('access_token', access_token);
+            setAccessToken(access_token);
+          } else {
+            const storedAccessToken = sessionStorage.getItem('access_token');
+            if (storedAccessToken) {
+              setAccessToken(storedAccessToken);
+            } 
+          }
+          if (refresh_token) {
+            sessionStorage.setItem('refresh_token', refresh_token);
+            setRefreshToken(refresh_token);
+          } else {
+            const storedRefreshToken = sessionStorage.getItem('refresh_token');
+            if (storedRefreshToken) {
+              setRefreshToken(storedRefreshToken);
+            }
+          }
+    })
 
     const handleInputChange = (event) => {
         setArtistName(event.target.value);

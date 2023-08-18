@@ -180,7 +180,10 @@ app.get('/callback', function(req, res) {
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
         var access_token = body.access_token;
-        res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&user_id=${user_id}`);
+        var refresh_token = body.refresh_token;
+        // let currtime = new Date().getTime();
+        var expiration_time = body.expires_in;
+        res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
       }
     });
   }
@@ -225,6 +228,25 @@ app.get('/notification', (req, res) => {
   const user_id = req.query.user_id;
   const subscribed_artist = pool.query('SELECT * FROM "Notifications" WHERE user_id = $1', [user_id], (err, result) => {
     res.json(result.rows);
+  });
+});
+
+
+app.get('/refresh_token', function(req, res) {
+  var refresh_token = req.query.refresh_token;
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: { 'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64')) },
+    form: {
+      grant_type: 'refresh_token',
+      refresh_token: refresh_token
+    },
+    json: true
+  };
+  request.post(authOptions, function(error, response, body) {
+    const newAccessToken = body.access_token;
+    const newExpiresIn = body.expires_in;
+    res.json({newAccessToken, newExpiresIn})
   });
 });
 

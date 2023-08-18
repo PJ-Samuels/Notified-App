@@ -14,6 +14,8 @@ export default function ArtistPage() {
     const [subscribe_status, setSubscribeStatus] = useState(true);
     const access_token = sessionStorage.getItem("access_token");
     sessionStorage.setItem("access_token", access_token);
+    const refresh_token = sessionStorage.getItem("refresh_token");
+    sessionStorage.setItem("refresh_token", refresh_token);
 
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);

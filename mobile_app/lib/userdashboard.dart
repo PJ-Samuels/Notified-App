@@ -98,7 +98,7 @@ class _UserDashboardState extends State<UserDashboard> {
                       width: 200,
                       height: 200,
                     ),
-                    const Divider(), // Add a divider between each artist
+                    const Divider(),
                   ],
                 );
               },

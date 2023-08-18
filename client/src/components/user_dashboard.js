@@ -9,12 +9,18 @@ export default function UserDashboard() {
   const [notifications, setNotifications] = useState([]);
   const [data, setData] = useState([]);
   const [token, setAccessToken] = useState('');
+  const [refreshtoken, setRefreshToken] = useState('');
   const [user_id, setUserId] = useState('');
+  const [expiration_time, setExpirationTime] = useState(null);
   
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     var access_token = params.get('accesstoken');
+    var refresh_token = params.get('refreshtoken');
     var user_id = params.get('user_id');
+    var expiresInSeconds = params.get('expirationtime');
+    const expirationTime = new Date().getTime() + expiresInSeconds * 1000;
+    setExpirationTime(new Date(expirationTime));
     setUserId(user_id);
     if (access_token && user_id) {
       sessionStorage.setItem('access_token', access_token);
@@ -26,6 +32,17 @@ export default function UserDashboard() {
         setAccessToken(storedAccessToken);
       }
     }
+
+    if (refresh_token && user_id) {
+      sessionStorage.setItem('refresh_token', refresh_token);
+      setRefreshToken(refresh_token);
+    } else {
+      const storedRefreshToken = sessionStorage.getItem('refresh_token');
+      if (storedRefreshToken) {
+        setRefreshToken(storedRefreshToken);
+      }
+    }
+
     if(user_id){
       fetch("http://localhost:5000/user_dashboard?user_id="+user_id)
       .then(res => res.json())
@@ -40,8 +57,27 @@ export default function UserDashboard() {
       });
     }
     }, []);
-   
-
+    const isTokenExpired = () => {
+      const currentTime = (Date.now())
+      if(currentTime >= expiration_time){
+        console.log("expired")
+      }
+      return currentTime >= expiration_time;
+    };
+  
+    const refreshAccessToken = async () => {
+      const response  = await fetch(`http://localhost:5000/refresh_token?refresh_token=${refreshtoken}`,{
+        method: "GET"
+      });
+    };
+  useEffect(() => {
+    if (isTokenExpired()) {
+      refreshAccessToken();
+    }
+  }, [token, expiration_time]);
+  // const testRefresh = () => {
+  //   refreshAccessToken();
+  // };
   const handleArtist = async (artist_id, artist_name) => {
     const response = await fetch(`https://api.spotify.com/v1/artists/${artist_id}/albums?limit=3`,{
         method: "GET",
