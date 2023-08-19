@@ -3,7 +3,7 @@ import React, { useEffect , useState} from 'react';
 import './css/artist_page.css';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { ToggleSlider }  from "react-toggle-slider";
+// import { ToggleSlider }  from "react-toggle-slider";
 
 export default function ArtistPage() {
     const [artist_data, setArtistData] = useState([]);
@@ -81,11 +81,12 @@ export default function ArtistPage() {
                     <div className= 'notifications'>
                         <h3>Notifications Options</h3>
                         <a>Emails</a>
-                        <ToggleSlider className= "toggle" onToggle = {handleEmail}/>
+                        <Form ><Form.Check className = "toggle" type="switch" id="custom-switch" label="Check this switch"/></Form>
                         <a>Texts</a>
-                        <ToggleSlider onToggle = {handleText}/>
+                        <Form ><Form.Check className = "toggle" type="switch" id="custom-switch" label="Check this switch"/></Form>
                         <a>Banners</a>
-                        <ToggleSlider onToggle = {handleBanner}/>
+                        <Form ><Form.Check className = "toggle" type="switch" id="custom-switch" label="Check this switch"/></Form>
+
 
                     {/* <form onSubmit={handleSubmit}>
                         <input type="submit" value={subscribe_status ? "Subscribed" : "Unsubscribed"} />
