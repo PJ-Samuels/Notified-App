@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
-import Button from 'react-bootstrap/button';
+import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form'
 
 const App = () => {
