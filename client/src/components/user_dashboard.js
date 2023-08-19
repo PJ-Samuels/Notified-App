@@ -18,8 +18,10 @@ export default function UserDashboard() {
     var access_token = params.get('accesstoken');
     var refresh_token = params.get('refreshtoken');
     var user_id = params.get('user_id');
-    var expiresInSeconds = params.get('expirationtime');
+    var expiresInSeconds = params.get('expiration_time');
     const expirationTime = new Date().getTime() + expiresInSeconds * 1000;
+    // console.log(expirationTime)
+    // console.log(expireatioIn)
     setExpirationTime(new Date(expirationTime));
     setUserId(user_id);
     if (access_token && user_id) {
@@ -57,12 +59,22 @@ export default function UserDashboard() {
       });
     }
     }, []);
+
     const isTokenExpired = () => {
-      const currentTime = (Date.now())
-      if(currentTime >= expiration_time){
-        console.log("expired")
+      if (!expiration_time) {
+        return false;
       }
-      return currentTime >= expiration_time;
+      const currentTime = (Date.now()/1000)
+      // console.log("curr time",currentTime)
+      // console.log("expr time",expiration_time.getTime())
+      if(currentTime >= expiration_time.getTime()){
+        console.log("expired")
+        return true;
+      }
+      else{
+        return false;
+      }
+      // return currentTime >= expiration_time.getTime();
     };
   
     const refreshAccessToken = async () => {
@@ -75,9 +87,9 @@ export default function UserDashboard() {
       refreshAccessToken();
     }
   }, [token, expiration_time]);
-  // const testRefresh = () => {
-  //   refreshAccessToken();
-  // };
+  const testRefresh = () => {
+    refreshAccessToken();
+  };
   const handleArtist = async (artist_id, artist_name) => {
     const response = await fetch(`https://api.spotify.com/v1/artists/${artist_id}/albums?limit=3`,{
         method: "GET",

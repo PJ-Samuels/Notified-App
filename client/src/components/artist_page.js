@@ -76,25 +76,27 @@ export default function ArtistPage() {
         <div> 
             <div className='artist_header'>
                 <h1>{artist_name}</h1><br/>
-                <div className= 'notifications'>
-                    <h3>Notification settings</h3>
-                    <a>Emails</a>
-                    <ToggleSlider onToggle = {handleEmail}/>
-                    <a>Texts</a>
-                    <ToggleSlider onToggle = {handleText}/>
-                    <a>Banners</a>
-                    <ToggleSlider onToggle = {handleBanner}/>
+                <div className = "section">
+                    <img src = {artist_image}></img><br/>
+                    <div className= 'notifications'>
+                        <h3>Notifications Options</h3>
+                        <a>Emails</a>
+                        <ToggleSlider className= "toggle" onToggle = {handleEmail}/>
+                        <a>Texts</a>
+                        <ToggleSlider onToggle = {handleText}/>
+                        <a>Banners</a>
+                        <ToggleSlider onToggle = {handleBanner}/>
 
+                    {/* <form onSubmit={handleSubmit}>
+                        <input type="submit" value={subscribe_status ? "Subscribed" : "Unsubscribed"} />
+                    </form> */}
+                    <Form  className = "submitter" onSubmit={handleSubmit}>
+                        <Button  type="submit" variant={subscribe_status ? "success" : "danger"}>
+                            {subscribe_status ? "Subscribed" : "Subscribe"}
+                        </Button>
+                    </Form>
+                    </div>
                 </div>
-                <img src = {artist_image}></img><br/>
-                {/* <form onSubmit={handleSubmit}>
-                    <input type="submit" value={subscribe_status ? "Subscribed" : "Unsubscribed"} />
-                </form> */}
-                <Form onSubmit={handleSubmit}>
-                    <Button type="submit" variant={subscribe_status ? "success" : "danger"}>
-                        {subscribe_status ? "Subscribed" : "Subscribe"}
-                    </Button>
-                </Form>
             </div>
 
             <h2>Latest Albums</h2>

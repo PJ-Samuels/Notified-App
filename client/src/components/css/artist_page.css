@@ -37,8 +37,33 @@ h2{
     text-align: center;
 }
 .album_card a{
-    color: white !important;;
+    color: white !important;
+}
+.notifications{
+    padding-left: 70px;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important; /* Center items horizontally within the column */
+    text-align: center !important; 
+}
+.notifications {
+    align-items: center !important; /* Center the toggle buttons horizontally */
+    padding-bottom: 20px !important;
+}
+.toggle{
+    padding-bottom: 5px!important;
 }
 .notifications a{
-    color: white !important;;
+    color: white !important;
+    padding-top: 10px !important;
+    /* display: flex;
+    flex-direction: column; */
+}
+
+.submitter{
+    padding-top: 10px !important;
+}
+.section {
+    display: flex !important;
+    align-items: center !important; /* Align vertically */
 }
