@@ -6,8 +6,10 @@ const bodyParser = require('body-parser');
 const app = express();
 const config = require('./config.js');
 const pool = require('./db.js');
-var client_id = config.CLIENT_ID;
-var client_secret = config.CLIENT_SECRET;
+const client_id = process.env.CLIENT_ID; 
+const client_secret = process.env.CLIENT_SECRET;
+// var client_id = config.CLIENT_ID;
+// var client_secret = config.CLIENT_SECRET;
 var redirect_uri = 'http://localhost:3000/callback';
 const session = require('express-session');
 const cron = require('node-cron');
@@ -265,7 +267,8 @@ function sendEmail(bool, latest_release, artist_name, release_img){
     service: 'gmail',
     auth: {
       user: 'pjsamuels3@gmail.com',
-      pass: config.GMAIL_PASSWORD,
+      pass: process.env.GMAIL_PASSWORD,
+      // pass: config.GMAIL_PASSWORD,
     },
   });
   if (bool === true) {
