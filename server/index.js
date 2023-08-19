@@ -16,6 +16,8 @@ const moment = require('moment-timezone');
 moment.tz.setDefault('UTC');
 var validator = require("email-validator");
 const bcrypt = require("bcrypt")
+const port = process.env.PORT || 5000;
+const path = require('path');
 
 var generateRandomString = function(length) {
   var text = '';
@@ -34,11 +36,19 @@ app.use(session({
 }))
 app.use(express.json());
 app.use(bodyParser.json())
+app.use(express.static(path.join(__dirname, '../client/build')))
 
-app.get('/', (req, res) => {
-    const data = ["This is the server"];
-    res.json(data);
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname + '../client/build/index.html'), function(err) {
+    res.status(500).send(err);
   });
+
+});
+
+// app.get('/', (req, res) => {
+//     const data = ["This is the server"];
+//     res.json(data);
+//   });
 app.post('/',async (req,res) =>{
   var user_id;
   if (validator.validate(req.body.email)) {
@@ -337,6 +347,6 @@ cron.schedule(cronSchedule, () => {
   });
 });
 
-app.listen(5000, () => {
+app.listen(port, () => {
     console.log('Server is running on port 5000');
 })
