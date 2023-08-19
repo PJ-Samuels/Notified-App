@@ -1,0 +1,13 @@
+{
+  "name": "notified-app",
+  "version": "1.0.0",
+  "description": "Instructions on how to get Start with Notified Web app and mobile app locally<br/>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node cd server && node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
