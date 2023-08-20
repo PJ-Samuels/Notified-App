@@ -23,9 +23,9 @@ const bcrypt = require("bcrypt")
 const port = process.env.PORT || 5000;
 const path = require('path');
 
-console.log(process.env.DATABASE_URL)
+console.log(process.env.NOTIFIED_URL)
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.NOTIFIED_URL,
   ssl: {
     rejectUnauthorized: false
   }
