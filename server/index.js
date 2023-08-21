@@ -146,6 +146,7 @@ app.post('/api/signup', async (req, res) => {
     //   return res.redirect('/api/signup');
     // }
   
+    const account = req.body.account;
     console.log("Valid email");
     const password = account.password;
   
