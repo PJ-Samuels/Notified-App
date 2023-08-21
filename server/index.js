@@ -152,22 +152,22 @@ app.post('/api/signup', async (req, res) => {
     bcrypt.hash(password, 10, (err, hash) => {
       if (err) {
         console.error(err);
-        res.redirect('/signup');
+        res.redirect('/api/signup');
       } else {
         pool.query('INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3)', [account.username, account.email, hash], (err, result) => {
           if (err) {
             console.error(err);
-            res.redirect('/signup');
+            res.redirect('/api/signup');
           } else {
             console.log("Success");
             pool.query('SELECT id FROM "Users" WHERE username = $1 AND email = $2 AND password = $3', [account.username, account.email, hash], (err, result) => {
               if (err) {
                 console.error(err);
-                res.redirect('/signup');
+                res.redirect('/api/signup');
               } else {
                 user_id = result.rows[0].id;
                 req.session.user_id = user_id;
-                res.redirect('/login?user_id=' + user_id);
+                res.redirect('/api/login?user_id=' + user_id);
               }
             });
           }
@@ -180,7 +180,7 @@ app.post('/api/signup', async (req, res) => {
   }
   }catch(err){
     console.log(err)
-    res.redirect('/signup');
+    res.redirect('/api/signup');
 
   }
 });
