@@ -35,10 +35,11 @@ export default function Signup(){
         .then((res) => res.text())
         .then((spotifyAuthUrl) => {
             console.log(spotifyAuthUrl)
-            window.location.href = spotifyAuthUrl;
+            console.log("signup completed")
+            // window.location.href = spotifyAuthUrl;
           })
         
-        console.log("signup completed")
+
     }
     return (
     <div>
