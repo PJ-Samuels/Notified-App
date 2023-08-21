@@ -125,27 +125,25 @@ app.post('/api/',async (req,res) =>{
 
 app.post('/api/signup', async (req, res) => {
   console.log("Reached /signup route")
-  var user_id = 0;
-  console.log("user id", user_id);
-  res.redirect('/api/login?user_id=' + user_id);
+  var user_id;
+  // console.log("user id", user_id);
+
   // const account = req.body.account;
   // console.log(account.email)
+  try {
+    const account = req.body.account;
+    console.log(account.email);
+    const insertQuery = 'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id';
+    const insertValues = [account.username, account.email, account.password];
 
-
-  // try {
-  //   const account = req.body.account;
-  //   console.log(account.email);
-  //   const insertQuery = 'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id';
-  //   const insertValues = [account.username, account.email, account.password];
-
-  //   const insertResult = await pool.query(insertQuery, insertValues);
-  //   user_id = insertResult.rows[0].id;
-
-
-  // } catch (error) {
-  //   console.error(error);
-  //   res.json({ success: false, error: "An error occurred during signup." }); 
-  // }
+    const insertResult = await pool.query(insertQuery, insertValues);
+    user_id = insertResult.rows[0].id;
+    res.redirect('/api/login?user_id=' + user_id);
+  } catch (error) {
+    console.error(error);
+    res.redirect('/api/signup');
+    // res.json({ success: false, error: "An error occurred during signup." }); 
+  }
   // try {
   // if (validator.validate(account.email)) {
   //   console.log("Valid email");
