@@ -63,9 +63,9 @@ app.use(express.static(path.join(__dirname, '../client/build')))
 
 app.get('/api/', function(req, res) {
   res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
-    if (err) {
-      res.status(500).send(err);
-    }
+    // if (err) {
+    //   res.status(500).send(err);
+    // }
     // else{
     //   const data = ["This is the server"];
     //   res.json(data);
@@ -256,7 +256,7 @@ app.get('/callback', function(req, res) {
         // let currtime = new Date().getTime();
         var expiration_time = body.expires_in;
         //res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
-        res.send(`https://notified-webapp-0f26d6f34016.herokuapp.com/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
+        res.send(`https://notified-webapp-0f26d6f34016.herokuapp.com/api/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
 
       }
     });

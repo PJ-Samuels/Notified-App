@@ -21,25 +21,25 @@ export default function Signup(){
     const handleClick = () => {
         window.location.href = "/"
     }
-    const handleSubmit = (event) =>{
-        console.log("signup reached")
-        event.preventDefault();
-        console.log("submit clicked")
-
-        // fetch("http://localhost:5000/signup",{
-        fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/signup",{
-            method: "POST",
-            headers: {'Content-Type': "application/json"},
-            body: JSON.stringify({account})
-        })
-        .then((res) => res.text())
-        .then((spotifyAuthUrl) => {
-            console.log(spotifyAuthUrl)
-            console.log("signup completed")
-            // window.location.href = spotifyAuthUrl;
-          })
-        
-
+    const handleSubmit = async (event) =>{
+        try {
+            const response = await fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/signup", {
+                method: "POST",
+                headers: {'Content-Type': "application/json"},
+                body: JSON.stringify({account})
+            });
+    
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
+            const spotifyAuthUrl = await response.text();
+            console.log("signup completed");
+            window.location.href = spotifyAuthUrl;
+        } catch (error) {
+            console.error('Error:', error);
+            // Handle error: display an error message or take appropriate action
+        }
     }
     return (
     <div>
