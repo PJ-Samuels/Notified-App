@@ -17,8 +17,17 @@ const App = () => {
   useEffect(() => {
       // fetch("http://localhost:5000/")
       fetch("/api/")
-        .then((res) => res.json())
-        .then((data) => setData(data));
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => setData(data))
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        // Handle the error here, e.g., set an error state
+      });
   }, []);
   const handleEmailChange = (event) => {
     setEmail(event.target.value)
