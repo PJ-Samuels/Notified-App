@@ -209,11 +209,10 @@ app.get('/api/login', function(req, res) {
     state: state,
   })
   spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
-  // console.log(spotifyAuthUrl);
   res.send(spotifyAuthUrl);
 });
   
-app.get('/api/callback', function(req, res) {
+app.get('/callback', function(req, res) {
   var code = req.query.code || null;
   var state = req.query.state || null;
   var user_id;
@@ -233,7 +232,7 @@ app.get('/api/callback', function(req, res) {
       }
   })
   if (state === null) {
-    res.redirect('/api/callback' +
+    res.redirect('/callback' +
       querystring.stringify({
         error: 'state_mismatch'
       }));
