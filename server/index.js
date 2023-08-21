@@ -135,13 +135,13 @@ app.post('/api/signup', async (req, res) => {
     (err, result) => {
       if (err) {
         console.error(err);
-        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
+        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/');
       }
 
       if (result.rows.length > 0) {
         // User already exists
         console.log("User already exists");
-        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/api/');
+        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/');
       }
 
       // User does not exist, insert new user
@@ -151,7 +151,7 @@ app.post('/api/signup', async (req, res) => {
         (err, result) => {
           if (err) {
             console.error(err);
-            return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
+            return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/');
           }
 
           const user_id = result.rows[0].id;
