@@ -149,15 +149,15 @@ app.post('/api/signup', async (req, res) => {
     console.log("Valid email");
     const password = account.password;
   
-    bcrypt.hash(password, 10, (err, hash) => {
-      if (err) {
-        console.error(err);
-        return res.redirect('/api/signup');
-      }
+    // bcrypt.hash(password, 10, (err, hash) => {
+    //   if (err) {
+    //     console.error(err);
+    //     return res.redirect('/api/signup');
+    //   }
   
       pool.query(
         'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id',
-        [account.username, account.email, hash],
+        [account.username, account.email, password],
         (err, result) => {
           if (err) {
             console.error(err);
@@ -180,7 +180,7 @@ app.post('/api/signup', async (req, res) => {
           // res.redirect('/api/login?user_id=' + user_id);
         }
       );
-    });
+    // });
  // } 
   //catch (err) {
   //   console.log(err);
