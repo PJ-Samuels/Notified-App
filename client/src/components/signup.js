@@ -22,6 +22,7 @@ export default function Signup(){
         window.location.href = "/"
     }
     const handleSubmit = async (event) =>{
+        event.preventDefault();
         try {
             const response = await fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/signup", {
                 method: "POST",
