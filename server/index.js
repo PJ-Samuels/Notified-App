@@ -78,50 +78,50 @@ app.get('/*', function(req, res) {
 //     res.json(data);
 //   });
 app.post('/*',async (req,res) =>{
-  try{
+  // try{
 
  
-  var user_id;
-  if (validator.validate(req.body.email)) {
-    console.log("Valid email");
-    const password = req.body.password;
-    pool.query('SELECT email, password FROM "Users" WHERE email = $1', [req.body.email])
-      .then(result => {
-        if (result.rowCount > 0) {
-          const hashedPassword = result.rows[0].password;
-          bcrypt.compare(password, hashedPassword, (err, isValid) => {
-            if (isValid) {
-              pool.query('SELECT id FROM "Users" WHERE email = $1', [req.body.email])
-                .then(result2 => {
-                  user_id = result2.rows[0].id;
-                  res.json([1, user_id]);
-                })
-                .catch(error => {
-                  console.error(error);
-                  res.json([0, null]);
-                });
-            } else {
-              throw new Error('Invalid credentials');
-            }
-          });
-        } else {
-          throw new Error('Invalid credentials');
-        }
-      })
-      .catch(error => {
-        console.error(error);
-        res.json([0, null]);
-      });
+  // var user_id;
+  // if (validator.validate(req.body.email)) {
+  //   console.log("Valid email");
+  //   const password = req.body.password;
+  //   pool.query('SELECT email, password FROM "Users" WHERE email = $1', [req.body.email])
+  //     .then(result => {
+  //       if (result.rowCount > 0) {
+  //         const hashedPassword = result.rows[0].password;
+  //         bcrypt.compare(password, hashedPassword, (err, isValid) => {
+  //           if (isValid) {
+  //             pool.query('SELECT id FROM "Users" WHERE email = $1', [req.body.email])
+  //               .then(result2 => {
+  //                 user_id = result2.rows[0].id;
+  //                 res.json([1, user_id]);
+  //               })
+  //               .catch(error => {
+  //                 console.error(error);
+  //                 res.json([0, null]);
+  //               });
+  //           } else {
+  //             throw new Error('Invalid credentials');
+  //           }
+  //         });
+  //       } else {
+  //         throw new Error('Invalid credentials');
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //       res.json([0, null]);
+  //     });
       
-  } else {
-    console.log("index.hmtl post")
-    console.log("Invalid email");
-    res.json([0, null]);
-  }
-  }catch(err){
-    console.log(err)
-    res.json([0, null]);
-  }
+  // } else {
+  //   console.log("index.hmtl post")
+  //   console.log("Invalid email");
+  //   res.json([0, null]);
+  // }
+  // }catch(err){
+  //   console.log(err)
+  //   res.json([0, null]);
+  // }
 });
 
 app.post('/signup', async (req, res) => {
