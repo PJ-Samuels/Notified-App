@@ -126,10 +126,6 @@ app.post('/api/',async (req,res) =>{
 app.post('/api/signup', async (req, res) => {
   console.log("Reached /signup route")
   var user_id;
-  // console.log("user id", user_id);
-
-  // const account = req.body.account;
-  // console.log(account.email)
   try {
     const account = req.body.account;
     console.log(account.email);
