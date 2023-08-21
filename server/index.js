@@ -183,6 +183,7 @@ function generateUniqueIdentifier(req, state, user_id) {
 }
 
 app.get('/login', function(req, res) {
+  console.log("LOGIN REACHED");
   req.session.user_id = req.query.user_id;
   const user_id = req.query.user_id;  
   var state = generateRandomString(16);

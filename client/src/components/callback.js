@@ -6,6 +6,7 @@ function Callback() {
     const code = urlParams.get('code');
     const state = urlParams.get('state');
     // fetch(`http://localhost:5000/callback?code=${code}&state=${state}`)
+    console.log("callback front end reached")
     fetch(`https://notified-webapp-0f26d6f34016.herokuapp.com/callback?code=${code}&state=${state}`)
 
       .then((res) => res.text())
