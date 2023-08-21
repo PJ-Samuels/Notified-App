@@ -125,6 +125,7 @@ app.post('/*',async (req,res) =>{
 });
 
 app.post('/signup', async (req, res) => {
+  console.log("Reached /signup route")
   var user_id = 0;
   console.log("user id", user_id);
   // const account = req.body.account;
