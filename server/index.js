@@ -124,47 +124,36 @@ app.post('/api/',async (req,res) =>{
 });
 
 app.post('/api/signup', async (req, res) => {
-  // console.log("Reached /signup route")
-  // var user_id;
-  // try {
-  //   const account = req.body.account;
-  //   console.log(account.email);
-  //   const insertQuery = 'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id';
-  //   const insertValues = [account.username, account.email, account.password];
+  const account = req.body.account;
+  console.log("Valid email");
+  const password = account.password;
 
-  //   const insertResult = await pool.query(insertQuery, insertValues);
-  //   user_id = insertResult.rows[0].id;
-  //   res.redirect('/api/login?user_id=' + user_id);
-  // } catch (error) {
-  //   console.error(error);
-  //   res.redirect('/api/signup');
-    // res.json({ success: false, error: "An error occurred during signup." }); 
-  // }
-  // try {
-    // if (!validator.validate(account.email)) {
-    //   console.log("Invalid email");
-    //   return res.redirect('/api/signup');
-    // }
-  
-    const account = req.body.account;
-    console.log("Valid email");
-    const password = account.password;
-  
-    // bcrypt.hash(password, 10, (err, hash) => {
-    //   if (err) {
-    //     console.error(err);
-    //     return res.redirect('/api/signup');
-    //   }
-  
+  // Check if the user already exists in the table
+  pool.query(
+    'SELECT id FROM "Users" WHERE email = $1',
+    [account.email],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
+      }
+
+      if (result.rows.length > 0) {
+        // User already exists
+        console.log("User already exists");
+        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/api/');
+      }
+
+      // User does not exist, insert new user
       pool.query(
         'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id',
         [account.username, account.email, password],
         (err, result) => {
           if (err) {
             console.error(err);
-            return res.redirect('/api/signup');
+            return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
           }
-  
+
           const user_id = result.rows[0].id;
           req.session.user_id = user_id;
           const state = generateRandomString(16);
@@ -177,17 +166,13 @@ app.post('/api/signup', async (req, res) => {
             state,
           });
           const spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
-          res.redirect(spotifyAuthUrl)
-          // res.redirect('/api/login?user_id=' + user_id);
+          res.redirect(spotifyAuthUrl);
         }
       );
-    // });
- // } 
-  //catch (err) {
-  //   console.log(err);
-  //   res.redirect('/api/signup');
-  // }  
+    }
+  );
 });
+
 
 function generateUniqueIdentifier(req, state, user_id) {
   const query = 'INSERT INTO unique_identifiers (user_state, user_id) VALUES ($1, $2)';
