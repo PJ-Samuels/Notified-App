@@ -136,6 +136,8 @@ app.post('/signup', async (req, res) => {
     //   console.log("Invalid email");
     //   res.redirect('/signup');
     // }
+
+    //
   } catch (error) {
     console.error(error);
     res.redirect('/signup');
