@@ -8,13 +8,12 @@ const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 // const config = require('./config.js');
 // const pool = require('./db.js');
-const {Pool}= require('pg');
-
 // var client_id = config.CLIENT_ID;
 // var client_secret = config.CLIENT_SECRET;
+const {Pool}= require('pg');
 var redirect_uri = 'http://localhost:3000/callback';
 const session = require('express-session');
-const PgSession = require('connect-pg-simple')(session);
+// const PgSession = require('connect-pg-simple')(session);
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 const moment = require('moment-timezone');
@@ -46,13 +45,13 @@ var generateRandomString = function(length) {
 app.use(cors());
 
 
-const sessionStore = new PgSession({
-  pool, // Provide the PostgreSQL pool instance
-  tableName: 'session' // You can specify a custom table name if needed
-});
+// const sessionStore = new PgSession({
+//   pool,
+//   tableName: 'session' 
+// });
 
 app.use(session({
-  store: sessionStore,
+  // store: pool,
   secret: 'secret',
   resave: false,
   saveUninitialized: true
