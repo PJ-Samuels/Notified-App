@@ -188,7 +188,7 @@ function generateUniqueIdentifier(req, state, user_id) {
   return state;
 }
 
-app.get('/api/login', function(req, res) {
+app.get('/api/login', async function(req, res) {
   console.log("LOGIN REACHED");
   req.session.user_id = req.query.user_id;
   const user_id = req.query.user_id;  
@@ -202,8 +202,22 @@ app.get('/api/login', function(req, res) {
     redirect_uri: redirect_uri,
     state: state,
   })
-  spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
-  res.send(spotifyAuthUrl);
+  // spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
+  try {
+    const response = await fetch('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
+    
+    if (response.ok) {
+      const spotifyAuthUrl = await response.text();
+      res.send(spotifyAuthUrl);
+    } else {
+      // Redirect to sign-up page in case of error
+      res.redirect('/sign-up');
+    }
+  } catch (error) {
+    // Handle the error, redirect to sign-up page or show an error message
+    console.error(error);
+    res.redirect('/sign-up');
+  }
 });
   
 app.get('/api/callback', function(req, res) {
