@@ -15,7 +15,7 @@ const App = () => {
   const [wrongPass, setWrongPass] = useState(false)
 
   useEffect(() => {
-      fetch("http://localhost:5000/*")
+      fetch("http://localhost:5000/")
         .then((res) => res.json())
         .then((data) => setData(data));
   }, []);
@@ -27,7 +27,7 @@ const App = () => {
   }
   const handleClick = (event) => {
     event.preventDefault();
-    fetch("http://localhost:5000/*",{
+    fetch("http://localhost:5000/",{
       method: "POST",
       headers: {'Content-Type': "application/json"},
       body: JSON.stringify({email,password})

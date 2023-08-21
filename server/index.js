@@ -53,17 +53,18 @@ app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, '../client/build')))
 
 app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname + '../client/build/index.html'), function(err) {
-    res.status(500).send(err);
+  res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err);
+    }
   });
-
 });
 
 // app.get('/', (req, res) => {
 //     const data = ["This is the server"];
 //     res.json(data);
 //   });
-app.post('/',async (req,res) =>{
+app.post('/*',async (req,res) =>{
   var user_id;
   if (validator.validate(req.body.email)) {
     console.log("Valid email");
