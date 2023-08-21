@@ -140,11 +140,11 @@ app.post('/api/signup', async (req, res) => {
   //   res.redirect('/api/signup');
     // res.json({ success: false, error: "An error occurred during signup." }); 
   // }
-  try {
-    if (!validator.validate(account.email)) {
-      console.log("Invalid email");
-      return res.redirect('/api/signup');
-    }
+  // try {
+    // if (!validator.validate(account.email)) {
+    //   console.log("Invalid email");
+    //   return res.redirect('/api/signup');
+    // }
   
     console.log("Valid email");
     const password = account.password;
@@ -166,14 +166,26 @@ app.post('/api/signup', async (req, res) => {
   
           const user_id = result.rows[0].id;
           req.session.user_id = user_id;
-          res.redirect('/api/login?user_id=' + user_id);
+          const state = generateRandomString(16);
+          const scope = 'user-read-private user-read-email';
+          const auth_query_parameters = new URLSearchParams({
+            response_type: "code",
+            client_id,
+            scope,
+            redirect_uri,
+            state,
+          });
+          const spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
+          res.redirect(spotifyAuthUrl)
+          // res.redirect('/api/login?user_id=' + user_id);
         }
       );
     });
-  } catch (err) {
-    console.log(err);
-    res.redirect('/api/signup');
-  }  
+ // } 
+  //catch (err) {
+  //   console.log(err);
+  //   res.redirect('/api/signup');
+  // }  
 });
 
 function generateUniqueIdentifier(req, state, user_id) {

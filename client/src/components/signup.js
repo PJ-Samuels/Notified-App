@@ -29,13 +29,13 @@ export default function Signup(){
                 body: JSON.stringify({account})
             });
     
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            // if (!response.ok) {
+            //     throw new Error('Network response was not ok');
+            // }
     
-            const spotifyAuthUrl = await response.text();
-            console.log("signup completed");
-            window.location.href = spotifyAuthUrl;
+            // const spotifyAuthUrl = await response.text();
+            // console.log("signup completed");
+            // window.location.href = spotifyAuthUrl;
         } catch (error) {
             console.error('Error:', error);
             // Handle error: display an error message or take appropriate action
