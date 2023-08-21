@@ -23,7 +23,8 @@ export default function Signup(){
     const handleSubmit = (event) =>{
         event.preventDefault();
         console.log("submit clicked")
-        fetch("http://localhost:5000/signup",{
+        // fetch("http://localhost:5000/signup",{
+        fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/signup",{
             method: "POST",
             headers: {'Content-Type': "application/json"},
             body: JSON.stringify({account})
