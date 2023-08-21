@@ -66,10 +66,10 @@ app.get('/*', function(req, res) {
     if (err) {
       res.status(500).send(err);
     }
-    else{
-      const data = ["This is the server"];
-      res.json(data);
-    }
+    // else{
+    //   const data = ["This is the server"];
+    //   res.json(data);
+    // }
   });
 });
 
