@@ -211,12 +211,12 @@ app.get('/api/login', async function(req, res) {
       res.send(spotifyAuthUrl);
     } else {
       // Redirect to sign-up page in case of error
-      res.redirect('/sign-up');
+      res.redirect('/signup');
     }
   } catch (error) {
     // Handle the error, redirect to sign-up page or show an error message
     console.error(error);
-    res.redirect('/sign-up');
+    res.redirect('/signup');
   }
 });
   
