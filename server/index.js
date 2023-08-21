@@ -133,7 +133,7 @@ app.post('/signup', async (req, res) => {
     res.redirect('/login?user_id=' + user_id);
   } catch (error) {
     console.error(error);
-    // res.redirect('/signup');
+    res.json({ success: false, error: "An error occurred during signup." }); 
   }
   // try {
   // if (validator.validate(account.email)) {
