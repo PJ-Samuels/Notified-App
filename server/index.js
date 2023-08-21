@@ -209,7 +209,8 @@ app.get('/api/login', function(req, res) {
     state: state,
   })
   spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
-  res.send(spotifyAuthUrl);
+  console.log(spotifyAuthUrl);
+  // res.send(spotifyAuthUrl);
 });
   
 app.get('/api/callback', function(req, res) {
