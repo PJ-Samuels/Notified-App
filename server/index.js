@@ -120,8 +120,8 @@ app.post('/signup', async (req, res) => {
     const account = req.body.account;
     console.log(account.email);
 
-    if (validator.validate(account.email)) {
-      console.log("Valid email");
+    // if (validator.validate(account.email)) {
+      // console.log("Valid email");
       const password = account.password;
       const hash = await bcrypt.hash(password, 10);
       const insertResult = await pool.query('INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id', [account.username, account.email, hash]);
@@ -132,10 +132,10 @@ app.post('/signup', async (req, res) => {
 
       req.session.user_id = user_id;
       res.redirect('/login?user_id=' + user_id);
-    } else {
-      console.log("Invalid email");
-      res.redirect('/signup');
-    }
+    // } else {
+    //   console.log("Invalid email");
+    //   res.redirect('/signup');
+    // }
   } catch (error) {
     console.error(error);
     res.redirect('/signup');
