@@ -15,7 +15,8 @@ const App = () => {
   const [wrongPass, setWrongPass] = useState(false)
 
   useEffect(() => {
-      fetch("http://localhost:5000/")
+      // fetch("http://localhost:5000/")
+      fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/")
         .then((res) => res.json())
         .then((data) => setData(data));
   }, []);
@@ -27,7 +28,8 @@ const App = () => {
   }
   const handleClick = (event) => {
     event.preventDefault();
-    fetch("http://localhost:5000/",{
+    // fetch("http://localhost:5000/",{
+    fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/",{
       method: "POST",
       headers: {'Content-Type': "application/json"},
       body: JSON.stringify({email,password})
