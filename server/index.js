@@ -115,10 +115,11 @@ app.post('/*',async (req,res) =>{
   }
 });
 
-app.post('/signup', (req, res) => {
+app.post('/signup', async (req, res) => {
   var user_id;
   const account = req.body.account;
   console.log(account.email)
+  try {
   if (validator.validate(account.email)) {
     console.log("Valid email");
     const password = account.password;
@@ -150,6 +151,11 @@ app.post('/signup', (req, res) => {
   } else {
     console.log("Invalid email");
     res.redirect('/signup');
+  }
+  }catch(err){
+    console.log(err)
+    res.redirect('/signup');
+
   }
 });
 
