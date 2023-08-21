@@ -50,12 +50,16 @@ app.use(session({
 }))
 app.use(express.json());
 app.use(bodyParser.json())
-app.use(express.static(path.join(__dirname, '../client/build')))
+app.use(express.static(path.join(__dirname, '../client')))
 
 app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
+  res.sendFile(path.join(__dirname, '../client/index.html'), function(err) {
     if (err) {
-      res.status(500).send(err);
+      //res.status(500).send(err);
+    }
+    else{
+      const data = ["This is the server"];
+      res.json(data);
     }
   });
 });
