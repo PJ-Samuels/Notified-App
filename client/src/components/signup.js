@@ -27,7 +27,7 @@ export default function Signup(){
         console.log("submit clicked")
 
         // fetch("http://localhost:5000/signup",{
-        fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/signup",{
+        fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/signup",{
             method: "POST",
             headers: {'Content-Type': "application/json"},
             body: JSON.stringify({account})
@@ -37,6 +37,7 @@ export default function Signup(){
             console.log(spotifyAuthUrl)
             window.location.href = spotifyAuthUrl;
           })
+        
         console.log("signup completed")
     }
     return (

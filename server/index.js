@@ -61,7 +61,7 @@ app.use(express.json());
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, '../client/build')))
 
-app.get('/', function(req, res) {
+app.get('/api/', function(req, res) {
   res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
     if (err) {
       res.status(500).send(err);
@@ -77,7 +77,7 @@ app.get('/', function(req, res) {
 //     const data = ["This is the server"];
 //     res.json(data);
 //   });
-app.post('/*',async (req,res) =>{
+app.post('/api/',async (req,res) =>{
   // try{
 
  
@@ -124,14 +124,14 @@ app.post('/*',async (req,res) =>{
   // }
 });
 
-app.post('/signup', async (req, res) => {
+app.post('/api/signup', async (req, res) => {
   console.log("Reached /signup route")
   var user_id = 0;
   console.log("user id", user_id);
   // const account = req.body.account;
   // console.log(account.email)
 
-  res.redirect('/login?user_id=' + user_id);
+  res.redirect('/api/login?user_id=' + user_id);
   // try {
   //   const account = req.body.account;
   //   console.log(account.email);
@@ -194,7 +194,7 @@ function generateUniqueIdentifier(req, state, user_id) {
   return state;
 }
 
-app.get('/login', function(req, res) {
+app.get('/api/login', function(req, res) {
   console.log("LOGIN REACHED");
   req.session.user_id = req.query.user_id;
   const user_id = req.query.user_id;  
