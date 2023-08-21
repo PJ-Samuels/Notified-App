@@ -143,7 +143,7 @@ app.post('/api/signup', async (req, res) => {
   try {
     if (!validator.validate(account.email)) {
       console.log("Invalid email");
-      return res.redirect('/signup');
+      return res.redirect('/api/signup');
     }
   
     console.log("Valid email");
@@ -152,7 +152,7 @@ app.post('/api/signup', async (req, res) => {
     bcrypt.hash(password, 10, (err, hash) => {
       if (err) {
         console.error(err);
-        return res.redirect('/signup');
+        return res.redirect('/api/signup');
       }
   
       pool.query(
@@ -161,7 +161,7 @@ app.post('/api/signup', async (req, res) => {
         (err, result) => {
           if (err) {
             console.error(err);
-            return res.redirect('/signup');
+            return res.redirect('/api/signup');
           }
   
           const user_id = result.rows[0].id;
