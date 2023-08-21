@@ -124,60 +124,56 @@ app.post('/api/',async (req,res) =>{
 });
 
 app.post('/api/signup', async (req, res) => {
-  console.log("Reached /signup route")
-  var user_id;
-  try {
-    const account = req.body.account;
-    console.log(account.email);
-    const insertQuery = 'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id';
-    const insertValues = [account.username, account.email, account.password];
-
-    const insertResult = await pool.query(insertQuery, insertValues);
-    user_id = insertResult.rows[0].id;
-    res.redirect('/api/login?user_id=' + user_id);
-  } catch (error) {
-    console.error(error);
-    res.redirect('/api/signup');
-    // res.json({ success: false, error: "An error occurred during signup." }); 
-  }
+  // console.log("Reached /signup route")
+  // var user_id;
   // try {
-  // if (validator.validate(account.email)) {
-  //   console.log("Valid email");
-  //   const password = account.password;
-  //   bcrypt.hash(password, 10, (err, hash) => {
-  //     if (err) {
-  //       console.error(err);
-  //       res.redirect('/api/signup');
-  //     } else {
-  //       pool.query('INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3)', [account.username, account.email, hash], (err, result) => {
-  //         if (err) {
-  //           console.error(err);
-  //           res.redirect('/api/signup');
-  //         } else {
-  //           console.log("Success");
-  //           pool.query('SELECT id FROM "Users" WHERE username = $1 AND email = $2 AND password = $3', [account.username, account.email, hash], (err, result) => {
-  //             if (err) {
-  //               console.error(err);
-  //               res.redirect('/api/signup');
-  //             } else {
-  //               user_id = result.rows[0].id;
-  //               req.session.user_id = user_id;
-  //               res.redirect('/api/login?user_id=' + user_id);
-  //             }
-  //           });
-  //         }
-  //       });
-  //     }
-  //   });
-  // } else {
-  //   console.log("Invalid email");
-  //   res.redirect('/signup');
-  // }
-  // }catch(err){
-  //   console.log(err)
-  //   res.redirect('/api/signup');
+  //   const account = req.body.account;
+  //   console.log(account.email);
+  //   const insertQuery = 'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id';
+  //   const insertValues = [account.username, account.email, account.password];
 
+  //   const insertResult = await pool.query(insertQuery, insertValues);
+  //   user_id = insertResult.rows[0].id;
+  //   res.redirect('/api/login?user_id=' + user_id);
+  // } catch (error) {
+  //   console.error(error);
+  //   res.redirect('/api/signup');
+    // res.json({ success: false, error: "An error occurred during signup." }); 
   // }
+  try {
+    if (!validator.validate(account.email)) {
+      console.log("Invalid email");
+      return res.redirect('/signup');
+    }
+  
+    console.log("Valid email");
+    const password = account.password;
+  
+    bcrypt.hash(password, 10, (err, hash) => {
+      if (err) {
+        console.error(err);
+        return res.redirect('/signup');
+      }
+  
+      pool.query(
+        'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id',
+        [account.username, account.email, hash],
+        (err, result) => {
+          if (err) {
+            console.error(err);
+            return res.redirect('/signup');
+          }
+  
+          const user_id = result.rows[0].id;
+          req.session.user_id = user_id;
+          res.redirect('/api/login?user_id=' + user_id);
+        }
+      );
+    });
+  } catch (err) {
+    console.log(err);
+    res.redirect('/api/signup');
+  }  
 });
 
 function generateUniqueIdentifier(req, state, user_id) {
