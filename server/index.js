@@ -125,9 +125,11 @@ app.post('/*',async (req,res) =>{
 });
 
 app.post('/signup', async (req, res) => {
-  var user_id;
+  var user_id = 0;
+  console.log("user id", user_id);
   // const account = req.body.account;
   // console.log(account.email)
+
   res.redirect('/login?user_id=' + user_id);
   // try {
   //   const account = req.body.account;

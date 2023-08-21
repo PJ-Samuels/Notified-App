@@ -18,7 +18,7 @@ export default function Signup(){
         }));
       };
     const handleClick = () => {
-        window.location.href = "https://notified-webapp-0f26d6f34016.herokuapp.com/*"
+        window.location.href = "/"
     }
     const handleSubmit = (event) =>{
         event.preventDefault();
