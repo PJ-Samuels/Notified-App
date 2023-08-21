@@ -210,7 +210,7 @@ app.get('/api/login', function(req, res) {
   res.send(spotifyAuthUrl);
 });
   
-app.get('/callback', function(req, res) {
+app.get('/api/callback', function(req, res) {
   var code = req.query.code || null;
   var state = req.query.state || null;
   var user_id;
@@ -230,7 +230,7 @@ app.get('/callback', function(req, res) {
       }
   })
   if (state === null) {
-    res.redirect('/callback' +
+    res.redirect('/api/callback' +
       querystring.stringify({
         error: 'state_mismatch'
       }));
