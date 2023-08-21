@@ -116,48 +116,32 @@ app.post('/*',async (req,res) =>{
 });
 
 app.post('/signup', async (req, res) => {
-  var user_id;
-  const account = req.body.account;
-  console.log(account.email)
   try {
-  if (validator.validate(account.email)) {
-    console.log("Valid email");
-    const password = account.password;
-    bcrypt.hash(password, 10, (err, hash) => {
-      if (err) {
-        console.error(err);
-        res.redirect('/signup');
-      } else {
-        pool.query('INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3)', [account.username, account.email, hash], (err, result) => {
-          if (err) {
-            console.error(err);
-            res.redirect('/signup');
-          } else {
-            console.log("Success");
-            pool.query('SELECT id FROM "Users" WHERE username = $1 AND email = $2 AND password = $3', [account.username, account.email, hash], (err, result) => {
-              if (err) {
-                console.error(err);
-                res.redirect('/signup');
-              } else {
-                user_id = result.rows[0].id;
-                req.session.user_id = user_id;
-                res.redirect('/login?user_id=' + user_id);
-              }
-            });
-          }
-        });
-      }
-    });
-  } else {
-    console.log("Invalid email");
-    res.redirect('/signup');
-  }
-  }catch(err){
-    console.log(err)
-    res.redirect('/signup');
+    const account = req.body.account;
+    console.log(account.email);
 
+    if (validator.validate(account.email)) {
+      console.log("Valid email");
+      const password = account.password;
+      const hash = await bcrypt.hash(password, 10);
+      const insertResult = await pool.query('INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id', [account.username, account.email, hash]);
+      const user_id = insertResult.rows[0].id;
+
+      const selectResult = await pool.query('SELECT id FROM "Users" WHERE username = $1 AND email = $2 AND password = $3', [account.username, account.email, hash]);
+      user_id = selectResult.rows[0].id;
+
+      req.session.user_id = user_id;
+      res.redirect('/login?user_id=' + user_id);
+    } else {
+      console.log("Invalid email");
+      res.redirect('/signup');
+    }
+  } catch (error) {
+    console.error(error);
+    res.redirect('/signup');
   }
 });
+
 
 function generateUniqueIdentifier(req, state, user_id) {
   const query = 'INSERT INTO unique_identifiers (user_state, user_id) VALUES ($1, $2)';
