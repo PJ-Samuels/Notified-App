@@ -78,6 +78,9 @@ app.get('/*', function(req, res) {
 //     res.json(data);
 //   });
 app.post('/*',async (req,res) =>{
+  try{
+
+ 
   var user_id;
   if (validator.validate(req.body.email)) {
     console.log("Valid email");
@@ -109,9 +112,14 @@ app.post('/*',async (req,res) =>{
         console.error(error);
         res.json([0, null]);
       });
+      
   } else {
     console.log("index.hmtl post")
     console.log("Invalid email");
+    res.json([0, null]);
+  }
+  }catch(err){
+    console.log(err)
     res.json([0, null]);
   }
 });
