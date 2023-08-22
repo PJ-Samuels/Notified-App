@@ -6,15 +6,15 @@ const bodyParser = require('body-parser');
 const app = express();
 const client_id = process.env.CLIENT_ID; 
 const client_secret = process.env.CLIENT_SECRET;
+var redirect_uri = 'https://notified-webapp-0f26d6f34016.herokuapp.com/callback';
 // const config = require('./config.js');
 // const pool = require('./db.js');
 // var client_id = config.CLIENT_ID;
 // var client_secret = config.CLIENT_SECRET;
-const {Pool}= require('pg');
 // var redirect_uri = 'http://localhost:3000/callback';
-var redirect_uri = 'https://notified-webapp-0f26d6f34016.herokuapp.com/callback';
+
+const {Pool}= require('pg');
 const session = require('express-session');
-// const PgSession = require('connect-pg-simple')(session);
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 const moment = require('moment-timezone');
@@ -46,13 +46,7 @@ var generateRandomString = function(length) {
 app.use(cors());
 
 
-// const sessionStore = new PgSession({
-//   pool,
-//   tableName: 'session' 
-// });
-
 app.use(session({
-  // store: pool,
   secret: 'secret',
   resave: false,
   saveUninitialized: true
@@ -73,10 +67,7 @@ app.get('/api/', function(req, res) {
   });
 });
 
-// app.get('/', (req, res) => {
-//     const data = ["This is the server"];
-//     res.json(data);
-//   });
+
 app.post('/api/',async (req,res) =>{
   try{
 
@@ -139,12 +130,9 @@ app.post('/api/signup', async (req, res) => {
       }
 
       if (result.rows.length > 0) {
-        // User already exists
         console.log("User already exists");
         return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/');
       }
-
-      // User does not exist, insert new user
       pool.query(
         'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id',
         [account.username, account.email, password],
@@ -196,23 +184,25 @@ app.get('/api/login', async function(req, res) {
     redirect_uri: redirect_uri,
     state: state,
   })
-  // spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
-  try {
-    const response = await fetch('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
+  spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
+  res.send(spotifyAuthUrl);
+  // try {
+  //   const response = await fetch('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
     
-    if (response.ok) {
-      const spotifyAuthUrl = await response.text();
-      res.send(spotifyAuthUrl);
-    } else {
-      console.log("Error")
-      // Redirect to sign-up page in case of error
-      // res.redirect('/signup');
-    }
-  } catch (error) {
-    // Handle the error, redirect to sign-up page or show an error message
-    console.error(error);
-    // res.redirect('/signup');
-  }
+  //   if (response.ok) {
+  //     const spotifyAuthUrl = await response.text();
+  //     console.log("spotify auth url", spotifyAuthUrl)
+  //     res.send(spotifyAuthUrl);
+  //   } else {
+  //     console.log("Error")
+  //     // Redirect to sign-up page in case of error
+  //     // res.redirect('/signup');
+  //   }
+  // } catch (error) {
+  //   // Handle the error, redirect to sign-up page or show an error message
+  //   console.error(error);
+  //   // res.redirect('/signup');
+  // }
 });
   
 app.get('/api/callback', function(req, res) {
@@ -256,10 +246,9 @@ app.get('/api/callback', function(req, res) {
       if (!error && response.statusCode === 200) {
         var access_token = body.access_token;
         var refresh_token = body.refresh_token;
-        // let currtime = new Date().getTime();
         var expiration_time = body.expires_in;
         //res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
-        res.send(`https://notified-webapp-0f26d6f34016.herokuapp.com/api/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
+         res.send(`https://notified-webapp-0f26d6f34016.herokuapp.com/api/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
 
       }
     });

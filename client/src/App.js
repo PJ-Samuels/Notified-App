@@ -15,7 +15,7 @@ const App = () => {
   const [wrongPass, setWrongPass] = useState(false)
 
   useEffect(() => {
-      // fetch("http://localhost:5000/")
+      //fetch("http://localhost:5000/api")
       fetch("api/")
         // .then((res) => res.json())
         // .then((data) => setData(data));
@@ -28,7 +28,7 @@ const App = () => {
   }
   const handleClick = (event) => {
     event.preventDefault();
-    // fetch("http://localhost:5000/",{
+    // fetch("http://localhost:5000/api",{
     fetch("/api/",{
       method: "POST",
       headers: {'Content-Type': "application/json"},
