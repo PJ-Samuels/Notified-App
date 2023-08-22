@@ -6,8 +6,7 @@ function Callback() {
     const code = urlParams.get('code');
     const state = urlParams.get('state');
     //fetch(`http://localhost:5000/api/callback?code=${code}&state=${state}`)
-    // console.log("callback front end reached")
-     fetch(`https://notified-webapp-0f26d6f34016.herokuapp.com/api/callback?code=${code}&state=${state}`)
+    fetch(`https://notified-webapp-0f26d6f34016.herokuapp.com/api/callback?code=${code}&state=${state}`)
       .then((res) => res.text())
       .then((spotifyAuthUrl) => {
         console.log("spotify auth",spotifyAuthUrl)
