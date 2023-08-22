@@ -114,6 +114,22 @@ app.post('/api/',async (req,res) =>{
     res.json([0, null]);
   }
 });
+app.get("/api/auth", (req, res) => {
+  // const user_id = result.rows[0].id;
+  // req.session.user_id = user_id;
+  const state = generateRandomString(16);
+  const scope = 'user-read-private user-read-email';
+  const auth_query_parameters = new URLSearchParams({
+    response_type: "code",
+    client_id,
+    scope,
+    redirect_uri,
+    state,
+  });
+  const spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
+  console.log("spotify auth url", spotifyAuthUrl)
+  res.redirect(spotifyAuthUrl);
+});
 
 app.post('/api/signup', async (req, res) => {
   const account = req.body.account;
