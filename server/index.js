@@ -22,7 +22,7 @@ const path = require('path');
 
 const client_id = process.env.CLIENT_ID; 
 const client_secret = process.env.CLIENT_SECRET;
-var redirect_uri = 'https://notified-webapp-0f26d6f34016.herokuapp.com/callback';
+var redirect_uri = 'https://notified-webapp-0f26d6f34016.herokuapp.com/api/callback';
 console.log(process.env.NOTIFIED_URL)
 const pool = new Pool({
   connectionString: process.env.NOTIFIED_URL,
