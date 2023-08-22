@@ -68,6 +68,7 @@ app.get('/api/', function(req, res) {
 
 
 app.post('/api/',async (req,res) =>{
+  console.log("index.hmtl post reached")
   try{
 
   var user_id;

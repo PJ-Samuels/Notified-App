@@ -28,6 +28,7 @@ const App = () => {
   }
   const handleClick = (event) => {
     event.preventDefault();
+    console.log("login pressed")
     //fetch("http://localhost:5000/api",{
     fetch("/api/",{
       method: "POST",
@@ -36,7 +37,6 @@ const App = () => {
     })
     .then((res) => res.json())
     .then((account_info) => {
-      // console.log("account info ", account_info);
       setAccountInfo(account_info[0]);
       // console.log("User_id ", account_info[1]);
       
