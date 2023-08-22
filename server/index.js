@@ -4,11 +4,11 @@ const request = require('request');
 const querystring = require('querystring')
 const bodyParser = require('body-parser');
 const app = express();
-const config = require('./config.js');
-const pool = require('./db.js');
-var client_id = config.CLIENT_ID;
-var client_secret = config.CLIENT_SECRET;
-var redirect_uri = 'http://localhost:3000/callback';
+// const config = require('./config.js');
+// const pool = require('./db.js');
+// var client_id = config.CLIENT_ID;
+// var client_secret = config.CLIENT_SECRET;
+// var redirect_uri = 'http://localhost:3000/callback';
 const {Pool}= require('pg');
 const session = require('express-session');
 const cron = require('node-cron');
@@ -20,17 +20,17 @@ const bcrypt = require("bcrypt")
 const port = process.env.PORT || 5000;
 const path = require('path');
 
-// const client_id = process.env.CLIENT_ID; 
-// const client_secret = process.env.CLIENT_SECRET;
-// var redirect_uri = 'https://notified-webapp-0f26d6f34016.herokuapp.com/callback';
-// console.log(process.env.NOTIFIED_URL)
-// const pool = new Pool({
-//   connectionString: process.env.NOTIFIED_URL,
-//   ssl: {
-//     rejectUnauthorized: false
-//   }
-// });
-// pool.connect();
+const client_id = process.env.CLIENT_ID; 
+const client_secret = process.env.CLIENT_SECRET;
+var redirect_uri = 'https://notified-webapp-0f26d6f34016.herokuapp.com/callback';
+console.log(process.env.NOTIFIED_URL)
+const pool = new Pool({
+  connectionString: process.env.NOTIFIED_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+pool.connect();
 
 
 var generateRandomString = function(length) {
