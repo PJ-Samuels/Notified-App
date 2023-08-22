@@ -42,7 +42,9 @@ var generateRandomString = function(length) {
   return text;
 };
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://notified-webapp-0f26d6f34016.herokuapp.com'}
+));
 
 
 app.use(session({
