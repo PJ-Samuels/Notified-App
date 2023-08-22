@@ -16,7 +16,7 @@ const App = () => {
 
   useEffect(() => {
       //fetch("http://localhost:5000/api")
-      fetch("`https://notified-webapp-0f26d6f34016.herokuapp.com/api/")
+      fetch("`api/")
         // .then((res) => res.json())
         // .then((data) => setData(data));
   }, []);
@@ -29,7 +29,7 @@ const App = () => {
   const handleClick = (event) => {
     event.preventDefault();
     //fetch("http://localhost:5000/api",{
-    fetch("`https://notified-webapp-0f26d6f34016.herokuapp.com/api/",{
+    fetch("`api/",{
       method: "POST",
       headers: {'Content-Type': "application/json"},
       body: JSON.stringify({email,password})
