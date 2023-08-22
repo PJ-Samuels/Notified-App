@@ -71,7 +71,7 @@ app.post('/api/',async (req,res) =>{
   try{
 
   var user_id;
-  if (validator.validate(req.body.email)) {
+  // if (validator.validate(req.body.email)) {
     console.log("Valid email");
     const password = req.body.password;
     pool.query('SELECT email, password FROM "Users" WHERE email = $1', [req.body.email])
@@ -102,11 +102,12 @@ app.post('/api/',async (req,res) =>{
         res.json([0, null]);
       });
       
-  } else {
-    console.log("index.hmtl post")
-    console.log("Invalid email");
-    res.json([0, null]);
-  }
+  //} 
+  // else {
+  //   console.log("index.hmtl post")
+  //   console.log("Invalid email");
+  //   res.json([0, null]);
+  //}
   }catch(err){
     console.log(err)
     res.json([0, null]);
