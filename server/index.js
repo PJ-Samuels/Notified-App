@@ -130,7 +130,7 @@ app.get("/api/auth", (req, res) => {
   });
   const spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
   console.log("spotify auth url", spotifyAuthUrl)
-  res.redirect(spotifyAuthUrl);
+  res.send(spotifyAuthUrl);
 });
 
 app.post('/api/signup', async (req, res) => {

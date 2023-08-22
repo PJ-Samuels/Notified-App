@@ -7,10 +7,13 @@ export default function Login() {
       sessionStorage.setItem('user_id', user_id);
 
       fetch("/api/auth")
+      .then((res) => res.text())
+      .then((spotifyAuthUrl) => {
+        console.log("spotify auth",spotifyAuthUrl)
+        window.location.href = spotifyAuthUrl;
+      })
       //fetch(`http://localhost:5000/api/login?user_id=${user_id}`)
-      // .then((res => res.json())).then((data) => 
-      // spotifyAuthUrl = data.spotifyAuthUrl).then((data) =>
-      // console.log(data));
+
 
       // fetch(`https://notified-webapp-0f26d6f34016.herokuapp.com/api/login?user_id=${user_id}`)
       // .then((res) => res.text())
