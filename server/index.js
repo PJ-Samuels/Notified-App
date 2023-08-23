@@ -22,7 +22,7 @@ const path = require('path');
 
 const client_id = process.env.CLIENT_ID; 
 const client_secret = process.env.CLIENT_SECRET;
-var redirect_uri = 'https://notified-webapp-0f26d6f34016.herokuapp.com/callback';
+var redirect_uri = 'https://notified-webapp-0f26d6f34016.herokuapp.com/api/callback';
 console.log(process.env.NOTIFIED_URL)
 const pool = new Pool({
   connectionString: process.env.NOTIFIED_URL,
@@ -241,6 +241,7 @@ app.get('/api/login', async function(req, res) {
 });
   
 app.get('/api/callback', function(req, res) {
+  console.log("callback reached")
   var code = req.query.code || null;
   var state = req.query.state || null;
   var user_id;
