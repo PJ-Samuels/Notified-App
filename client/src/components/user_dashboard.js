@@ -46,12 +46,15 @@ export default function UserDashboard() {
     }
 
     if(user_id){
-      fetch("http://localhost:5000/user_dashboard?user_id="+user_id)
+      // fetch("http://localhost:5000/user_dashboard?user_id="+user_id)
+      fetch("/user_dashboard?user_id="+user_id)
       .then(res => res.json())
       .then(data => {
         setArtists(data)
       })
-      fetch("http://localhost:5000/notification?user_id="+user_id)
+
+      // fetch("http://localhost:5000/notification?user_id="+user_id)
+      fetch("/notification?user_id="+user_id)
       .then(res => res.json())
       .then(data => {
         setNotifications(data)
@@ -78,7 +81,9 @@ export default function UserDashboard() {
     };
   
     const refreshAccessToken = async () => {
-      const response  = await fetch(`http://localhost:5000/refresh_token?refresh_token=${refreshtoken}`,{
+      
+      // const response  = await fetch(`http://localhost:5000/refresh_token?refresh_token=${refreshtoken}`,{
+      const response  = await fetch(`/refresh_token?refresh_token=${refreshtoken}`,{
         method: "GET"
       });
     };
