@@ -9,10 +9,13 @@ const config = require('./config.js');
 const pool = require('./db.js');
 var client_id = config.CLIENT_ID;
 var client_secret = config.CLIENT_SECRET;
-var redirect_uri = 'http://localhost:3000/callback';
+var redirect_uri = 'http://localhost:5000/api/callback';
 
 const {Pool}= require('pg');
-const session = require('express-session');
+// const passport = require('passport');
+// app.use(passport.initialize());
+// app.use(passport.session());
+
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 const moment = require('moment-timezone');
@@ -21,7 +24,24 @@ var validator = require("email-validator");
 const bcrypt = require("bcrypt")
 const port = process.env.PORT || 5000;
 const path = require('path');
+const session = require('express-session');
+// const SpotifyStrategy = require('passport-spotify').Strategy;
 
+
+// passport.use(
+//   new SpotifyStrategy(
+//     {
+//       clientID: client_id,
+//       clientSecret: client_secret,
+//       callbackURL: 'https://notified-webapp-0f26d6f34016.herokuapp.com/api/callback'
+//     },
+//     function(accessToken, refreshToken, expires_in, profile, done) {
+//       User.findOrCreate({ spotifyId: profile.id }, function(err, user) {
+//         return done(err, user);
+//       });
+//     }
+//   )
+// );
 // const client_id = process.env.CLIENT_ID; 
 // const client_secret = process.env.CLIENT_SECRET;
 // var redirect_uri = 'https://notified-webapp-0f26d6f34016.herokuapp.com/callback';
@@ -125,9 +145,10 @@ app.post('/api/',async (req,res) =>{
   }
 });
 const stateKey = 'spotify_auth_state';
-app.get("/api/auth", (req, res) => {
+app.get("/api/auth", function (req, res){
   // const user_id = result.rows[0].id;
-  // req.session.user_id = user_id;
+  const user_id = 0;
+  req.session.user_id = user_id;
 
   const state = generateRandomString(16);
   res.cookie(stateKey, state)
@@ -152,6 +173,7 @@ app.get("/api/auth", (req, res) => {
 });
 
 app.post('/api/signup', async (req, res) => {
+
   const account = req.body.account;
   console.log("Valid email");
   const password = account.password;
@@ -244,8 +266,10 @@ app.get('/api/login', async function(req, res) {
 });
   
 app.get('/api/callback', function(req, res) {
-  var code = req.query.code || null;
-  var state = req.query.state || null;
+  console.log("callback reached")
+  const { code, state } = req.query;
+  // var code = req.query.code || null;
+  // var state = req.query.state || null;
   var user_id;
   const query = 'SELECT user_id FROM unique_identifiers WHERE user_state = $1';
   pool.query(query, [state])
@@ -285,7 +309,7 @@ app.get('/api/callback', function(req, res) {
         var access_token = body.access_token;
         var refresh_token = body.refresh_token;
         var expiration_time = body.expires_in;
-        res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
+        res.redirect(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
         //res.send(`https://notified-webapp-0f26d6f34016.herokuapp.com/api/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
 
       }
