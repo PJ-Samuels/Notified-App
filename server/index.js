@@ -124,7 +124,7 @@ app.post('/api/',async (req,res) =>{
 app.get("/api/auth", (req, res) => {
   // const user_id = result.rows[0].id;
   // req.session.user_id = user_id;
-  // res.header("Access-Control-Allow-Origin", "https://notified-webapp-0f26d6f34016.herokuapp.com");
+
   // res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   // response.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
   const state = generateRandomString(16);
@@ -144,6 +144,7 @@ app.get("/api/auth", (req, res) => {
        */
       state: state
   })
+  res.header("Access-Control-Allow-Origin", "https://notified-webapp-0f26d6f34016.herokuapp.com");
   res.send(`https://accounts.spotify.com/authorize?${queryParams}`)
 });
 
