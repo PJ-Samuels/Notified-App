@@ -45,6 +45,11 @@ var generateRandomString = function(length) {
 };
 
 app.use(cors(
+  {
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    headers: 'Content-Type',
+  }
   // {
   // origin: 'https://notified-webapp-0f26d6f34016.herokuapp.com'}
 ));
@@ -119,21 +124,31 @@ app.post('/api/',async (req,res) =>{
     res.json([0, null]);
   }
 });
+const stateKey = 'spotify_auth_state';
 app.get("/api/auth", (req, res) => {
   // const user_id = result.rows[0].id;
   // req.session.user_id = user_id;
+
   const state = generateRandomString(16);
-  const scope = 'user-read-private user-read-email';
-  const auth_query_parameters = new URLSearchParams({
-    response_type: "code",
-    client_id,
-    scope,
-    redirect_uri,
-    state,
-  });
-  const spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
-  console.log("spotify auth url", spotifyAuthUrl)
-  res.send(spotifyAuthUrl);
+  res.cookie(stateKey, state)
+
+  const scope = [
+      'user-read-private', 'user-read-email', 'user-follow-modify', 'user-follow-read', 'user-library-modify', 'user-library-read', 'playlist-modify-private', 'playlist-read-private', 'playlist-read-collaborative', 'user-top-read', 'playlist-modify-public',
+      'user-read-currently-playing', 'user-read-recently-played'
+  ].join(" ")
+
+  const queryParams = querystring.stringify({
+      client_id: client_id,
+      response_type: 'code',
+      redirect_uri: redirect_uri,
+      scope: scope,
+      /**
+       * https://developer.spotify.com/documentation/general/guides/authorization/scopes/
+       */
+      state: state
+  })
+  res.send(`https://accounts.spotify.com/authorize?${queryParams}`)
+
 });
 
 app.post('/api/signup', async (req, res) => {
