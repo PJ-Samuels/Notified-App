@@ -42,8 +42,13 @@ var generateRandomString = function(length) {
   return text;
 };
 
-app.use(cors({
-  origin: 'https://notified-webapp-0f26d6f34016.herokuapp.com'}
+const corsOptions = {
+  origin: ['https://notified-webapp-0f26d6f34016.herokuapp.com'],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+};
+app.use(cors(
+  corsOptions
 ));
 
 
