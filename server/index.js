@@ -70,7 +70,7 @@ app.get('/api/', function(req, res) {
 });
 
 app.post('/api/test', function(req, res) {
-  res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/landing_page');
+  res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com?test=1');
   
 });
 app.post('/api/',async (req,res) =>{
