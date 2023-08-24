@@ -60,7 +60,8 @@ app.use(session({
 }))
 app.use(express.json());
 app.use(bodyParser.json())
-app.use(express.static(path.join(__dirname, '../client/build')))
+// app.use(express.static(path.join(__dirname, '../client/build')))
+app.use(express.static(path.resolve('../client/build')))
 
 app.get('/api/', function(req, res) {
   res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
@@ -68,14 +69,7 @@ app.get('/api/', function(req, res) {
 });
 
 app.post('/api/test', function(req, res) {
-  // res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/landing_page');
-  res.sendFile(path.join(__dirname, '../client/build/landing_page.html'), function(err) {
-    if (err) {
-      console.error("Error sending landing page:", err);
-    } else {
-      console.log("Landing page sent successfully");
-    }
-  });
+  res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/landing_page');
 });
 app.post('/api/',async (req,res) =>{
   console.log("index.hmtl post reached")
@@ -273,7 +267,7 @@ app.get('/api/callback', function(req, res) {
           expiration_time: expiration_time
         }
         //res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
-        res.redirect(`https://notified-webapp-0f26d6f34016.herokuapp.com//user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
+        res.redirect(`https://notified-webapp-0f26d6f34016.herokuapp.com/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
       }
     });
   }
