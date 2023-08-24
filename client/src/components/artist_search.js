@@ -51,9 +51,11 @@ export default function ArtistSearch() {
             }
         });
         const query = new URLSearchParams(window.location.search);
+
         const user_id = query.get('user_id');
         const response_data = await response.json();
         const dataToEncode = JSON.stringify(response_data);
+        console.log("dataToEncode",dataToEncode);
         const encodedData = encodeURIComponent(dataToEncode);
         const encodedName = encodeURIComponent(JSON.stringify(artistName));
         const encodedImg = encodeURIComponent(JSON.stringify(artistImg));
