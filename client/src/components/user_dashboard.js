@@ -2,9 +2,11 @@ import React from "react";
 import { useEffect , useState} from "react";
 // import {useNavigate} from 'react-router-dom';
 import './css/user_dashboard.css'
+import { useLocation } from 'react-router-dom';
 
 export default function UserDashboard() {
   // const navigate = useNavigate();
+  const location = useLocation();
   const [artists, setArtists] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [data, setData] = useState([]);

@@ -4,6 +4,7 @@ const request = require('request');
 const querystring = require('querystring')
 const bodyParser = require('body-parser');
 const app = express();
+
 // const config = require('./config.js');
 // const pool = require('./db.js');
 // var client_id = config.CLIENT_ID;
@@ -291,13 +292,24 @@ app.get('/api/callback', function(req, res) {
         }
 
         //res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
-        res.redirect(`/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
-        //  res.sendFile(path.join(__dirname, '../client/build/user_dashboard.html'));
+        //res.redirect(`/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
         // res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
-        // if (err) {
-        // res.status(500).send(err);
-        // }
+
         // });
+        const redirectURL = `/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`;
+        const htmlContent = `
+          <html>
+          <head>
+            <script>
+              window.location.href = "${redirectURL}";
+            </script>
+          </head>
+          <body>
+            Redirecting...
+          </body>
+          </html>
+        `;
+        res.send(htmlContent);
       }
     });
   }
