@@ -13,7 +13,8 @@ const App = () => {
   const [password, setPassword] = useState("")
   const [account_info, setAccountInfo] = useState(0)
   const [wrongPass, setWrongPass] = useState(false)
-
+  const history = useHistory();
+  history.push('/landing_page');
   useEffect(() => {
       //fetch("http://localhost:5000/api")
       fetch("/api/")
@@ -34,6 +35,7 @@ const App = () => {
       headers: {'Content-Type': "application/json"},
       body: JSON.stringify({email,password})
     })
+    history.push('/landing_page');
   }
   const handleClick = (event) => {
     event.preventDefault();
