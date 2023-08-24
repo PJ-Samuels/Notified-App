@@ -13,7 +13,7 @@ const App = () => {
   const [password, setPassword] = useState("")
   const [account_info, setAccountInfo] = useState(0)
   const [wrongPass, setWrongPass] = useState(false)
-  const history = useHistory();
+  // const history = useHistory();
 
   useEffect(() => {
       //fetch("http://localhost:5000/api")
