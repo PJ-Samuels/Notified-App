@@ -2,7 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React, { useEffect, useState } from 'react';
-import {useNavigate, useHistory} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form'
 
