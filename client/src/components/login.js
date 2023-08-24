@@ -8,8 +8,8 @@ export default function Login() {
 
       console.log("login reached")
       // fetch("api/auth")
-      fetch("http://localhost:5000/api/auth")
-      // fetch(`http://localhost:5000/api/login?user_id=${user_id}`)
+      // fetch("http://localhost:5000/api/auth")
+      fetch(`http://localhost:5000/api/login?user_id=${user_id}`)
       .then((res) => res.text())
       .then((spotifyAuthUrl) => {
         console.log("spotify auth",spotifyAuthUrl)

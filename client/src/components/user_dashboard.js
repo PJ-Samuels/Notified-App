@@ -46,12 +46,12 @@ export default function UserDashboard() {
     }
 
     if(user_id){
-      fetch("http://localhost:5000/user_dashboard?user_id="+user_id)
+      fetch("http://localhost:5000/api/user_dashboard?user_id="+user_id)
       .then(res => res.json())
       .then(data => {
         setArtists(data)
       })
-      fetch("http://localhost:5000/notification?user_id="+user_id)
+      fetch("http://localhost:5000/api/notification?user_id="+user_id)
       .then(res => res.json())
       .then(data => {
         setNotifications(data)
@@ -78,7 +78,7 @@ export default function UserDashboard() {
     };
   
     const refreshAccessToken = async () => {
-      const response  = await fetch(`http://localhost:5000/refresh_token?refresh_token=${refreshtoken}`,{
+      const response  = await fetch(`http://localhost:5000/api/refresh_token?refresh_token=${refreshtoken}`,{
         method: "GET"
       });
     };
@@ -112,7 +112,7 @@ export default function UserDashboard() {
     const encodedImg = encodeURIComponent(JSON.stringify(response_data2.artists.items[0].images[1].url));
     const encodedID = encodeURIComponent(JSON.stringify(response_data2.artists.items[0].id));
     const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
-    const url = `/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
+    const url = `/api/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
     window.location.href = url;
   }
 
