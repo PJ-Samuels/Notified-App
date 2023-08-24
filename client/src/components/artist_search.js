@@ -59,7 +59,7 @@ export default function ArtistSearch() {
         const encodedImg = encodeURIComponent(JSON.stringify(artistImg));
         const encodedID = encodeURIComponent(JSON.stringify(artistId));
         const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
-        const url = `/api/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
+        const url = `/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
         window.location.href = url;
     }
 
