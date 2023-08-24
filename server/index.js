@@ -296,7 +296,10 @@ app.get('/api/callback', function(req, res) {
         // res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
 
         // });
-        res.redirect(`${FRONTEND_URI}/?${queryParams}`);
+        const queryParams = querystring.stringify(data);
+        const FRONTEND_URI = 'https://notified-webapp-0f26d6f34016.herokuapp.com';
+
+        res.redirect(`${FRONTEND_URI}/user_dashboard?${queryParams}`);
         
       }
     });
