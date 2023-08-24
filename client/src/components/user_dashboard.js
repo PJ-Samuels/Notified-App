@@ -115,11 +115,11 @@ export default function UserDashboard() {
     const response_data2 = await response2.json();
     // const dataToEncode = JSON.stringify(response_data);
 
-    const encodedData = encodeURIComponent(dataToEncode);
+    // const encodedData = encodeURIComponent(dataToEncode);
     const encodedName = encodeURIComponent(JSON.stringify(artist_name));
     const encodedImg = encodeURIComponent(JSON.stringify(response_data2.artists.items[0].images[1].url));
     const encodedID = encodeURIComponent(JSON.stringify(response_data2.artists.items[0].id));
-    const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
+    // const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
     sessionStorage.setItem('response_data', JSON.stringify(response_data));
     sessionStorage.setItem('response_data2', JSON.stringify(response_data2));
     sessionStorage.setItem('user_id', JSON.stringify(user_id));
