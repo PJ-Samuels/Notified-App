@@ -61,7 +61,8 @@ app.use(session({
 app.use(express.json());
 app.use(bodyParser.json())
 // app.use(express.static(path.join(__dirname, '../client/build')))
-app.use(express.static(path.resolve('../client/build')))
+app.use(express.static(path.resolve(__dirname, '..', 'client', 'build')));
+
 
 app.get('/api/', function(req, res) {
   res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
@@ -70,6 +71,7 @@ app.get('/api/', function(req, res) {
 
 app.post('/api/test', function(req, res) {
   res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/landing_page');
+  
 });
 app.post('/api/',async (req,res) =>{
   console.log("index.hmtl post reached")
@@ -360,7 +362,7 @@ function sendEmail(bool, latest_release, artist_name, release_img){
 }
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'../client/build/index.html'));
+  res.sendFile(path.resolve(__dirname, '..', 'client', 'build', 'index.html'));
 });
 
 const timeZone = 'America/New_York';
