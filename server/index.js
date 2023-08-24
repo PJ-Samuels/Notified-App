@@ -301,7 +301,6 @@ app.get('/api/callback', function(req, res) {
           <html>
           <head>
             <script>
-              window.location.href = "${redirectURL}";
             </script>
           </head>
           <body>
