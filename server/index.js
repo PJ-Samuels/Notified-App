@@ -292,15 +292,7 @@ app.get('/api/callback', function(req, res) {
         }
 
         //res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
-        //res.redirect(`/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
-        // res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
-
-        // });
-        const queryParams = querystring.stringify(data);
-        const FRONTEND_URI = 'https://notified-webapp-0f26d6f34016.herokuapp.com';
-
-        res.redirect(`${FRONTEND_URI}/user_dashboard?${queryParams}`);
-        
+        res.redirect(`/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
       }
     });
   }
