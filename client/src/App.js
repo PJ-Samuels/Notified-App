@@ -69,7 +69,7 @@ const App = () => {
     <div className = "login_page">
       <h1>Notified</h1>
       <h2>Login</h2>
-      <Form onSubmit={handleTest}>
+      <Form onSubmit={handleClick}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control type="text" placeholder="email" value={email} onChange={handleEmailChange} autoComplete="off"/><br/>
           <Form.Control type="password" placeholder="password" value={password} onChange={handlePassChange} autoComplete="off"/>
