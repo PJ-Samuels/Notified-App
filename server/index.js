@@ -67,7 +67,9 @@ app.get('/api/', function(req, res) {
   });
 });
 
-
+app.post('/api/test', function(req, res) {
+  res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/landing_page');
+});
 app.post('/api/',async (req,res) =>{
   console.log("index.hmtl post reached")
   try{
