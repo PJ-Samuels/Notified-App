@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/secrets.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
-// import "secrets.dart";
+import 'package:http/http.dart' as http;
 
 class ArtistSearch extends StatefulWidget {
   final int user_id;
@@ -26,6 +26,16 @@ class _ArtistSearchState extends State<ArtistSearch> {
           'user-read-email playlist-read-private playlist-read-collaborative',
     );
     print(authenticationToken);
+    const artistName = 'JID';
+    String apiUrl =
+        'https://api.spotify.com/v1/search/?q=$artistName&type=artist&limit=1';
+    Map<String, String> headers = {
+      'Authorization': 'Bearer $authenticationToken',
+    };
+    http.Response response =
+        await http.get(Uri.parse(apiUrl), headers: headers);
+    print(response.body);
+    // String apiUrl = 'https://api.spotify.com/v1/artists/$artistId/albums?limit=3';
   }
 
   @override

@@ -1,12 +1,22 @@
 {
-  "name": "server",
+  "name": "notified-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "Instructions on how to get Start with Notified Web app and mobile app locally<br/>",
   "main": "index.js",
+  "engines": {
+    "node": "20.4.0"
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "server": "nodemon index.js",
+    "start": "cd server && node index.js && cd ../client && npm start",
+    "heroku-postbuild": "cd client && npm install && npm run build && cd ../server && npm install"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -26,7 +36,6 @@
     "npm": "^9.8.0",
     "pg": "^8.11.0",
     "request": "^2.88.2",
-    "server": "^1.0.38",
     "validator": "^13.9.0"
   }
 }

@@ -33,12 +33,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var spotifyClientId = "b9bd5d60afce4b29bc880a786130628e";
   var spotifyRedirectUrl = "spotify-ios-quick-start://spotify-login-callback";
-  // int _counter = 0;
-  // void _incrementCounter() {
-  //   setState(() {
-  //     _counter++;
-  //   });
-  // }
   Future<void> authenticateSpotify() async {
     final authenticationToken = await SpotifySdk.getAccessToken(
       clientId: spotifyClientId,

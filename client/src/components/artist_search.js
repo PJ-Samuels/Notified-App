@@ -1,33 +1,39 @@
 import React from "react";
 import { useEffect, useState } from "react";
-// import {useNavigate} from 'react-router-dom';
 import './css/artist_search.css'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-
+import { useNavigate } from "react-router-dom";
 
 export default function ArtistSearch() {
     const [access_token, setAccessToken] = useState('');
-    useEffect(() => {
-        if (access_token) {
-            // console.log("stored access token", access_token)
-            sessionStorage.setItem('access_token', access_token);
-            setAccessToken(access_token);
-          } else {
-            const storedAccessToken = sessionStorage.getItem('access_token');
-            if (storedAccessToken) {
-            //   console.log("stored access token",storedAccessToken)
-              setAccessToken(storedAccessToken);
-            } 
-          }
-    })
-
+    const [refresh_token, setRefreshToken] = useState('');
     const [artistName, setArtistName] = useState("");
     const [artistImg, setArtistImg] = useState("");
     const [artistId, setArtistId] = useState("");
     const [data, setData] = React.useState([]);
     const [bool, setBool] = React.useState(false);
-
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (access_token) {
+            sessionStorage.setItem('access_token', access_token);
+            setAccessToken(access_token);
+          } else {
+            const storedAccessToken = sessionStorage.getItem('access_token');
+            if (storedAccessToken) {
+              setAccessToken(storedAccessToken);
+            } 
+          }
+          if (refresh_token) {
+            sessionStorage.setItem('refresh_token', refresh_token);
+            setRefreshToken(refresh_token);
+          } else {
+            const storedRefreshToken = sessionStorage.getItem('refresh_token');
+            if (storedRefreshToken) {
+              setRefreshToken(storedRefreshToken);
+            }
+          }
+    })
 
     const handleInputChange = (event) => {
         setArtistName(event.target.value);
@@ -47,15 +53,18 @@ export default function ArtistSearch() {
             }
         });
         const query = new URLSearchParams(window.location.search);
+
         const user_id = query.get('user_id');
         const response_data = await response.json();
         const dataToEncode = JSON.stringify(response_data);
+        // console.log("dataToEncode",dataToEncode);
         const encodedData = encodeURIComponent(dataToEncode);
         const encodedName = encodeURIComponent(JSON.stringify(artistName));
         const encodedImg = encodeURIComponent(JSON.stringify(artistImg));
         const encodedID = encodeURIComponent(JSON.stringify(artistId));
         const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
-        const url = `/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
+        const url = `https://notified-webapp-0f26d6f34016.herokuapp.com/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
+        // navigate(url);
         window.location.href = url;
     }
 

@@ -2,19 +2,29 @@ import React from "react";
 import { useEffect , useState} from "react";
 // import {useNavigate} from 'react-router-dom';
 import './css/user_dashboard.css'
+import { useLocation } from 'react-router-dom';
 
 export default function UserDashboard() {
   // const navigate = useNavigate();
+  const location = useLocation();
   const [artists, setArtists] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [data, setData] = useState([]);
   const [token, setAccessToken] = useState('');
+  const [refreshtoken, setRefreshToken] = useState('');
   const [user_id, setUserId] = useState('');
+  const [expiration_time, setExpirationTime] = useState(null);
   
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     var access_token = params.get('accesstoken');
+    var refresh_token = params.get('refreshtoken');
     var user_id = params.get('user_id');
+    var expiresInSeconds = params.get('expiration_time');
+    const expirationTime = new Date().getTime() + expiresInSeconds * 1000;
+    // console.log(expirationTime)
+    // console.log(expireatioIn)
+    setExpirationTime(new Date(expirationTime));
     setUserId(user_id);
     if (access_token && user_id) {
       sessionStorage.setItem('access_token', access_token);
@@ -26,13 +36,27 @@ export default function UserDashboard() {
         setAccessToken(storedAccessToken);
       }
     }
+
+    if (refresh_token && user_id) {
+      sessionStorage.setItem('refresh_token', refresh_token);
+      setRefreshToken(refresh_token);
+    } else {
+      const storedRefreshToken = sessionStorage.getItem('refresh_token');
+      if (storedRefreshToken) {
+        setRefreshToken(storedRefreshToken);
+      }
+    }
+
     if(user_id){
-      fetch("http://localhost:5000/user_dashboard?user_id="+user_id)
+      // fetch("http://localhost:5000/user_dashboard?user_id="+user_id)
+      fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/user_dashboard?user_id="+user_id)
       .then(res => res.json())
       .then(data => {
         setArtists(data)
       })
-      fetch("http://localhost:5000/notification?user_id="+user_id)
+
+      // fetch("http://localhost:5000/notification?user_id="+user_id)
+      fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/notification?user_id="+user_id)
       .then(res => res.json())
       .then(data => {
         setNotifications(data)
@@ -40,8 +64,39 @@ export default function UserDashboard() {
       });
     }
     }, []);
-   
 
+    const isTokenExpired = () => {
+      if (!expiration_time) {
+        return false;
+      }
+      const currentTime = (Date.now()/1000)
+      // console.log("curr time",currentTime)
+      // console.log("expr time",expiration_time.getTime())
+      if(currentTime >= expiration_time.getTime()){
+        console.log("expired")
+        return true;
+      }
+      else{
+        return false;
+      }
+      // return currentTime >= expiration_time.getTime();
+    };
+  
+    const refreshAccessToken = async () => {
+      
+      // const response  = await fetch(`http://localhost:5000/refresh_token?refresh_token=${refreshtoken}`,{
+      const response  = await fetch(`https://notified-webapp-0f26d6f34016.herokuapp.com/api/refresh_token?refresh_token=${refreshtoken}`,{
+        method: "GET"
+      });
+    };
+  useEffect(() => {
+    if (isTokenExpired()) {
+      refreshAccessToken();
+    }
+  }, [token, expiration_time]);
+  const testRefresh = () => {
+    refreshAccessToken();
+  };
   const handleArtist = async (artist_id, artist_name) => {
     const response = await fetch(`https://api.spotify.com/v1/artists/${artist_id}/albums?limit=3`,{
         method: "GET",

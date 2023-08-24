@@ -18,55 +18,35 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    // _passwordController.addListener(() {
-    //   final String text = _passwordController.text.toLowerCase();
-    //   _passwordController.value = _passwordController.value.copyWith(
-    //     text: text,
-    //     selection:
-    //         TextSelection(baseOffset: text.length, extentOffset: text.length),
-    //     composing: TextRange.empty,
-    //   );
-      
-    // });
-    // _emailController.addListener(() {
-    //   final String text = _emailController.text.toLowerCase();
-    //   _emailController.value = _emailController.value.copyWith(
-    //     text: text,
-    //     selection:
-    //         TextSelection(baseOffset: text.length, extentOffset: text.length),
-    //     composing: TextRange.empty,
-    //   );
-    // });
     _passwordController.addListener(() {
-  final String oldText = _passwordController.text;
-  final String newText = _passwordController.text.toLowerCase();
+      final String oldText = _passwordController.text;
+      final String newText = _passwordController.text.toLowerCase();
+      if (oldText != newText) {
+        final int cursorPosition = _passwordController.selection.baseOffset -
+            (oldText.length - newText.length);
 
-  if (oldText != newText) {
-    final int cursorPosition =
-        _passwordController.selection.baseOffset - (oldText.length - newText.length);
+        _passwordController.value = TextEditingValue(
+          text: newText,
+          selection: TextSelection.collapsed(offset: cursorPosition),
+          composing: TextRange.empty,
+        );
+      }
+    });
 
-    _passwordController.value = TextEditingValue(
-      text: newText,
-      selection: TextSelection.collapsed(offset: cursorPosition),
-      composing: TextRange.empty,
-    );
-  }
-});
+    _emailController.addListener(() {
+      final String oldText = _emailController.text;
+      final String newText = _emailController.text.toLowerCase();
+      if (oldText != newText) {
+        final int cursorPosition = _emailController.selection.baseOffset -
+            (oldText.length - newText.length);
 
-_emailController.addListener(() {
-  final String oldText = _emailController.text;
-  final String newText = _emailController.text.toLowerCase();
-
-  if (oldText != newText) {
-    final int cursorPosition = _emailController.selection.baseOffset - (oldText.length - newText.length);
-
-    _emailController.value = TextEditingValue(
-      text: newText,
-      selection: TextSelection.collapsed(offset: cursorPosition),
-      composing: TextRange.empty,
-    );
-  }
-});
+        _emailController.value = TextEditingValue(
+          text: newText,
+          selection: TextSelection.collapsed(offset: cursorPosition),
+          composing: TextRange.empty,
+        );
+      }
+    });
     _connection = PostgreSQLConnection(
       // final String apiUrl = 'http://192.168.1.173:your_port_number';
       databaseHost,

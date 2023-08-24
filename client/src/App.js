@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
-import Button from 'react-bootstrap/button';
+import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form'
 
 const App = () => {
@@ -15,9 +15,10 @@ const App = () => {
   const [wrongPass, setWrongPass] = useState(false)
 
   useEffect(() => {
-      fetch("http://localhost:5000/")
-        .then((res) => res.json())
-        .then((data) => setData(data));
+      //fetch("http://localhost:5000/api")
+      fetch("/api/")
+        // .then((res) => res.json())
+        // .then((data) => setData(data));
   }, []);
   const handleEmailChange = (event) => {
     setEmail(event.target.value)
@@ -25,16 +26,26 @@ const App = () => {
   const handlePassChange = (event) => {
     setPassword(event.target.value)
   }
+  const handleTest = (event) => {
+    event.preventDefault();
+    console.log("test pressed")
+    fetch("/api/test",{
+      method: "POST",
+      headers: {'Content-Type': "application/json"},
+      body: JSON.stringify({email,password})
+    })
+  }
   const handleClick = (event) => {
     event.preventDefault();
-    fetch("http://localhost:5000/",{
+    console.log("login pressed")
+    //fetch("http://localhost:5000/api",{
+    fetch("/api/",{
       method: "POST",
       headers: {'Content-Type': "application/json"},
       body: JSON.stringify({email,password})
     })
     .then((res) => res.json())
     .then((account_info) => {
-      // console.log("account info ", account_info);
       setAccountInfo(account_info[0]);
       // console.log("User_id ", account_info[1]);
       

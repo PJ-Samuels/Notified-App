@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
 export default function Signup(){
+
     const [account, setAccount] = useState({
             username: '',
             email: '',
@@ -18,21 +19,23 @@ export default function Signup(){
         }));
       };
     const handleClick = () => {
-        window.location.href = "http://localhost:3000/"
+        window.location.href = "/"
     }
-    const handleSubmit = (event) =>{
+    const handleSubmit = async (event) =>{
         event.preventDefault();
-        console.log("submit clicked")
-        fetch("http://localhost:5000/signup",{
-            method: "POST",
-            headers: {'Content-Type': "application/json"},
-            body: JSON.stringify({account})
-        })
-        .then((res) => res.text())
-        .then((spotifyAuthUrl) => {
-            console.log(spotifyAuthUrl)
+        try {
+            const response = await fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/signup", {
+                method: "POST",
+                headers: {'Content-Type': "application/json"},
+                body: JSON.stringify({account})
+            });
+
+            const spotifyAuthUrl = await response.text();
+            console.log("signup completed");
             window.location.href = spotifyAuthUrl;
-          })
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
     return (
     <div>

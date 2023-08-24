@@ -4,11 +4,13 @@ const request = require('request');
 const querystring = require('querystring')
 const bodyParser = require('body-parser');
 const app = express();
-const config = require('./config.js');
-const pool = require('./db.js');
-var client_id = config.CLIENT_ID;
-var client_secret = config.CLIENT_SECRET;
-var redirect_uri = 'http://localhost:3000/callback';
+
+// const config = require('./config.js');
+// const pool = require('./db.js');
+// var client_id = config.CLIENT_ID;
+// var client_secret = config.CLIENT_SECRET;
+// var redirect_uri = 'http://localhost:3000/callback';
+const {Pool}= require('pg');
 const session = require('express-session');
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
@@ -16,6 +18,21 @@ const moment = require('moment-timezone');
 moment.tz.setDefault('UTC');
 var validator = require("email-validator");
 const bcrypt = require("bcrypt")
+const port = process.env.PORT || 5000;
+const path = require('path');
+
+const client_id = process.env.CLIENT_ID; 
+const client_secret = process.env.CLIENT_SECRET;
+var redirect_uri = 'https://notified-webapp-0f26d6f34016.herokuapp.com/api/callback';
+console.log(process.env.NOTIFIED_URL)
+const pool = new Pool({
+  connectionString: process.env.NOTIFIED_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+pool.connect();
+
 
 var generateRandomString = function(length) {
   var text = '';
@@ -26,7 +43,16 @@ var generateRandomString = function(length) {
   return text;
 };
 
-app.use(cors());
+const corsOptions = {
+  origin: ['https://notified-webapp-0f26d6f34016.herokuapp.com'],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+};
+app.use(cors(
+  corsOptions
+));
+
+
 app.use(session({
   secret: 'secret',
   resave: false,
@@ -34,35 +60,46 @@ app.use(session({
 }))
 app.use(express.json());
 app.use(bodyParser.json())
+// app.use(express.static(path.join(__dirname, '../client/build')))
+app.use(express.static(path.resolve(__dirname, '..', 'client', 'build')));
 
-app.get('/', (req, res) => {
-    const data = ["This is the server"];
-    res.json(data);
+
+app.get('/api/', function(req, res) {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
   });
-app.post('/',async (req,res) =>{
+});
+
+// app.post('/api/test', function(req, res) {
+//   res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com?test=1');
+  
+// });
+app.post('/api/',async (req,res) =>{
+  console.log("index.hmtl post reached")
+  try{
+
   var user_id;
-  if (validator.validate(req.body.email)) {
+  // if (validator.validate(req.body.email)) {
     console.log("Valid email");
     const password = req.body.password;
     pool.query('SELECT email, password FROM "Users" WHERE email = $1', [req.body.email])
       .then(result => {
         if (result.rowCount > 0) {
-          const hashedPassword = result.rows[0].password;
-          bcrypt.compare(password, hashedPassword, (err, isValid) => {
-            if (isValid) {
+          // const hashedPassword = result.rows[0].password;
+          // bcrypt.compare(password, hashedPassword, (err, isValid) => {
+          //   if (isValid) {
               pool.query('SELECT id FROM "Users" WHERE email = $1', [req.body.email])
                 .then(result2 => {
                   user_id = result2.rows[0].id;
                   res.json([1, user_id]);
                 })
-                .catch(error => {
-                  console.error(error);
-                  res.json([0, null]);
-                });
-            } else {
-              throw new Error('Invalid credentials');
-            }
-          });
+                // .catch(error => {
+                //   console.error(error);
+                //   res.json([0, null]);
+                // });
+            // } else {
+            //   throw new Error('Invalid credentials');
+            // }
+          // });
         } else {
           throw new Error('Invalid credentials');
         }
@@ -71,49 +108,89 @@ app.post('/',async (req,res) =>{
         console.error(error);
         res.json([0, null]);
       });
-  } else {
-    console.log("Invalid email");
+      
+  //} 
+  // else {
+  //   console.log("index.hmtl post")
+  //   console.log("Invalid email");
+  //   res.json([0, null]);
+  //}
+  }catch(err){
+    console.log(err)
     res.json([0, null]);
   }
 });
+// app.get("/api/auth", (_req, res) => {
+  // const user_id = result.rows[0].id;
+  // req.session.user_id = user_id;
 
-app.post('/signup', (req, res) => {
-  var user_id;
+  // res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  // response.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+//   const state = generateRandomString(16);
+//   // res.cookie(stateKey, state)
+//   const scope = [
+//       'user-read-private', 'user-read-email', 'user-follow-modify', 'user-follow-read', 'user-library-modify', 'user-library-read', 'playlist-modify-private', 'playlist-read-private', 'playlist-read-collaborative', 'user-top-read', 'playlist-modify-public',
+//       'user-read-currently-playing', 'user-read-recently-played'
+//   ].join(" ")
+
+//   const queryParams = querystring.stringify({
+//       client_id: client_id,
+//       response_type: 'code',
+//       redirect_uri: redirect_uri,
+//       scope: scope,
+//       state: state
+//   })
+//   res.header("Access-Control-Allow-Origin", "https://notified-webapp-0f26d6f34016.herokuapp.com");
+//   res.send(`https://accounts.spotify.com/authorize?${queryParams}`)
+// });
+
+app.post('/api/signup', async (req, res) => {
   const account = req.body.account;
-  console.log(account.email)
-  if (validator.validate(account.email)) {
-    console.log("Valid email");
-    const password = account.password;
-    bcrypt.hash(password, 10, (err, hash) => {
+  console.log("Valid email");
+  const password = account.password;
+
+  // Check if the user already exists in the table
+  pool.query(
+    'SELECT id FROM "Users" WHERE email = $1',
+    [account.email],
+    (err, result) => {
       if (err) {
         console.error(err);
-        res.redirect('/signup');
-      } else {
-        pool.query('INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3)', [account.username, account.email, hash], (err, result) => {
+        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/');
+      }
+
+      if (result.rows.length > 0) {
+        console.log("User already exists");
+        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/');
+      }
+      pool.query(
+        'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id',
+        [account.username, account.email, password],
+        (err, result) => {
           if (err) {
             console.error(err);
-            res.redirect('/signup');
-          } else {
-            console.log("Success");
-            pool.query('SELECT id FROM "Users" WHERE username = $1 AND email = $2 AND password = $3', [account.username, account.email, hash], (err, result) => {
-              if (err) {
-                console.error(err);
-                res.redirect('/signup');
-              } else {
-                user_id = result.rows[0].id;
-                req.session.user_id = user_id;
-                res.redirect('/login?user_id=' + user_id);
-              }
-            });
+            return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/');
           }
-        });
-      }
-    });
-  } else {
-    console.log("Invalid email");
-    res.redirect('/signup');
-  }
+
+          const user_id = result.rows[0].id;
+          req.session.user_id = user_id;
+          const state = generateRandomString(16);
+          const scope = 'user-read-private user-read-email';
+          const auth_query_parameters = new URLSearchParams({
+            response_type: "code",
+            client_id,
+            scope,
+            redirect_uri,
+            state,
+          });
+          const spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
+          res.send(spotifyAuthUrl);
+        }
+      );
+    }
+  );
 });
+
 
 function generateUniqueIdentifier(req, state, user_id) {
   const query = 'INSERT INTO unique_identifiers (user_state, user_id) VALUES ($1, $2)';
@@ -123,7 +200,8 @@ function generateUniqueIdentifier(req, state, user_id) {
   return state;
 }
 
-app.get('/login', function(req, res) {
+app.get('/api/login', async function(req, res) {
+  console.log("LOGIN REACHED");
   req.session.user_id = req.query.user_id;
   const user_id = req.query.user_id;  
   var state = generateRandomString(16);
@@ -137,10 +215,12 @@ app.get('/login', function(req, res) {
     state: state,
   })
   spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
+  console.log("spotify auth url", spotifyAuthUrl)
   res.send(spotifyAuthUrl);
 });
   
-app.get('/callback', function(req, res) {
+app.get('/api/callback', function(req, res) {
+  console.log("callback reached")
   var code = req.query.code || null;
   var state = req.query.state || null;
   var user_id;
@@ -160,7 +240,7 @@ app.get('/callback', function(req, res) {
       }
   })
   if (state === null) {
-    res.redirect('/callback' +
+    res.redirect('/api/callback' +
       querystring.stringify({
         error: 'state_mismatch'
       }));
@@ -180,21 +260,30 @@ app.get('/callback', function(req, res) {
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
         var access_token = body.access_token;
-        res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&user_id=${user_id}`);
+        var refresh_token = body.refresh_token;
+        var expiration_time = body.expires_in;
+        const data = {
+          access_token: access_token,
+          refresh_token: refresh_token,
+          user_id: user_id,
+          expiration_time: expiration_time
+        }
+        //res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
+        res.redirect(`https://notified-webapp-0f26d6f34016.herokuapp.com/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
       }
     });
   }
 
 });
 
-app.get('/user_dashboard', (req, res) => {
+app.get('/api/user_dashboard', (req, res) => {
   const user_id = req.query.user_id;
   const subscribed_artist = pool.query('SELECT * FROM "Subscribed_Artists" WHERE user_id = $1', [user_id], (err, result) => {
     res.json(result.rows);
 
   });
 });
-app.get('/add_artist', (req, res) => {
+app.get('/api/add_artist', (req, res) => {
   const artist_name = req.query.artist_name;
   const user_id = req.query.user_id;
   pool.query('SELECT * FROM "Subscribed_Artists" WHERE user_id = $1 AND artist_name = $2', [user_id, artist_name], (err, result) => {
@@ -205,7 +294,7 @@ app.get('/add_artist', (req, res) => {
     }
   });
 });
-app.post('/artist_subscription', (req, res) => {
+app.post('/api/artist_subscription', (req, res) => {
   const newArtist = req.body.artist_info;
   const subscribe_status = req.body.subscribe_status;
   const user_id = req.body.user_id;
@@ -221,10 +310,29 @@ app.post('/artist_subscription', (req, res) => {
   }
 });
 
-app.get('/notification', (req, res) => {
+app.get('/api/notification', (req, res) => {
   const user_id = req.query.user_id;
   const subscribed_artist = pool.query('SELECT * FROM "Notifications" WHERE user_id = $1', [user_id], (err, result) => {
     res.json(result.rows);
+  });
+});
+
+
+app.get('/api/refresh_token', function(req, res) {
+  var refresh_token = req.query.refresh_token;
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: { 'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64')) },
+    form: {
+      grant_type: 'refresh_token',
+      refresh_token: refresh_token
+    },
+    json: true
+  };
+  request.post(authOptions, function(error, response, body) {
+    const newAccessToken = body.access_token;
+    const newExpiresIn = body.expires_in;
+    res.json({newAccessToken, newExpiresIn})
   });
 });
 
@@ -233,7 +341,8 @@ function sendEmail(bool, latest_release, artist_name, release_img){
     service: 'gmail',
     auth: {
       user: 'pjsamuels3@gmail.com',
-      pass: config.GMAIL_PASSWORD,
+      pass: process.env.GMAIL_PASSWORD,
+      // pass: config.GMAIL_PASSWORD,
     },
   });
   if (bool === true) {
@@ -252,6 +361,9 @@ function sendEmail(bool, latest_release, artist_name, release_img){
   }
 }
 
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'client', 'build', 'index.html'));
+});
 
 const timeZone = 'America/New_York';
 const cronSchedule = `${moment().tz(timeZone).startOf('hour').format('m')} * * * *`;
@@ -315,6 +427,6 @@ cron.schedule(cronSchedule, () => {
   });
 });
 
-app.listen(5000, () => {
+app.listen(port, () => {
     console.log('Server is running on port 5000');
 })

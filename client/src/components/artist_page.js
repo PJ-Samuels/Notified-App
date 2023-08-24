@@ -3,7 +3,7 @@ import React, { useEffect , useState} from 'react';
 import './css/artist_page.css';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { ToggleSlider }  from "react-toggle-slider";
+// import { ToggleSlider }  from "react-toggle-slider";
 
 export default function ArtistPage() {
     const [artist_data, setArtistData] = useState([]);
@@ -14,6 +14,8 @@ export default function ArtistPage() {
     const [subscribe_status, setSubscribeStatus] = useState(true);
     const access_token = sessionStorage.getItem("access_token");
     sessionStorage.setItem("access_token", access_token);
+    const refresh_token = sessionStorage.getItem("refresh_token");
+    sessionStorage.setItem("refresh_token", refresh_token);
 
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);
@@ -31,7 +33,8 @@ export default function ArtistPage() {
     useEffect(() => {
         if (user_id !== null) {
           const queryParams = new URLSearchParams({ artist_name: artist_name, user_id: user_id }).toString();
-          fetch(`http://localhost:5000/add_artist?${queryParams}`)
+          //fetch(`http://localhost:5000/add_artist?${queryParams}`)
+          fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/artist_subscription")
             .then(response => response.json())
             .then(data => {
               setSubscribeStatus(data);
@@ -47,8 +50,8 @@ export default function ArtistPage() {
             artist_image: artist_image,
             latest_release: artist_data.items[0].name
         }
-
-        fetch("http://localhost:5000/artist_subscription",{
+        // fetch("http://localhost:5000/artist_subscription",{
+        fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/artist_subscription",{
             method: "POST",
             headers: {'Content-Type': "application/json"},
             body: JSON.stringify({ artist_info: artist_info, subscribe_status: subscribe_status, user_id: user_id })
@@ -74,25 +77,28 @@ export default function ArtistPage() {
         <div> 
             <div className='artist_header'>
                 <h1>{artist_name}</h1><br/>
-                <div className= 'notifications'>
-                    <h3>Notification settings</h3>
-                    <a>Emails</a>
-                    <ToggleSlider onToggle = {handleEmail}/>
-                    <a>Texts</a>
-                    <ToggleSlider onToggle = {handleText}/>
-                    <a>Banners</a>
-                    <ToggleSlider onToggle = {handleBanner}/>
+                <div className = "section">
+                    <img src = {artist_image}></img><br/>
+                    <div className= 'notifications'>
+                        <h3>Notifications Options</h3>
+                        <a>Emails</a>
+                        <Form ><Form.Check className = "toggle" type="switch" id="custom-switch" label="Check this switch"/></Form>
+                        <a>Texts</a>
+                        <Form ><Form.Check className = "toggle" type="switch" id="custom-switch" label="Check this switch"/></Form>
+                        <a>Banners</a>
+                        <Form ><Form.Check className = "toggle" type="switch" id="custom-switch" label="Check this switch"/></Form>
 
+
+                    {/* <form onSubmit={handleSubmit}>
+                        <input type="submit" value={subscribe_status ? "Subscribed" : "Unsubscribed"} />
+                    </form> */}
+                    <Form  className = "submitter" onSubmit={handleSubmit}>
+                        <Button  type="submit" variant={subscribe_status ? "success" : "danger"}>
+                            {subscribe_status ? "Subscribed" : "Subscribe"}
+                        </Button>
+                    </Form>
+                    </div>
                 </div>
-                <img src = {artist_image}></img><br/>
-                {/* <form onSubmit={handleSubmit}>
-                    <input type="submit" value={subscribe_status ? "Subscribed" : "Unsubscribed"} />
-                </form> */}
-                <Form onSubmit={handleSubmit}>
-                    <Button type="submit" variant={subscribe_status ? "success" : "danger"}>
-                        {subscribe_status ? "Subscribed" : "Subscribe"}
-                    </Button>
-                </Form>
             </div>
 
             <h2>Latest Albums</h2>

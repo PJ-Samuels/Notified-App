@@ -1,3 +1,8 @@
 .user_nav{
     background-color: green;
 }
+.container{
+    padding: 0;
+    margin: 0;
+    padding-left: 10px;
+}
