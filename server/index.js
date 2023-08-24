@@ -230,10 +230,10 @@ function generateUniqueIdentifier(req, state, user_id) {
 }
 
 app.get('/api/login', async function(req, res) {
-  console.log("LOGIN REACHED");
+  //console.log("LOGIN REACHED");
   req.session.user_id = req.query.user_id;
   const user_id = req.query.user_id;  
-  console.log("user_id", user_id)
+  //console.log("user_id", user_id)
   var state = generateRandomString(16);
   const uniqueIdentifier = generateUniqueIdentifier(req, state, user_id);
   var scope = 'user-read-private user-read-email';
@@ -245,7 +245,7 @@ app.get('/api/login', async function(req, res) {
     state: state,
   })
   spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
-  console.log("spotify auth url", spotifyAuthUrl)
+  // console.log("spotify auth url", spotifyAuthUrl)
   res.send(spotifyAuthUrl);
   // try {
   //   const response = await fetch('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
@@ -267,7 +267,7 @@ app.get('/api/login', async function(req, res) {
 });
   
 app.get('/api/callback', function(req, res) {
-  console.log("callback reached")
+  // console.log("callback reached")
   // const { code, state } = req.query;
   var code = req.query.code || null;
   var state = req.query.state || null;
