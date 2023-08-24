@@ -310,9 +310,8 @@ app.get('/api/callback', function(req, res) {
         var access_token = body.access_token;
         var refresh_token = body.refresh_token;
         var expiration_time = body.expires_in;
-        res.sendFile(path.join(__dirname, '../client/user_dashboard'), function(err) {});
         res.redirect(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
-        //res.send(`https://notified-webapp-0f26d6f34016.herokuapp.com/api/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
+        //res.send(`https://notified-webapp-0f26d6f34016.herokuapp.com/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
 
       }
     });
