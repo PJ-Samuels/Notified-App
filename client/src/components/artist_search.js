@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import './css/artist_search.css'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import { useNavigate } from "react-router-dom";
 
 export default function ArtistSearch() {
     const [access_token, setAccessToken] = useState('');
@@ -12,6 +13,7 @@ export default function ArtistSearch() {
     const [artistId, setArtistId] = useState("");
     const [data, setData] = React.useState([]);
     const [bool, setBool] = React.useState(false);
+    const navigate = useNavigate();
     useEffect(() => {
         if (access_token) {
             sessionStorage.setItem('access_token', access_token);
@@ -62,7 +64,8 @@ export default function ArtistSearch() {
         const encodedID = encodeURIComponent(JSON.stringify(artistId));
         const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
         const url = `https://notified-webapp-0f26d6f34016.herokuapp.com/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
-        window.location.href = url;
+        navigate(url);
+        // window.location.href = url;
     }
 
     const fetchData = async () => {
