@@ -5,10 +5,10 @@ const querystring = require('querystring')
 const bodyParser = require('body-parser');
 const app = express();
 
-// const config = require('./config.js');
+const config = require('./config.js');
 const pool = require('./db.js');
-// var client_id = config.CLIENT_ID;
-// var client_secret = config.CLIENT_SECRET;
+var client_id = config.CLIENT_ID;
+var client_secret = config.CLIENT_SECRET;
 var redirect_uri = 'http://localhost:5000/api/callback';
 
 const {Pool}= require('pg');
@@ -42,8 +42,8 @@ const session = require('express-session');
 //     }
 //   )
 // );
-const client_id = process.env.CLIENT_ID; 
-const client_secret = process.env.CLIENT_SECRET;
+// const client_id = process.env.CLIENT_ID; 
+// const client_secret = process.env.CLIENT_SECRET;
 // var redirect_uri = 'https://notified-webapp-0f26d6f34016.herokuapp.com/callback';
 // console.log(process.env.NOTIFIED_URL)
 // const pool = new Pool({
