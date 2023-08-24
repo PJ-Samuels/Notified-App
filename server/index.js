@@ -69,10 +69,10 @@ app.get('/api/', function(req, res) {
   });
 });
 
-app.post('/api/test', function(req, res) {
-  res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com?test=1');
+// app.post('/api/test', function(req, res) {
+//   res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com?test=1');
   
-});
+// });
 app.post('/api/',async (req,res) =>{
   console.log("index.hmtl post reached")
   try{
@@ -294,7 +294,7 @@ app.get('/api/add_artist', (req, res) => {
     }
   });
 });
-app.post('/artist_subscription', (req, res) => {
+app.post('/api/artist_subscription', (req, res) => {
   const newArtist = req.body.artist_info;
   const subscribe_status = req.body.subscribe_status;
   const user_id = req.body.user_id;
@@ -310,7 +310,7 @@ app.post('/artist_subscription', (req, res) => {
   }
 });
 
-app.get('/notification', (req, res) => {
+app.get('/api/notification', (req, res) => {
   const user_id = req.query.user_id;
   const subscribed_artist = pool.query('SELECT * FROM "Notifications" WHERE user_id = $1', [user_id], (err, result) => {
     res.json(result.rows);
@@ -318,7 +318,7 @@ app.get('/notification', (req, res) => {
 });
 
 
-app.get('/refresh_token', function(req, res) {
+app.get('/api/refresh_token', function(req, res) {
   var refresh_token = req.query.refresh_token;
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
