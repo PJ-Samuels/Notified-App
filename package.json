@@ -4,7 +4,7 @@
   "description": "Instructions on how to get Start with Notified Web app and mobile app locally<br/>",
   "main": "index.js",
   "engines": {
-    "node": "14.15.4"
+    "node": "20.4.0"
   },
   "cacheDirectories": [
     "node_modules",
