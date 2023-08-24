@@ -1,0 +1,30 @@
+<!-- public/landing_page.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing Page</title>
+</head>
+<body>
+  <div id="root"><!-- React component will be rendered here --></div>
+  <script src="/static/js/main.e6632bea.js"></script>
+  <script>
+    // Import the components
+    const { BrowserRouter, Route } = ReactRouterDOM;
+
+    // Define the LandingPage component
+    const LandingPage = () => {
+      return (
+        <BrowserRouter>
+          <Route path="/landing_page" element={<><HomeNav /><LandingPageComponent /></>} />
+        </BrowserRouter>
+      );
+    };
+
+    // Render the LandingPage component into the "root" div
+    const rootElement = document.getElementById('root');
+    ReactDOM.hydrate(<LandingPage />, rootElement);
+  </script>
+</body>
+</html>
