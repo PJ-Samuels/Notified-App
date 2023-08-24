@@ -57,15 +57,15 @@ export default function ArtistSearch() {
         const user_id = query.get('user_id');
         const response_data = await response.json();
         const dataToEncode = JSON.stringify(response_data);
-        console.log("dataToEncode",dataToEncode);
+        // console.log("dataToEncode",dataToEncode);
         const encodedData = encodeURIComponent(dataToEncode);
         const encodedName = encodeURIComponent(JSON.stringify(artistName));
         const encodedImg = encodeURIComponent(JSON.stringify(artistImg));
         const encodedID = encodeURIComponent(JSON.stringify(artistId));
         const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
         const url = `https://notified-webapp-0f26d6f34016.herokuapp.com/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
-        navigate(url);
-        // window.location.href = url;
+        // navigate(url);
+        window.location.href = url;
     }
 
     const fetchData = async () => {
