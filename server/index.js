@@ -292,7 +292,8 @@ app.get('/api/callback', function(req, res) {
 
         //res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
         //  res.redirect(`/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
-         res.sendFile(path.join(__dirname, '../client/build/user_dashboard.html'),{data:json.stringify(data)});
+        //  res.sendFile(path.join(__dirname, '../client/build/user_dashboard.html'));
+        res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {});
       }
     });
   }
