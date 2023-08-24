@@ -64,13 +64,6 @@ app.use(express.static(path.join(__dirname, '../client/build')))
 
 app.get('/api/', function(req, res) {
   res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
-    // if (err) {
-    //   res.status(500).send(err);
-    // }
-    // else{
-    //   const data = ["This is the server"];
-    //   res.json(data);
-    // }
   });
 });
 
@@ -122,32 +115,29 @@ app.post('/api/',async (req,res) =>{
     res.json([0, null]);
   }
 });
-app.get("/api/auth", (req, res) => {
+// app.get("/api/auth", (_req, res) => {
   // const user_id = result.rows[0].id;
   // req.session.user_id = user_id;
 
   // res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   // response.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-  const state = generateRandomString(16);
-  // res.cookie(stateKey, state)
-  const scope = [
-      'user-read-private', 'user-read-email', 'user-follow-modify', 'user-follow-read', 'user-library-modify', 'user-library-read', 'playlist-modify-private', 'playlist-read-private', 'playlist-read-collaborative', 'user-top-read', 'playlist-modify-public',
-      'user-read-currently-playing', 'user-read-recently-played'
-  ].join(" ")
+//   const state = generateRandomString(16);
+//   // res.cookie(stateKey, state)
+//   const scope = [
+//       'user-read-private', 'user-read-email', 'user-follow-modify', 'user-follow-read', 'user-library-modify', 'user-library-read', 'playlist-modify-private', 'playlist-read-private', 'playlist-read-collaborative', 'user-top-read', 'playlist-modify-public',
+//       'user-read-currently-playing', 'user-read-recently-played'
+//   ].join(" ")
 
-  const queryParams = querystring.stringify({
-      client_id: client_id,
-      response_type: 'code',
-      redirect_uri: redirect_uri,
-      scope: scope,
-      /**
-       * https://developer.spotify.com/documentation/general/guides/authorization/scopes/
-       */
-      state: state
-  })
-  res.header("Access-Control-Allow-Origin", "https://notified-webapp-0f26d6f34016.herokuapp.com");
-  res.send(`https://accounts.spotify.com/authorize?${queryParams}`)
-});
+//   const queryParams = querystring.stringify({
+//       client_id: client_id,
+//       response_type: 'code',
+//       redirect_uri: redirect_uri,
+//       scope: scope,
+//       state: state
+//   })
+//   res.header("Access-Control-Allow-Origin", "https://notified-webapp-0f26d6f34016.herokuapp.com");
+//   res.send(`https://accounts.spotify.com/authorize?${queryParams}`)
+// });
 
 app.post('/api/signup', async (req, res) => {
   const account = req.body.account;
@@ -222,23 +212,6 @@ app.get('/api/login', async function(req, res) {
   spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
   console.log("spotify auth url", spotifyAuthUrl)
   res.send(spotifyAuthUrl);
-  // try {
-  //   const response = await fetch('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
-    
-  //   if (response.ok) {
-  //     const spotifyAuthUrl = await response.text();
-  //     console.log("spotify auth url", spotifyAuthUrl)
-  //     res.send(spotifyAuthUrl);
-  //   } else {
-  //     console.log("Error")
-  //     // Redirect to sign-up page in case of error
-  //     // res.redirect('/signup');
-  //   }
-  // } catch (error) {
-  //   // Handle the error, redirect to sign-up page or show an error message
-  //   console.error(error);
-  //   // res.redirect('/signup');
-  // }
 });
   
 app.get('/api/callback', function(req, res) {
@@ -290,9 +263,8 @@ app.get('/api/callback', function(req, res) {
           user_id: user_id,
           expiration_time: expiration_time
         }
-
         //res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
-        res.redirect(`/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
+        res.redirect(`https://notified-webapp-0f26d6f34016.herokuapp.com//user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
       }
     });
   }
