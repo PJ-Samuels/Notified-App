@@ -283,9 +283,16 @@ app.get('/api/callback', function(req, res) {
         var access_token = body.access_token;
         var refresh_token = body.refresh_token;
         var expiration_time = body.expires_in;
-        //res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
-         res.redirect(`/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
+        const data = {
+          access_token: access_token,
+          refresh_token: refresh_token,
+          user_id: user_id,
+          expiration_time: expiration_time
+        }
 
+        //res.send(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
+        //  res.redirect(`/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
+         res.sendFile(path.join(__dirname, '../client/build/user_dashboard.html'),{data:json.stringify(data)});
       }
     });
   }
