@@ -13,16 +13,7 @@ export default function Login() {
         console.log("spotify auth",spotifyAuthUrl)
         window.location.href = spotifyAuthUrl;
         // navigate("/callback")
-      })
-
-      // fetch(`https://notified-webapp-0f26d6f34016.herokuapp.com/api/login?user_id=${user_id}`)
-      // .then((res) => res.text())
-      // .then((spotifyAuthUrl) => {
-      //   console.log("spotify auth",spotifyAuthUrl)
-      //   window.location.href = spotifyAuthUrl;
-      // })
-      // .catch((error) => {
-      // });
+      });
     }, []);
     const navigate = useNavigate();
     const handleLogout = () => {

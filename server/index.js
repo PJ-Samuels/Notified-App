@@ -296,19 +296,8 @@ app.get('/api/callback', function(req, res) {
         // res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
 
         // });
-        const redirectURL = `/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`;
-        const htmlContent = `
-          <html>
-          <head>
-            <script>
-            </script>
-          </head>
-          <body>
-            Redirecting...
-          </body>
-          </html>
-        `;
-        res.send(htmlContent);
+        res.redirect(`${FRONTEND_URI}/?${queryParams}`);
+        
       }
     });
   }
@@ -400,6 +389,9 @@ function sendEmail(bool, latest_release, artist_name, release_img){
   }
 }
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'../client/build/index.html'));
+});
 
 const timeZone = 'America/New_York';
 const cronSchedule = `${moment().tz(timeZone).startOf('hour').format('m')} * * * *`;
