@@ -18,7 +18,7 @@ const App = () => {
   useEffect(() => {
       //fetch("http://localhost:5000/api")
       fetch("/api/")
-      history.push('/landing_page');
+      // history.push('/landing_page');
         // .then((res) => res.json())
         // .then((data) => setData(data));
   }, []);
