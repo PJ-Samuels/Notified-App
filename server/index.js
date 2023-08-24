@@ -69,7 +69,13 @@ app.get('/api/', function(req, res) {
 
 app.post('/api/test', function(req, res) {
   // res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/landing_page');
-  res.sendFile(path.join(__dirname, '../client/build/landing_page.html'), function(err) {});
+  res.sendFile(path.join(__dirname, '../client/build/landing_page.html'), function(err) {
+    if (err) {
+      console.error("Error sending landing page:", err);
+    } else {
+      console.log("Landing page sent successfully");
+    }
+  });
 });
 app.post('/api/',async (req,res) =>{
   console.log("index.hmtl post reached")
