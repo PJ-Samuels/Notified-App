@@ -120,6 +120,7 @@ export default function UserDashboard() {
     const encodedImg = encodeURIComponent(JSON.stringify(response_data2.artists.items[0].images[1].url));
     const encodedID = encodeURIComponent(JSON.stringify(response_data2.artists.items[0].id));
     // const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
+    
     sessionStorage.setItem('response_data', JSON.stringify(response_data));
     sessionStorage.setItem('response_data2', JSON.stringify(response_data2));
     sessionStorage.setItem('user_id', JSON.stringify(user_id));
