@@ -33,7 +33,7 @@ export default function ArtistPage() {
     useEffect(() => {
         if (user_id !== null) {
           const queryParams = new URLSearchParams({ artist_name: artist_name, user_id: user_id }).toString();
-          fetch(`http://localhost:5000/add_artist?${queryParams}`)
+          fetch(`http://localhost:5000/api/add_artist?${queryParams}`)
             .then(response => response.json())
             .then(data => {
               setSubscribeStatus(data);
@@ -50,7 +50,7 @@ export default function ArtistPage() {
             latest_release: artist_data.items[0].name
         }
 
-        fetch("http://localhost:5000/artist_subscription",{
+        fetch("http://localhost:5000/api/artist_subscription",{
             method: "POST",
             headers: {'Content-Type': "application/json"},
             body: JSON.stringify({ artist_info: artist_info, subscribe_status: subscribe_status, user_id: user_id })

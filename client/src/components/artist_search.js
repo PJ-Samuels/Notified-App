@@ -87,7 +87,6 @@ export default function ArtistSearch() {
     }
     useEffect(() => {
         if(bool === true){
-            // console.log("Updated Data:", data);
         }
     }, [data]);
 
@@ -102,12 +101,6 @@ export default function ArtistSearch() {
         </Form.Group>
         <Button variant="primary" type="submit" value="Search">Submit</Button>
       </Form>
-
-        {/* <form onSubmit = {handleSubmit}>
-            <input className = "text" type = "text" placeholder="Type Artist Name here" value = {artistName} onChange = {handleInputChange}/><br/>
-            <input className = "submit" type = "submit" value = "Search"></input>
-        </form> */}
-        {/* <button onClick = {handleBack}> go back </button> */}
         {data && Object.keys(data).length > 0 && (
         <div className="top_artist">
             <h2>{data.name}</h2>
