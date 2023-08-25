@@ -22,8 +22,8 @@ export default function ArtistPage() {
         // const encodedData = query.get('data');
         // const decodedData = decodeURIComponent(encodedData);
         // const data = JSON.parse(decodedData);
-        const userId = sessionStorage.getItem(JSON.parse("user_id"));
-        const data =  sessionStorage.getItem(JSON.parse("response_data"));
+        const userId = JSON.parse(sessionStorage.getItem("user_id"));
+        const data =  JSON.parse(sessionStorage.getItem("response_data"));
         const decodedName = JSON.parse(decodeURIComponent(query.get('artist')));
 
         console.log("data",data)
