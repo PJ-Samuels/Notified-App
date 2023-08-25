@@ -19,15 +19,21 @@ export default function ArtistPage() {
 
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);
-        const encodedData = query.get('data');
-        const decodedData = decodeURIComponent(encodedData);
-        const data = JSON.parse(decodedData);
+        // const encodedData = query.get('data');
+        // const decodedData = decodeURIComponent(encodedData);
+        // const data = JSON.parse(decodedData);
+        const userId = JSON.parse(sessionStorage.getItem("user_id"));
+        const data =  JSON.parse(sessionStorage.getItem("response_data"));
         const decodedName = JSON.parse(decodeURIComponent(query.get('artist')));
+
+        console.log("data",data)
+        console.log("user_id",userId)
+        setUserId(userId);
         setArtistData(data);
         setArtistName(decodedName);
         setArtistId(JSON.parse(decodeURIComponent(query.get('artistID'))));
         setArtistImg(JSON.parse(decodeURIComponent(query.get('artistImg'))));
-        setUserId(JSON.parse(decodeURIComponent(query.get('user_id'))));
+        // setUserId(JSON.parse(decodeURIComponent(query.get('user_id'))));
 
     },[]);
     useEffect(() => {
