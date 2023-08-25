@@ -56,14 +56,19 @@ export default function ArtistSearch() {
 
         const user_id = query.get('user_id');
         const response_data = await response.json();
-        const dataToEncode = JSON.stringify(response_data);
+        //const dataToEncode = JSON.stringify(response_data);
         // console.log("dataToEncode",dataToEncode);
-        const encodedData = encodeURIComponent(dataToEncode);
+        //const encodedData = encodeURIComponent(dataToEncode);
         const encodedName = encodeURIComponent(JSON.stringify(artistName));
         const encodedImg = encodeURIComponent(JSON.stringify(artistImg));
         const encodedID = encodeURIComponent(JSON.stringify(artistId));
-        const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
-        const url = `https://notified-webapp-0f26d6f34016.herokuapp.com/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
+
+        
+        sessionStorage.setItem('response_data', JSON.stringify(response_data));
+        sessionStorage.setItem('user_id', JSON.stringify(user_id));
+        // const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
+
+        const url = `https://notified-webapp-0f26d6f34016.herokuapp.com/artist_page?&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}`;
         // navigate(url);
         window.location.href = url;
     }

@@ -22,7 +22,7 @@ export default function ArtistPage() {
         // const encodedData = query.get('data');
         // const decodedData = decodeURIComponent(encodedData);
         // const data = JSON.parse(decodedData);
-        const data =  sessionStorage.get("data");
+        const data =  sessionStorage.getItem("response_data");
         const decodedName = JSON.parse(decodeURIComponent(query.get('artist')));
         const userId = sessionStorage.getItem("user_id");
         setUserId(userId);
