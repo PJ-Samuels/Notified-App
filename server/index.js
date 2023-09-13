@@ -149,9 +149,7 @@ app.post('/api/signup', async (req, res) => {
   console.log("Valid email");
   const password = account.password;
 
-  pool.query(
-    'SELECT id FROM "Users" WHERE email = $1',
-    [account.email],
+  pool.query('SELECT id FROM "Users" WHERE email = $1', [account.email],
     (err, result) => {
       if (err) {
         console.error(err);
@@ -173,6 +171,8 @@ app.post('/api/signup', async (req, res) => {
 
           const user_id = result.rows[0].id;
           req.session.user_id = user_id;
+          console.log("hitting id")
+          console.log("user_id", user_id)
           // res.redirect('/api/login');
           const state = generateRandomString(16);
           const scope = 'user-read-private user-read-email';
@@ -184,6 +184,8 @@ app.post('/api/signup', async (req, res) => {
             state,
           });
           const spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
+          console.log("hitting url")
+          console.log("spotify auth url__________", spotifyAuthUrl)
           res.send(spotifyAuthUrl);
         }
       );
