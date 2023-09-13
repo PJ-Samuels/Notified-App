@@ -64,6 +64,7 @@ export default function ArtistPage() {
             setArtistImg(JSON.parse(decodeURIComponent(query.get('artistImg'))));
     
             if (userId !== null) {
+                console.log("userId getting hit", userId);
                 const queryParams = new URLSearchParams({ artist_name: decodedName, user_id: userId }).toString();
                 try {
                     const response = await fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/artist_subscription");
