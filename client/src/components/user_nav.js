@@ -25,7 +25,7 @@ export default function UserNav(){
     // console.log("user_id", user_id)
     const navigate = useNavigate();
     useEffect(() => {
-      if (user_id == null) {
+      if (user_id === null) {
         const storedUserId = JSON.parse(sessionStorage.getItem('user_id'));
         sessionStorage.setItem("user_id", user_id);
         if (storedUserId) {
