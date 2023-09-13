@@ -174,6 +174,7 @@ app.post('/api/signup', async (req, res) => {
           req.session.user_id = user_id;
           // res.redirect('/api/login');
           const state = generateRandomString(16);
+          const uniqueIdentifier = generateUniqueIdentifier(req, state, user_id);
           const scope = 'user-read-private user-read-email';
           const auth_query_parameters = new URLSearchParams({
             response_type: "code",
@@ -229,6 +230,7 @@ app.get('/api/callback', function(req, res) {
     if (result.rows.length > 0) {
       user_id = result.rows[0].user_id;
       req.session.user_id = user_id;
+      console.log("user_id from identifier", user_id)
       const deleteQuery = 'DELETE FROM unique_identifiers WHERE user_state = $1';
       pool.query(deleteQuery, [state])
         .then(() => {
