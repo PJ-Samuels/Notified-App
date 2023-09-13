@@ -55,8 +55,8 @@ export default function ArtistPage() {
             const data = JSON.parse(sessionStorage.getItem("response_data"));
             const decodedName = JSON.parse(decodeURIComponent(query.get('artist')));
     
-            console.log("data", data);
-            console.log("user_id", userId);
+            // console.log("data", data);
+            // console.log("user_id", userId);
             setUserId(userId);
             setArtistData(data);
             setArtistName(decodedName);
@@ -64,9 +64,10 @@ export default function ArtistPage() {
             setArtistImg(JSON.parse(decodeURIComponent(query.get('artistImg'))));
     
             if (userId !== null) {
-                console.log("userId getting hit", userId);
+                // console.log("userId", userId);
                 const queryParams = new URLSearchParams({ artist_name: decodedName, user_id: userId }).toString();
                 try {
+                    console.log("hitting this part")
                     const response = await fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/artist_subscription");
                     const data = await response.json();
                     console.log("subscribe_status", data);
