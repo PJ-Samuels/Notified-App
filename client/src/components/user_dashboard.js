@@ -22,7 +22,7 @@ export default function UserDashboard() {
     var user_id = params.get('user_id');
     var expiresInSeconds = params.get('expiration_time');
     const expirationTime = new Date().getTime() + expiresInSeconds * 1000;
-    sessionStorage.setItem('user_id', user_id);
+    sessionStorage.setItem('user_id', JSON.stringify(user_id));
     // console.log(expirationTime)
     // console.log(expireatioIn)
     setExpirationTime(new Date(expirationTime));
