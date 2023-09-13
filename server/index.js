@@ -172,7 +172,6 @@ app.post('/api/signup', async (req, res) => {
 
           const user_id = result.rows[0].id;
           req.session.user_id = user_id;
-          console.log("user_id", user_id)
           // res.redirect('/api/login');
           const state = generateRandomString(16);
           const scope = 'user-read-private user-read-email';
@@ -201,7 +200,6 @@ function generateUniqueIdentifier(req, state, user_id) {
 }
 
 app.get('/api/login', async function(req, res) {
-  console.log("LOGIN REACHED");
   req.session.user_id = req.query.user_id;
   const user_id = req.query.user_id;  
   var state = generateRandomString(16);
@@ -224,6 +222,7 @@ app.get('/api/callback', function(req, res) {
   var code = req.query.code || null;
   var state = req.query.state || null;
   var user_id;
+  console.log("user_id", req.session.user_id)
   const query = 'SELECT user_id FROM unique_identifiers WHERE user_state = $1';
   pool.query(query, [state])
   .then(result => {
