@@ -172,6 +172,7 @@ app.post('/api/signup', async (req, res) => {
 
           const user_id = result.rows[0].id;
           req.session.user_id = user_id;
+          console.log("user_id", user_id)
           // res.redirect('/api/login');
           const state = generateRandomString(16);
           const scope = 'user-read-private user-read-email';
