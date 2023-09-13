@@ -43,6 +43,7 @@ export default function ArtistPage() {
           fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/artist_subscription")
             .then(response => response.json())
             .then(data => {
+                console.log("subscribe_status",data)
               setSubscribeStatus(data);
             });
         }
@@ -65,6 +66,7 @@ export default function ArtistPage() {
         .then(response => response.json())
         .then(data => {
             setSubscribeStatus(data);
+            console.log("subscribe_status",subscribe_status)
         });
     }
     // const handleBack = () => {
