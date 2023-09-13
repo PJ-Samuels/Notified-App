@@ -153,12 +153,12 @@ app.post('/api/signup', async (req, res) => {
     (err, result) => {
       if (err) {
         console.error(err);
-        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/');
+        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
       }
 
       if (result.rows.length > 0) {
         console.log("User already exists");
-        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/');
+        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
       }
       pool.query(
         'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id',
@@ -166,13 +166,11 @@ app.post('/api/signup', async (req, res) => {
         (err, result) => {
           if (err) {
             console.error(err);
-            return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/');
+            return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
           }
 
           const user_id = result.rows[0].id;
           req.session.user_id = user_id;
-          console.log("hitting id")
-          console.log("user_id", user_id)
           // res.redirect('/api/login');
           const state = generateRandomString(16);
           const scope = 'user-read-private user-read-email';
@@ -184,8 +182,6 @@ app.post('/api/signup', async (req, res) => {
             state,
           });
           const spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
-          console.log("hitting url")
-          console.log("spotify auth url__________", spotifyAuthUrl)
           res.send(spotifyAuthUrl);
         }
       );
