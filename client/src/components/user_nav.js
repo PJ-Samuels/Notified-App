@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './css/user_nav.css';
 import { useNavigate } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
@@ -19,17 +19,31 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 export default function UserNav(){
     // const access_token = sessionStorage.getItem('access_token');
     // sessionStorage.setItem("access_token", access_token);
-    const user_id = JSON.parse(sessionStorage.getItem('user_id'));
-    sessionStorage.setItem("user_id", user_id);
+    const [user_id, setUserId] = useState(null);
+    // const user_id = JSON.parse(sessionStorage.getItem('user_id'));
+
     console.log("user_id", user_id)
     const navigate = useNavigate();
+    useEffect(() => {
+      const storedUserId = JSON.parse(sessionStorage.getItem('user_id'));
+      sessionStorage.setItem("user_id", user_id);
+      if (storedUserId) {
+        setUserId(storedUserId);
+      }
+    }, []);
+
     const artistSearchClick = () => {
         // console.log("user nav artist click", access_token)
-        navigate("/artist_search?user_id="+user_id)
+        if(user_id){
+          navigate("/artist_search?user_id="+user_id)
+        }
+
     }
     const homeClick = () => {
         // console.log("user nav home click",access_token)
-        navigate("/user_dashboard?user_id="+user_id)
+        if(user_id){
+          navigate("/user_dashboard?user_id="+user_id)
+        }
     }
     const discoverClick = () => {
       sessionStorage.clear();
@@ -70,7 +84,7 @@ export default function UserNav(){
               <Nav className="me-auto">
                 <Nav.Link onClick = {homeClick}>Home</Nav.Link>
                 <Nav.Link onClick = {artistSearchClick}>Artist Search</Nav.Link>
-                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                <NavDropdown title="Discover" id="basic-nav-dropdown">
                   {/* <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.2">
                     Another action
