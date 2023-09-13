@@ -47,7 +47,7 @@ export default function ArtistPage() {
               setSubscribeStatus(data);
             });
         }
-      }, [user_id]);
+      }, [user_id, artist_name]);
 
     const handleSubmit = (event) =>{
         event.preventDefault();
