@@ -41,7 +41,7 @@ export default function ArtistPage() {
           const queryParams = new URLSearchParams({ artist_name: artist_name, user_id: user_id }).toString();
           
           //fetch(`http://localhost:5000/add_artist?${queryParams}`)
-          fetch(`https://notified-webapp-0f26d6f34016.herokuapp.com/api/add_artist${queryParams}`)
+          fetch(`https://notified-webapp-0f26d6f34016.herokuapp.com/api/add_artist?${queryParams}`)
             .then(response => response.json())
             .then(data => {
                 console.log("subscribe_status",data)
