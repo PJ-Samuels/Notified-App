@@ -21,6 +21,7 @@ export default function UserNav(){
     // sessionStorage.setItem("access_token", access_token);
     const user_id = JSON.parse(sessionStorage.getItem('user_id'));
     sessionStorage.setItem("user_id", user_id);
+    console.log("user_id", user_id)
     const navigate = useNavigate();
     const artistSearchClick = () => {
         // console.log("user nav artist click", access_token)
