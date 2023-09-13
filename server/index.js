@@ -146,9 +146,10 @@ app.post('/api/',async (req,res) =>{
 
 app.post('/api/signup', async (req, res) => {
   const account = req.body.account;
-  console.log("Valid email");
   const password = account.password;
-
+  if (validator.validate(account.email)) {
+    console.log("Valid email");
+  }
   pool.query('SELECT id FROM "Users" WHERE email = $1', [account.email],
     (err, result) => {
       if (err) {
