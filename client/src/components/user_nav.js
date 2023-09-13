@@ -27,7 +27,7 @@ export default function UserNav(){
     useEffect(() => {
       if (user_id === null) {
         const storedUserId = JSON.parse(sessionStorage.getItem('user_id'));
-        sessionStorage.setItem("user_id", user_id);
+        sessionStorage.setItem("user_id", JSON.stringify(user_id));
         if (storedUserId) {
           setUserId(storedUserId);
         }
@@ -38,6 +38,7 @@ export default function UserNav(){
     const artistSearchClick = () => {
         // console.log("user nav artist click", access_token)
         if(user_id){
+          sessionStorage.setItem("user_id", JSON.stringify(user_id));
           navigate("/artist_search?user_id="+user_id)
         }
 
@@ -45,6 +46,7 @@ export default function UserNav(){
     const homeClick = () => {
         // console.log("user nav home click",access_token)
         if(user_id){
+          sessionStorage.setItem("user_id", JSON.stringify(user_id));
           navigate("/user_dashboard?user_id="+user_id)
         }
     }

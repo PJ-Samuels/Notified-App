@@ -27,7 +27,7 @@ export default function ArtistPage() {
         const decodedName = JSON.parse(decodeURIComponent(query.get('artist')));
 
         console.log("data",data)
-        console.log("artist_ page user_id",userId)
+        console.log("artist_page user_id",userId)
         setUserId(userId);
         setArtistData(data);
         setArtistName(decodedName);

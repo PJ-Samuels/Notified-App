@@ -66,7 +66,7 @@ export default function ArtistSearch() {
         
         sessionStorage.setItem('response_data', JSON.stringify(response_data));
         sessionStorage.setItem('user_id', JSON.stringify(user_id));
-        console.log("session storage", sessionStorage.getItem('user_id'));
+
         // const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
 
         const url = `https://notified-webapp-0f26d6f34016.herokuapp.com/artist_page?&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}`;
