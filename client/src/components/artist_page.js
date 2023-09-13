@@ -45,8 +45,9 @@ export default function ArtistPage() {
             .then(response => response.json())
             .then(data => {
                 console.log("subscribe_status",data)
-              setSubscribeStatus(data);
+                setSubscribeStatus(data);
             });
+        console.log('hitting')
         }
       }, [user_id, artist_name]);
 
