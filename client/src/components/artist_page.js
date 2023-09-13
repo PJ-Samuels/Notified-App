@@ -17,70 +17,41 @@ export default function ArtistPage() {
     const refresh_token = sessionStorage.getItem("refresh_token");
     sessionStorage.setItem("refresh_token", refresh_token);
 
-    // useEffect(() => {
-    //     const query = new URLSearchParams(window.location.search);
-    //     // const encodedData = query.get('data');
-    //     // const decodedData = decodeURIComponent(encodedData);
-    //     // const data = JSON.parse(decodedData);
-    //     const userId = JSON.parse(sessionStorage.getItem("user_id"));
-    //     const data =  JSON.parse(sessionStorage.getItem("response_data"));
-    //     const decodedName = JSON.parse(decodeURIComponent(query.get('artist')));
-
-    //     console.log("data",data)
-    //     console.log("user_id",userId)
-    //     setUserId(userId);
-    //     setArtistData(data);
-    //     setArtistName(decodedName);
-    //     setArtistId(JSON.parse(decodeURIComponent(query.get('artistID'))));
-    //     setArtistImg(JSON.parse(decodeURIComponent(query.get('artistImg'))));
-    //     // setUserId(JSON.parse(decodeURIComponent(query.get('user_id'))));
-
-    // },[]);
-    // useEffect(() => {
-    //     if (user_id !== null) {
-    //       const queryParams = new URLSearchParams({ artist_name: artist_name, user_id: user_id }).toString();
-    //       //fetch(`http://localhost:5000/add_artist?${queryParams}`)
-    //       fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/artist_subscription")
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             console.log("subscribe_status",data)
-    //           setSubscribeStatus(data);
-    //         });
-    //     }
-    //   }, [user_id, artist_name]);
     useEffect(() => {
-        const fetchData = async () => {
-            const query = new URLSearchParams(window.location.search);
-            const userId = JSON.parse(sessionStorage.getItem("user_id"));
-            const data = JSON.parse(sessionStorage.getItem("response_data"));
-            const decodedName = JSON.parse(decodeURIComponent(query.get('artist')));
-    
-            // console.log("data", data);
-            // console.log("user_id", userId);
-            setUserId(userId);
-            setArtistData(data);
-            setArtistName(decodedName);
-            setArtistId(JSON.parse(decodeURIComponent(query.get('artistID'))));
-            setArtistImg(JSON.parse(decodeURIComponent(query.get('artistImg'))));
-    
-            if (userId !== null) {
-                // console.log("userId", userId);
-                const queryParams = new URLSearchParams({ artist_name: decodedName, user_id: userId }).toString();
-                try {
-                    console.log("hitting this part")
-                    const response = await fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/artist_subscription");
-                    const data = await response.json();
-                    console.log("subscribe_status", data);
-                    setSubscribeStatus(data);
-                } catch (error) {
-                    console.error("Error fetching subscription status:", error);
-                    // Handle the error as needed
-                }
-            }
-        };
-    
-        fetchData();
-    }, []);
+        const query = new URLSearchParams(window.location.search);
+        // const encodedData = query.get('data');
+        // const decodedData = decodeURIComponent(encodedData);
+        // const data = JSON.parse(decodedData);
+        const userId = JSON.parse(sessionStorage.getItem("user_id"));
+        const data =  JSON.parse(sessionStorage.getItem("response_data"));
+        const decodedName = JSON.parse(decodeURIComponent(query.get('artist')));
+
+        console.log("data",data)
+        console.log("user_id",userId)
+        setUserId(userId);
+        setArtistData(data);
+        setArtistName(decodedName);
+        setArtistId(JSON.parse(decodeURIComponent(query.get('artistID'))));
+        setArtistImg(JSON.parse(decodeURIComponent(query.get('artistImg'))));
+        // setUserId(JSON.parse(decodeURIComponent(query.get('user_id'))));
+
+    },[]);
+    useEffect(() => {
+        if (user_id !== null) {
+          const queryParams = new URLSearchParams({ artist_name: artist_name, user_id: user_id }).toString();
+          console.log('hitting this part')
+          //fetch(`http://localhost:5000/add_artist?${queryParams}`)
+          fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/artist_subscription")
+            .then(response => response.json())
+            .then(data => {
+                console.log('not hitting this part')
+                console.log("subscribe_status",data)
+              setSubscribeStatus(data);
+            });
+            console.log("finish hitting this part")
+        }
+      }, [user_id, artist_name]);
+
     const handleSubmit = (event) =>{
         event.preventDefault();
         const artist_info = {
