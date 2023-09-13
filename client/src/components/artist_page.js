@@ -27,7 +27,7 @@ export default function ArtistPage() {
         const decodedName = JSON.parse(decodeURIComponent(query.get('artist')));
 
         console.log("data",data)
-        console.log("user_id",userId)
+        console.log("artist_ page user_id",userId)
         setUserId(userId);
         setArtistData(data);
         setArtistName(decodedName);
@@ -37,7 +37,7 @@ export default function ArtistPage() {
 
     },[]);
     useEffect(() => {
-        if (user_id !== null) {
+        if (user_id && user_id !== null) {
           const queryParams = new URLSearchParams({ artist_name: artist_name, user_id: user_id }).toString();
           
           //fetch(`http://localhost:5000/add_artist?${queryParams}`)

@@ -22,7 +22,7 @@ export default function UserNav(){
     const [user_id, setUserId] = useState(null);
     // const user_id = JSON.parse(sessionStorage.getItem('user_id'));
 
-    console.log("user_id", user_id)
+    // console.log("user_id", user_id)
     const navigate = useNavigate();
     useEffect(() => {
       const storedUserId = JSON.parse(sessionStorage.getItem('user_id'));
