@@ -279,6 +279,7 @@ app.get('/api/callback', function(req, res) {
 
 app.get('/api/user_dashboard', (req, res) => {
   const user_id = req.query.user_id;
+  console.log("user_id user dashboard", user_id)
   const subscribed_artist = pool.query('SELECT * FROM "Subscribed_Artists" WHERE user_id = $1', [user_id], (err, result) => {
     res.json(result.rows);
 
