@@ -294,6 +294,7 @@ app.get('/api/add_artist', (req, res) => {
     }
   });
 });
+
 app.post('/api/artist_subscription', (req, res) => {
   const newArtist = req.body.artist_info;
   const subscribe_status = req.body.subscribe_status;

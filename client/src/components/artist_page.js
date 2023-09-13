@@ -39,19 +39,14 @@ export default function ArtistPage() {
     useEffect(() => {
         if (user_id !== null) {
           const queryParams = new URLSearchParams({ artist_name: artist_name, user_id: user_id }).toString();
-          console.log('hitting this part')
+          
           //fetch(`http://localhost:5000/add_artist?${queryParams}`)
-          fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/artist_subscription",{
-              method: "POST",
-            headers: { 'Content-Type': "application/json" },
-            body: JSON.stringify({ artist_name: artist_name, user_id: user_id })})
+          fetch(`https://notified-webapp-0f26d6f34016.herokuapp.com/api/add_artist${queryParams}`)
             .then(response => response.json())
             .then(data => {
-                console.log('not hitting this part')
                 console.log("subscribe_status",data)
               setSubscribeStatus(data);
             });
-            console.log("finish hitting this part")
         }
       }, [user_id, artist_name]);
 
