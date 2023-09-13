@@ -19,7 +19,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 export default function UserNav(){
     // const access_token = sessionStorage.getItem('access_token');
     // sessionStorage.setItem("access_token", access_token);
-    const user_id = sessionStorage.getItem('user_id');
+    const user_id = JSON.parse(sessionStorage.getItem('user_id'));
     sessionStorage.setItem("user_id", user_id);
     const navigate = useNavigate();
     const artistSearchClick = () => {
