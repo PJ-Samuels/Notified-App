@@ -67,3 +67,6 @@ h2{
     display: flex !important;
     align-items: center !important; /* Align vertically */
 }
+.toggle{
+    justify-content: center !important;
+}

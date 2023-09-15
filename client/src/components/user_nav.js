@@ -5,29 +5,16 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-// import { token, setGlobalTheme } from '@atlaskit/tokens';  
-// import {
-//     AtlassianNavigation,
-//     PrimaryButton,
-//     PrimaryDropdownButton,
-//     ProductHome,
-//   } from '@atlaskit/atlassian-navigation';
-// import ArtistSearch from "./artist_search";
-
-
 
 export default function UserNav(){
     // const access_token = sessionStorage.getItem('access_token');
     // sessionStorage.setItem("access_token", access_token);
     const [user_id, setUserId] = useState(null);
-    // const user_id = JSON.parse(sessionStorage.getItem('user_id'));
-
-    // console.log("user_id", user_id)
     const navigate = useNavigate();
     useEffect(() => {
       const storedUserId = JSON.parse(sessionStorage.getItem('user_id'));
       if (user_id === null && storedUserId) {
-        console.log("user nav user_id", storedUserId);
+        // console.log("user nav user_id", storedUserId);
         setUserId(storedUserId);
       }
     }, []);
@@ -55,29 +42,7 @@ export default function UserNav(){
         sessionStorage.clear();
         navigate("/")
     }
-    // const handleDash = () => {
-    //     navigate("/user_dashboard?user_id="+user_id)
-    // }
-    // setGlobalTheme({
-    //     light: 'light',
-    //     dark: 'dark',
-    //     colorMode: 'auto',
-    //     typography: 'typography',
-    //   });
-    //style={{backgroundColor: token('elevation.surface')}}
     return(
-      // <>      
-      //   <AtlassianNavigation
-      //   label="site"
-      //   primaryItems={[
-      //     <PrimaryButton onClick={homeClick}>Home</PrimaryButton>,
-      //     <PrimaryDropdownButton onClick = {artistSearchClick}>Artist Search</PrimaryDropdownButton>,
-      //     <PrimaryDropdownButton onClick ={homeClick}>Discover</PrimaryDropdownButton>,
-      //     <PrimaryButton onClick= {homeClick}>Dashboard</PrimaryButton>,
-      //     <PrimaryButton onClick = {handleLogout}>logout</PrimaryButton>,
-      //   ]}
-      //   />
-      // </>
           <Navbar expand="lg" className="bg-body-tertiary">
           <Container>
             <Navbar.Brand onClick = {homeClick} >Notified </Navbar.Brand>

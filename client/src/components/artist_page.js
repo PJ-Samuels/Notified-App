@@ -89,11 +89,11 @@ export default function ArtistPage() {
                     <div className= 'notifications'>
                         <h3>Notifications Options</h3>
                         <a>Emails</a>
-                        <Form ><Form.Check className = "toggle" type="switch" id="custom-switch" label="Check this switch"/></Form>
+                        <Form ><Form.Check className = "toggle" type="switch" id="custom-switch"/></Form>
                         <a>Texts</a>
-                        <Form ><Form.Check className = "toggle" type="switch" id="custom-switch" label="Check this switch"/></Form>
+                        <Form ><Form.Check className = "toggle" type="switch" id="custom-switch"/></Form>
                         <a>Banners</a>
-                        <Form ><Form.Check className = "toggle" type="switch" id="custom-switch" label="Check this switch"/></Form>
+                        <Form ><Form.Check className = "toggle" type="switch" id="custom-switch"/></Form>
 
 
                     {/* <form onSubmit={handleSubmit}>

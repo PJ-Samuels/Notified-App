@@ -223,14 +223,14 @@ app.get('/api/callback', function(req, res) {
   var code = req.query.code || null;
   var state = req.query.state || null;
   var user_id;
-  console.log("user_id", req.session.user_id)
+  // console.log("user_id", req.session.user_id)
   const query = 'SELECT user_id FROM unique_identifiers WHERE user_state = $1';
   pool.query(query, [state])
   .then(result => {
     if (result.rows.length > 0) {
       user_id = result.rows[0].user_id;
       req.session.user_id = user_id;
-      console.log("user_id from identifier", user_id)
+      //console.log("user_id from identifier", user_id)
       const deleteQuery = 'DELETE FROM unique_identifiers WHERE user_state = $1';
       pool.query(deleteQuery, [state])
         .then(() => {
