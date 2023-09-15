@@ -26,9 +26,10 @@ export default function UserDashboard() {
     // console.log(expirationTime)
     // console.log(expireatioIn)
     setExpirationTime(new Date(expirationTime));
-    setUserId(user_id);
+
     if (access_token && user_id) {
       sessionStorage.setItem('access_token', access_token);
+      setUserId(user_id);
       setAccessToken(access_token);
 
     } else {
