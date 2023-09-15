@@ -25,15 +25,11 @@ export default function UserNav(){
     // console.log("user_id", user_id)
     const navigate = useNavigate();
     useEffect(() => {
-      if (user_id === null) {
-        console.log("user nav user_id", user_id)
-        const storedUserId = JSON.parse(sessionStorage.getItem('user_id'));
-        sessionStorage.setItem("user_id", JSON.stringify(user_id));
-        if (storedUserId) {
-          setUserId(storedUserId);
-        }
+      const storedUserId = JSON.parse(sessionStorage.getItem('user_id'));
+      if (user_id === null && storedUserId) {
+        console.log("user nav user_id", storedUserId);
+        setUserId(storedUserId);
       }
-
     }, []);
 
     const artistSearchClick = () => {
