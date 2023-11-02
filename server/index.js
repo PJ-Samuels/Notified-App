@@ -148,6 +148,7 @@ app.post('/api/signup', async (req, res) => {
           console.log("User already exists");
           return res.send('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
         }
+        console.log("hash pass", hash)
         pool.query(
           'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id',
           [account.username, account.email, hash],
