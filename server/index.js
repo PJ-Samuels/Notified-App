@@ -78,28 +78,28 @@ app.post('/api/',async (req,res) =>{
   try{
 
   var user_id;
-  // if (validator.validate(req.body.email)) {
+  if (validator.validate(req.body.email)) {
     console.log("Valid email");
     const password = req.body.password;
     pool.query('SELECT email, password FROM "Users" WHERE email = $1', [req.body.email])
       .then(result => {
         if (result.rowCount > 0) {
-          // const hashedPassword = result.rows[0].password;
-          // bcrypt.compare(password, hashedPassword, (err, isValid) => {
-          //   if (isValid) {
+          const hashedPassword = result.rows[0].password;
+          bcrypt.compare(password, hashedPassword, (err, isValid) => {
+            if (isValid) {
               pool.query('SELECT id FROM "Users" WHERE email = $1', [req.body.email])
                 .then(result2 => {
                   user_id = result2.rows[0].id;
                   res.json([1, user_id]);
                 })
-                // .catch(error => {
-                //   console.error(error);
-                //   res.json([0, null]);
-                // });
-            // } else {
-            //   throw new Error('Invalid credentials');
-            // }
-          // });
+                .catch(error => {
+                  console.error(error);
+                  res.json([0, null]);
+                });
+            } else {
+              throw new Error('Invalid credentials');
+            }
+          });
         } else {
           throw new Error('Invalid credentials');
         }
@@ -108,47 +108,27 @@ app.post('/api/',async (req,res) =>{
         console.error(error);
         res.json([0, null]);
       });
-      
-  //} 
-  // else {
-  //   console.log("index.hmtl post")
-  //   console.log("Invalid email");
-  //   res.json([0, null]);
-  //}
+    } 
+    else {
+      console.log("index.html post")
+      console.log("Invalid email");
+      res.json([0, null]);
+    }
   }catch(err){
     console.log(err)
     res.json([0, null]);
   }
 });
-// app.get("/api/auth", (_req, res) => {
-  // const user_id = result.rows[0].id;
-  // req.session.user_id = user_id;
-
-  // res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  // response.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-//   const state = generateRandomString(16);
-//   // res.cookie(stateKey, state)
-//   const scope = [
-//       'user-read-private', 'user-read-email', 'user-follow-modify', 'user-follow-read', 'user-library-modify', 'user-library-read', 'playlist-modify-private', 'playlist-read-private', 'playlist-read-collaborative', 'user-top-read', 'playlist-modify-public',
-//       'user-read-currently-playing', 'user-read-recently-played'
-//   ].join(" ")
-
-//   const queryParams = querystring.stringify({
-//       client_id: client_id,
-//       response_type: 'code',
-//       redirect_uri: redirect_uri,
-//       scope: scope,
-//       state: state
-//   })
-//   res.header("Access-Control-Allow-Origin", "https://notified-webapp-0f26d6f34016.herokuapp.com");
-//   res.send(`https://accounts.spotify.com/authorize?${queryParams}`)
-// });
 
 app.post('/api/signup', async (req, res) => {
   const account = req.body.account;
   const password = account.password;
+
   if (validator.validate(account.email)) {
     console.log("Valid email");
+  }
+  else{
+    return res.send('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
   }
   pool.query('SELECT id FROM "Users" WHERE email = $1', [account.email],
     (err, result) => {
