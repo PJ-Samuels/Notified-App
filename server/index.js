@@ -81,10 +81,12 @@ app.post('/api/',async (req,res) =>{
   if (validator.validate(req.body.email)) {
     console.log("Valid email");
     const password = req.body.password;
+    console.log("password",password)
     pool.query('SELECT email, password FROM "Users" WHERE email = $1', [req.body.email])
       .then(result => {
         if (result.rowCount > 0) {
           const hashedPassword = result.rows[0].password;
+          console.log("hashedPassword",hashedPassword)
           bcrypt.compare(password, hashedPassword, (err, isValid) => {
             if (isValid) {
               pool.query('SELECT id FROM "Users" WHERE email = $1', [req.body.email])
@@ -130,45 +132,51 @@ app.post('/api/signup', async (req, res) => {
   else{
     return res.send('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
   }
-  pool.query('SELECT id FROM "Users" WHERE email = $1', [account.email],
-    (err, result) => {
-      if (err) {
-        console.error(err);
-        return res.send('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
-      }
-
-      if (result.rows.length > 0) {
-        console.log("User already exists");
-        return res.send('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
-      }
-      pool.query(
-        'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id',
-        [account.username, account.email, password],
-        (err, result) => {
-          if (err) {
-            console.error(err);
-            return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
-          }
-
-          const user_id = result.rows[0].id;
-          req.session.user_id = user_id;
-          // res.redirect('/api/login');
-          const state = generateRandomString(16);
-          const uniqueIdentifier = generateUniqueIdentifier(req, state, user_id);
-          const scope = 'user-read-private user-read-email';
-          const auth_query_parameters = new URLSearchParams({
-            response_type: "code",
-            client_id,
-            scope,
-            redirect_uri,
-            state,
-          });
-          const spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
-          res.send(spotifyAuthUrl);
-        }
-      );
+  bcrypt.hash(password, 10, (err, hash) => {
+    if (err) {
+      console.error(err);
+      return res.send('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
     }
-  );
+    pool.query('SELECT id FROM "Users" WHERE email = $1', [account.email],
+      (err, result) => {
+        if (err) {
+          console.error(err);
+          return res.send('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
+        }
+
+        if (result.rows.length > 0) {
+          console.log("User already exists");
+          return res.send('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
+        }
+        pool.query(
+          'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id',
+          [account.username, account.email, hash],
+          (err, result) => {
+            if (err) {
+              console.error(err);
+              return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/signup');
+            }
+
+            const user_id = result.rows[0].id;
+            req.session.user_id = user_id;
+            // res.redirect('/api/login');
+            const state = generateRandomString(16);
+            const uniqueIdentifier = generateUniqueIdentifier(req, state, user_id);
+            const scope = 'user-read-private user-read-email';
+            const auth_query_parameters = new URLSearchParams({
+              response_type: "code",
+              client_id,
+              scope,
+              redirect_uri,
+              state,
+            });
+            const spotifyAuthUrl = 'https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString();
+            res.send(spotifyAuthUrl);
+          }
+        );
+      }
+    );
+  });
 });
 
 
