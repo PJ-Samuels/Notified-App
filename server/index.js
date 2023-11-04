@@ -152,13 +152,6 @@ app.post('/api/signup', async (req, res) => {
     }
   );
 });
-function generateToken(user){
-  const generatedToken = (user) => {
-    const token = jwt.sign({ id: user.id, email: user.email }, 'your-secret-key', { expiresIn: '7d' });
-    return token;
-  };
-  return generatedToken
-}
 
 function generateUniqueIdentifier(req, state, user_id) {
   const query = 'INSERT INTO unique_identifiers (user_state, user_id) VALUES ($1, $2)';
@@ -226,7 +219,12 @@ app.get('/api/callback', function(req, res) {
         var access_token = body.access_token;
         var refresh_token = body.refresh_token;
         var expiration_time = body.expires_in;
-        res.redirect(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time}`);
+        const generateToken = (user_id) => {
+          const token = jwt.sign({ id: user_id }, secretKey, { expiresIn: '7d' });
+          return token;
+        };
+        const stayloggedIntoken = generateToken(user_id);
+        res.redirect(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time},&stayloggedIntoken=${stayloggedIntoken}`);
       }
     });
   }
