@@ -74,9 +74,8 @@ app.get('/api/', function(req, res) {
   
 // });
 app.post('/api/',async (req,res) =>{
-  console.log("index.hmtl post reached")
+  //if(token is detected redirect to dashboard)
   try{
-
   var user_id;
   if (validator.validate(req.body.email)) {
     console.log("Valid email");
