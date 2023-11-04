@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-// import Button from '@atlaskit/button';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import './css/signup.css';
 
 export default function Signup(){
 
@@ -44,6 +44,9 @@ export default function Signup(){
     }
     return (
     <div>
+        <div className= "go_back">
+            <Button className = "go_back_button" onClick = {handleClick}>Go back</Button>
+        </div>
         <h1>Sign Up</h1>
         {/* <form onSubmit = {handleSubmit}>
             <input type ="text" placeholder = 'username' name = "username" value = {account.username} onChange = {handleAccount}/><br/>
@@ -59,9 +62,5 @@ export default function Signup(){
             </Form.Group>
             <Button variant="primary" type="submit">Submit</Button>
         </Form>
-        <div className= "go_back">
-            <Button onClick = {handleClick}>Go back</Button>
-        </div>
-        
     </div>)
 }

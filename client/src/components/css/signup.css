@@ -1,6 +1,4 @@
 .go_back{
-    display: flex !important;
+    color: #131212 !important;
     flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
 }
