@@ -5,16 +5,6 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-// import { token, setGlobalTheme } from '@atlaskit/tokens';  
-// import {
-//     AtlassianNavigation,
-//     PrimaryButton,
-//     PrimaryDropdownButton,
-//     ProductHome,
-//   } from '@atlaskit/atlassian-navigation';
-// import ArtistSearch from "./artist_search";
-
-
 
 export default function HomeNav(){
     const access_token = sessionStorage.getItem('access_token');
@@ -31,30 +21,7 @@ export default function HomeNav(){
         navigate("/")
     }
 
-    // setGlobalTheme({
-    //     light: 'light',
-    //     dark: 'dark',
-    //     colorMode: 'auto',
-    //     typography: 'typography',
-    //   });
-      
-
-    //style={{backgroundColor: token('elevation.surface')}}
     return(
-      // <>      
-      //   <AtlassianNavigation
-      //   label="site"
-      //   primaryItems={[
-      //       <PrimaryButton onClick={homeClick}>Home</PrimaryButton>,
-      //       <PrimaryDropdownButton>Releases</PrimaryDropdownButton>,
-      //       <PrimaryButton>News</PrimaryButton>,
-      //       <PrimaryButton>FAQ</PrimaryButton>,
-      //       <PrimaryButton onClick = {handleLogin}>login</PrimaryButton>,
-
-      //   ]}
-
-      //   />
-      // </>
       <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
         <Navbar.Brand onClick = {homeClick} >Notified </Navbar.Brand>

@@ -36,6 +36,7 @@ export default function UserNav(){
   }
     const handleLogout = () => {
         sessionStorage.clear();
+        localStorage.removeItem("token");
         navigate("/")
     }
     // const handleDash = () => {

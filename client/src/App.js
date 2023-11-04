@@ -40,7 +40,7 @@ const App = () => {
     .then((account_info) => {
       setAccountInfo(account_info[0]);
       // console.log("User_id ", account_info[1]);
-      
+      localStorage.setItem('token', account_info[2]);
       if (account_info[0] === 1) {
         sessionStorage.setItem('user_id', account_info[1]);
         navigate('/login');

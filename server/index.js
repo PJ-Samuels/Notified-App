@@ -16,6 +16,9 @@ const moment = require('moment-timezone');
 moment.tz.setDefault('UTC');
 var validator = require("email-validator");
 const bcrypt = require("bcrypt")
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const secretKey = crypto.randomBytes(32).toString('hex');
 const port = process.env.PORT || 5000;
 const path = require('path');
 const session = require('express-session');
@@ -56,6 +59,11 @@ app.get('/api/', function(req, res) {
 app.post('/api/',async (req,res) =>{
   try{
   var user_id;
+  
+  const generateToken = (user_id, email) => {
+    const token = jwt.sign({ id: user_id, email: email }, secretKey, { expiresIn: '7d' });
+    return token;
+  };
    if (validator.validate(req.body.email)) {
     console.log("Valid email");
     const password = req.body.password;
@@ -68,11 +76,12 @@ app.post('/api/',async (req,res) =>{
               pool.query('SELECT id FROM "Users" WHERE email = $1', [req.body.email])
                 .then(result2 => {
                   user_id = result2.rows[0].id;
-                  res.json([1, user_id]);
+                  const token = generateToken(user_id, req.body.email);
+                  res.json([1, user_id, token]);
                 })
                 .catch(error => {
                   console.error(error);
-                  res.json([0, null]);
+                  res.json([0, null, null]);
                 });
             } else {
               throw new Error('Invalid credentials');
@@ -98,33 +107,6 @@ app.post('/api/',async (req,res) =>{
     res.json([0, null]);
   }
 });
-// const stateKey = 'spotify_auth_state';
-// app.get("/api/auth", function (req, res){
-//   // const user_id = result.rows[0].id;
-//   const user_id = 0;
-//   req.session.user_id = user_id;
-
-//   const state = generateRandomString(16);
-//   res.cookie(stateKey, state)
-
-//   const scope = [
-//       'user-read-private', 'user-read-email', 'user-follow-modify', 'user-follow-read', 'user-library-modify', 'user-library-read', 'playlist-modify-private', 'playlist-read-private', 'playlist-read-collaborative', 'user-top-read', 'playlist-modify-public',
-//       'user-read-currently-playing', 'user-read-recently-played'
-//   ].join(" ")
-
-//   const queryParams = querystring.stringify({
-//       client_id: client_id,
-//       response_type: 'code',
-//       redirect_uri: redirect_uri,
-//       scope: scope,
-//       /**
-//        * https://developer.spotify.com/documentation/general/guides/authorization/scopes/
-//        */
-//       state: state
-//   })
-//   res.send(`https://accounts.spotify.com/authorize?${queryParams}`)
-
-// });
 
 app.post('/api/signup', async (req, res) => {
   const account = req.body.account;
@@ -170,7 +152,13 @@ app.post('/api/signup', async (req, res) => {
     }
   );
 });
-
+function generateToken(user){
+  const generatedToken = (user) => {
+    const token = jwt.sign({ id: user.id, email: user.email }, 'your-secret-key', { expiresIn: '7d' });
+    return token;
+  };
+  return generatedToken
+}
 
 function generateUniqueIdentifier(req, state, user_id) {
   const query = 'INSERT INTO unique_identifiers (user_state, user_id) VALUES ($1, $2)';
