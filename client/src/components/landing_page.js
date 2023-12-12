@@ -7,16 +7,32 @@ export default function LandingPage(){
     return(
         <div>
             <h1>Notified</h1>
-            <div className = "slideshow">
-                <Carousel>
-                    <Carousel.Item>
-                        <img width = "1000px" height = "500px" className = "img_test"src = {photo1}/>
-                        <Carousel.Caption>
-                            <h3>First slide label</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>    
-                </Carousel> 
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div className = "slideshow">
+                    <Carousel>
+                        <Carousel.Item>
+                            <img width = "1200px" height = "700px" className = "img_test"src = {photo1}/>
+                            <Carousel.Caption> 
+                                <h3>Get Notified anytime</h3>
+                                <p>stay up to date with all new artist releases</p>
+                            </Carousel.Caption>
+                        </Carousel.Item>  
+                        <Carousel.Item>
+                            <img width = "1200px" height = "700px" className = "img_test"src = {photo1}/>
+                            <Carousel.Caption> 
+                                <h3>Slide 2</h3>
+                                <p>slide 2 descritption</p>
+                            </Carousel.Caption>
+                        </Carousel.Item>   
+                        <Carousel.Item>
+                            <img width = "1200px" height = "700px" className = "img_test"src = {photo1}/>
+                            <Carousel.Caption> 
+                                <h3>Slide 2</h3>
+                                <p>slide 2 descritption</p>
+                            </Carousel.Caption>
+                        </Carousel.Item>    
+                    </Carousel> 
+                </div>
             </div>
             <div>page bottom</div>
         </div>

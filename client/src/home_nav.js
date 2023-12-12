@@ -30,15 +30,10 @@ export default function HomeNav(){
           <Nav className="me-auto">
             <Nav.Link onClick = {homeClick}>Home</Nav.Link>
             <NavDropdown title="Releases" id="basic-nav-dropdown">
-              {/* <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.1">Popular</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">Discover</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item> */}
+              <NavDropdown.Item href="#action/3.4">My Notifcations</NavDropdown.Item>
             </NavDropdown>
             <Nav.Link>News</Nav.Link>
             <Nav.Link>FAQ</Nav.Link>

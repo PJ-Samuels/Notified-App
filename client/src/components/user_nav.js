@@ -43,16 +43,11 @@ export default function UserNav(){
               <Nav className="me-auto">
                 <Nav.Link onClick = {homeClick}>Home</Nav.Link>
                 <Nav.Link onClick = {artistSearchClick}>Artist Search</Nav.Link>
-                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                  {/* <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">
-                    Another action
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                <NavDropdown title="Releases" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="#action/3.2">Popular</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.1">Discover</NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/3.4">
-                    Separated link
-                  </NavDropdown.Item> */}
+                  <NavDropdown.Item href="#action/3.4">My Notifications</NavDropdown.Item>
                 </NavDropdown>
                 <Nav.Link onClick = {handleLogout}> logout</Nav.Link>
               </Nav>
