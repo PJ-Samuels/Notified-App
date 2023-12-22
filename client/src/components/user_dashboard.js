@@ -106,13 +106,15 @@ export default function UserDashboard() {
   
     const response_data = await response.json();
     const response_data2 = await response2.json();
-    const dataToEncode = JSON.stringify(response_data);
-    const encodedData = encodeURIComponent(dataToEncode);
+    
     const encodedName = encodeURIComponent(JSON.stringify(artist_name));
     const encodedImg = encodeURIComponent(JSON.stringify(response_data2.artists.items[0].images[1].url));
     const encodedID = encodeURIComponent(JSON.stringify(response_data2.artists.items[0].id));
-    const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
-    const url = `/api/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
+
+    sessionStorage.setItem('response_data', JSON.stringify(response_data));
+    sessionStorage.setItem('user_id', JSON.stringify(user_id));
+    const url = `/artist_page?artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}`;
+    console.log(url)
     window.location.href = url;
   }
 

@@ -52,7 +52,16 @@ app.use(express.json());
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, '../client/build')))
 
-app.get('/api/', function(req, res) {
+app.post('/api/loggedIn', function(req, res) {
+  const token  = req.body.token;
+  console.log("token",token)
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    console.log("actual",decoded);
+  } catch (error) {
+    console.error('Token verification failed:', error);
+  }
+
 });
 
 

@@ -27,14 +27,13 @@ export default function Login() {
       // .catch((error) => {
       // });
     }, []);
-    const navigate = useNavigate();
-    const handleLogout = () => {
-        navigate('/');
-        console.log("logout")
-      }
+    // const navigate = useNavigate();
+    // const handleLogout = () => {
+    //     navigate('/');
+    //     console.log("logout")
+    //   }
     return(<div>
-        <h1>Notified Login page</h1>
-        <button onClick = {handleLogout}>Logout</button>
-
+        <h1>Loading</h1>
+        {/* <button onClick = {handleLogout}>Logout</button> */}
     </div>);
 };

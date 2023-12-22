@@ -14,9 +14,18 @@ const App = () => {
   const [account_info, setAccountInfo] = useState(0)
   const [wrongPass, setWrongPass] = useState(false)
   
-
+  
   useEffect(() => {
-      fetch("http://localhost:5000/api/")
+    const token = localStorage.getItem('token')
+    if (token) {
+      console.log(token)
+      fetch("http://localhost:5000/api/loggedIn",{
+        method: "POST",
+        headers: {'Content-Type': "application/json"},
+        body: JSON.stringify({ token: token })
+      })
+    }
+
       //fetch("/api/")
         // .then((res) => res.json())
         // .then((data) => setData(data));
@@ -29,9 +38,7 @@ const App = () => {
   }
   const handleClick = (event) => {
     event.preventDefault();
-    console.log("login pressed")
     fetch("http://localhost:5000/api/",{
-    // fetch("/api/",{
       method: "POST",
       headers: {'Content-Type': "application/json"},
       body: JSON.stringify({email,password})
@@ -40,6 +47,7 @@ const App = () => {
     .then((account_info) => {
       setAccountInfo(account_info[0]);
       // console.log("User_id ", account_info[1]);
+      console.log("Token ", account_info[2]);
       localStorage.setItem('token', account_info[2]);
       if (account_info[0] === 1) {
         sessionStorage.setItem('user_id', account_info[1]);
@@ -68,11 +76,6 @@ const App = () => {
         </Form.Group>
         <Button variant="primary" type="submit" value="Spotify Login">Login</Button>
       </Form>
-      {/* <form onSubmit = {handleClick}>
-        <input type = "text" placeholder='email' value = {email} onChange = {handleEmailChange}/><br/>
-        <input type = "text" placeholder='password' value = {password} onChange = {handlePassChange}/><br/>
-        <input type = "submit" value = "Spotify Login"/><br/>
-      </form> */}
       {wrongPass && <a className = "error_msg">incorrect email or password try again</a>}
       <h3>Sign Up</h3>
       <Button className = "signup" appearance = "primary" onClick = {handleSignup}>Sign Up</Button>
