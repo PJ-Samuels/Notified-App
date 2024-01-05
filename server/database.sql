@@ -29,6 +29,20 @@ CREATE TABLE "Notifications"(
     PRIMARY KEY (user_id, artist_name,latest_release),
     FOREIGN KEY (user_id) REFERENCES "Users"(id)
 );
+CREATE TABLE "Artist_Preferences"(
+    user_id int NOT NULL,
+    artist_name varchar(100) NOT NULL,
+    albums BOOLEAN NOT NULL,
+    singles BOOLEAN NOT NULL,
+    features BOOLEAN NOT NULL,
+    texts BOOLEAN NOT NULL,
+    email BOOLEAN NOT NULL,
+    banners BOOLEAN NOT NULL,
+    concerts BOOLEAN NOT NULL,
+    merch BOOLEAN NOT NULL,
+    PRIMARY KEY (user_id, artist_name),
+    FOREIGN KEY (user_id) REFERENCES "Users"(id)
+);
 
 CREATE TABLE "unique_identifiers" (
     user_state varchar(255) NOT NULL,

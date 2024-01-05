@@ -266,6 +266,9 @@ app.post('/api/artist_subscription', (req, res) => {
     const newArtistQuery  =  pool.query(`INSERT INTO "Subscribed_Artists" (user_id, artist_id, artist_name, artist_img, latest_release) VALUES ($1, $2, $3, $4, $5) RETURNING *`, [user_id, newArtist.artist_id, newArtist.artist_name, newArtist.artist_image, newArtist.latest_release, ], (err, result) => {
       res.json((true))
     });
+    const notificationQuery = pool.query('INSERT INTO "Artist_Preferences" (user_id, artistname,albums, singles, features, texts, email, concerts, merch) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)', [user_id, newArtist.artist_name, true, true, true, true, true, true, true], (err, result) => {
+      console.log("Artist_Preferences added")
+    });
   }
   else {
     const newArtistQuery  =  pool.query(`DELETE FROM "Subscribed_Artists" WHERE artist_id = $1 AND user_id = $2`, [newArtist.artist_id, user_id], (err, result) => {
@@ -300,7 +303,7 @@ app.get('/api/refresh_token', function(req, res) {
   });
 });
 
-function sendEmail(bool, latest_release, artist_name, release_img){
+function sendEmail(bool, latest_release, artist_name, release_img, email){
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -312,15 +315,25 @@ function sendEmail(bool, latest_release, artist_name, release_img){
     console.log("send email to user")
     const mailOptions = {
       from: 'pjsamuels3@gmail.com',
-      to: 'osamuels@bu.edu',
+      to: email,
       subject: 'New Release',
-      // text: `${artist_name} just Released a new album: ${latest_release}`,
       html: `<p>${artist_name} just Released a new album: ${latest_release}</p><img src="${imageUrl}" alt="Album Cover" />`,
     };
     transporter.sendMail(mailOptions, (error, info) => {
-      // console.log('Email sent: ' + info.response);
       res.send('Email sent successfully.');
     });  
+  }
+  else {
+    const mailOptions = {
+      from: 'pjsamuels3@gmail.com',
+      to: email,
+      subject: 'No New Release',
+      html: `There are no new releases from your subscribed artists.`
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      res.send('Email sent successfully.');
+    });  
+
   }
 }
 
@@ -365,9 +378,10 @@ cron.schedule(cronSchedule, () => {
                   const users = result.rows;
                   for (let i = 0; i < users.length; i++) {
                     // console.log("user_id",users[i].user_id)
+                    const email = pool.query('SELECT email FROM "Users" WHERE id = $1', [users[i].user_id], (err, result) => {});
                     pool.query('INSERT INTO "Notifications" (user_id, artist_id, artist_name, release_img, latest_release) VALUES ($1, $2, $3, $4, $5)', [users[i].user_id,artist_id,artist_name,release_img,latest_release], (err, result) => {
                       console.log("Notification added")
-                      sendEmail(true, latest_release, artist_name, release_img);
+                      sendEmail(true, latest_release, artist_name, release_img, email);
                     });
                   }
                 })
