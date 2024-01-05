@@ -15,11 +15,9 @@ export default function UserNav(){
 
     const navigate = useNavigate();
     const artistSearchClick = () => {
-        // console.log("user nav artist click", access_token)
         navigate("/artist_search?user_id="+user_id)
     }
     const homeClick = () => {
-        // console.log("user nav home click",access_token)
         navigate("/user_dashboard?user_id="+user_id)
     }
     const discoverClick = () => {
@@ -28,12 +26,9 @@ export default function UserNav(){
   }
     const handleLogout = () => {
         sessionStorage.clear();
-        // localStorage.removeItem("token");
+        localStorage.clear();
         navigate("/")
     }
-    // const handleDash = () => {
-    //     navigate("/user_dashboard?user_id="+user_id)
-    // }
 
     return(
           <Navbar expand="lg" className="bg-body-tertiary">

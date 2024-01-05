@@ -24,7 +24,7 @@ export default function Signup(){
     const handleSubmit = async (event) =>{
         event.preventDefault();
         try {
-            const response = await fetch("https://notified-webapp-0f26d6f34016.herokuapp.com/api/signup", {
+            const response = await fetch("http://localhost:5000/api/signup", {
                 method: "POST",
                 headers: {'Content-Type': "application/json"},
                 body: JSON.stringify({account})

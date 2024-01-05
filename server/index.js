@@ -54,10 +54,10 @@ app.use(express.static(path.join(__dirname, '../client/build')))
 
 app.post('/api/loggedIn', function(req, res) {
   const token  = req.body.token;
-  console.log("token",token)
   try {
     const decoded = jwt.verify(token, secretKey);
-    console.log("actual",decoded);
+    res.send(decoded);
+
   } catch (error) {
     console.error('Token verification failed:', error);
   }
@@ -119,7 +119,7 @@ app.post('/api/',async (req,res) =>{
 
 app.post('/api/signup', async (req, res) => {
   const account = req.body.account;
-  console.log("Valid email");
+  // console.log("Valid email");
   const password = account.password;
   pool.query(
     'SELECT id FROM "Users" WHERE email = $1',
@@ -127,12 +127,12 @@ app.post('/api/signup', async (req, res) => {
     (err, result) => {
       if (err) {
         console.error(err);
-        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/');
+        return res.redirect('http://localhost:3000/signup')
       }
 
       if (result.rows.length > 0) {
         console.log("User already exists");
-        return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/');
+        return res.redirect('http://localhost:3000/signup')
       }
       pool.query(
         'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id',
@@ -140,7 +140,7 @@ app.post('/api/signup', async (req, res) => {
         (err, result) => {
           if (err) {
             console.error(err);
-            return res.redirect('https://notified-webapp-0f26d6f34016.herokuapp.com/');
+            return res.redirect('http://localhost:3000/signup')
           }
 
           const user_id = result.rows[0].id;

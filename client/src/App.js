@@ -18,12 +18,19 @@ const App = () => {
   useEffect(() => {
     const token = localStorage.getItem('token')
     if (token) {
-      console.log(token)
+      // console.log(token)
       fetch("http://localhost:5000/api/loggedIn",{
         method: "POST",
         headers: {'Content-Type': "application/json"},
         body: JSON.stringify({ token: token })
       })
+      .then((res) => res.json())
+      .then((account_info) => {
+        // console.log(account_info)
+        // console.log(account_info['id'])
+        sessionStorage.setItem("user_id",account_info['id']);
+        navigate('/login')
+      });
     }
 
       //fetch("/api/")
@@ -47,7 +54,7 @@ const App = () => {
     .then((account_info) => {
       setAccountInfo(account_info[0]);
       // console.log("User_id ", account_info[1]);
-      console.log("Token ", account_info[2]);
+      // console.log("Token ", account_info[2]);
       localStorage.setItem('token', account_info[2]);
       if (account_info[0] === 1) {
         sessionStorage.setItem('user_id', account_info[1]);
