@@ -133,7 +133,7 @@ export default function UserDashboard() {
       <h2>Notifications</h2>
       <div className = "artists">
       {notifications.map((notification) => (
-        <div className= "artist_card" key={notification.artist_id}>
+        <div className= "artist_card" key ={notification.latest_release}>
           <a>{notification.artist_name}</a><br/>
           <a>{notification.latest_release}</a><br/>
           <img src={notification.release_img} alt={notification.artist_name}/>

@@ -7,6 +7,8 @@ import Button from 'react-bootstrap/Button'
 
 export default function ArtistPage() {
     const [artist_data, setArtistData] = useState([]);
+    const [artist_single, setArtistSingle] = useState([]);
+    const [artist_feature, setArtistFeature] = useState([]);
     const [artist_name, setArtistName] = useState("");
     const [artist_image, setArtistImg] = useState("");
     const [user_id, setUserId] = useState(null);
@@ -21,11 +23,17 @@ export default function ArtistPage() {
         const query = new URLSearchParams(window.location.search);
         const userId = JSON.parse(sessionStorage.getItem("user_id"));
         const data =  JSON.parse(sessionStorage.getItem("response_data"));
+        const single=  JSON.parse(sessionStorage.getItem("response_single"));
+        const feature =  JSON.parse(sessionStorage.getItem("response_feature"));
         const decodedName = JSON.parse(decodeURIComponent(query.get('artist')));
         console.log("artist page", data)
+        console.log("artist page", single)
+        console.log("artist page", feature)
         setUserId(userId);
         setArtistData(data);
         setArtistName(decodedName);
+        setArtistSingle(single);
+        setArtistFeature(feature);
         setArtistId(JSON.parse(decodeURIComponent(query.get('artistID'))));
         setArtistImg(JSON.parse(decodeURIComponent(query.get('artistImg'))));
 
@@ -114,8 +122,23 @@ export default function ArtistPage() {
             )))}
             </div>
             <h2>Latest Singles</h2>
-            <h3 className= "not_implemented">Coming Soon!</h3>
+            <div className='singles'>
+            {artist_single && Array.isArray(artist_single.items)  > 0 && (artist_single.items.map((single) => (
+                <div className = "single_card" key = {single.id}>
+                    <a>{single.name}</a><br/>
+                    <img src = {single.images[1].url}></img>
+                </div>
+            )))}
+            </div>
             <h2>Latest Features</h2>
-            <h3 className = "not_implemented">Coming Soon!</h3>
+            <div className='features'>
+            {artist_feature && Array.isArray(artist_feature.items)  > 0 && (artist_feature.items.map((feature) => (
+                <div className = "feature_card" key = {feature.id}>
+                    <a>{feature.name}</a><br/>
+                    <img src = {feature.images[1].url}></img>
+                </div>
+            )))}
+            </div>
+
         </div>);
 }

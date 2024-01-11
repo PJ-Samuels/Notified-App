@@ -50,16 +50,42 @@ export default function ArtistSearch() {
                 'Authorization': 'Bearer ' + access_token,
             }
         });
+
+        const response_singles = await fetch(`https://api.spotify.com/v1/artists/${data.id}/albums?limit=3&include_groups=single`,{
+            method: "GET",
+            headers: {
+              'Authorization': 'Bearer ' + access_token,
+          }
+
+        })
+
+        const response_features = await fetch(`https://api.spotify.com/v1/artists/${data.id}/albums?limit=3&include_groups=appears_on`,{
+          method: "GET",
+          headers: {
+            'Authorization': 'Bearer ' + access_token,
+        }
+
+      })
         const query = new URLSearchParams(window.location.search);
         const user_id = query.get('user_id');
         const response_data = await response.json();
+        const response_single = await response_singles.json();
+        const response_feature = await response_features.json();
+        console.log("response single",response_single)
+        console.log("response data",response_data)
+        console.log("response features",response_feature)
         const dataToEncode = JSON.stringify(response_data);
-        const encodedData = encodeURIComponent(dataToEncode);
+        // const encodedData = encodeURIComponent(dataToEncode);
         const encodedName = encodeURIComponent(JSON.stringify(artistName));
         const encodedImg = encodeURIComponent(JSON.stringify(artistImg));
         const encodedID = encodeURIComponent(JSON.stringify(artistId));
         const encodedUserId = encodeURIComponent(JSON.stringify(user_id));
-        const url = `/artist_page?data=${encodedData}&artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
+        sessionStorage.setItem('response_data', JSON.stringify(response_data));
+        sessionStorage.setItem('response_single', JSON.stringify(response_single));
+        sessionStorage.setItem('response_feature', JSON.stringify(response_feature));
+
+  
+        const url = `/artist_page?artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
         window.location.href = url;
     }
 

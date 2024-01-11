@@ -81,7 +81,7 @@ const App = () => {
           <Form.Control type="text" placeholder="email" value={email} onChange={handleEmailChange} autoComplete="off"/><br/>
           <Form.Control type="password" placeholder="password" value={password} onChange={handlePassChange} autoComplete="off"/>
         </Form.Group>
-        <Button variant="primary" type="submit" value="Spotify Login">Login</Button>
+        <Button className = "first_login" variant="primary" type="submit" value="Spotify Login">Login</Button>
       </Form>
       {wrongPass && <a className = "error_msg">incorrect email or password try again</a>}
       <h3>Sign Up</h3>
