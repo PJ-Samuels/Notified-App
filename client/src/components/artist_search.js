@@ -13,6 +13,7 @@ export default function ArtistSearch() {
     const [data, setData] = React.useState([]);
     const [bool, setBool] = React.useState(false);
     useEffect(() => {
+
         if (access_token) {
             sessionStorage.setItem('access_token', access_token);
             setAccessToken(access_token);
@@ -67,7 +68,10 @@ export default function ArtistSearch() {
 
       })
         const query = new URLSearchParams(window.location.search);
-        const user_id = query.get('user_id');
+        // const user_id = query.get('user_id');
+        const user_id = sessionStorage.getItem('user_id');
+        sessionStorage.setItem('user_id', user_id);
+
         const response_data = await response.json();
         const response_single = await response_singles.json();
         const response_feature = await response_features.json();
@@ -83,9 +87,10 @@ export default function ArtistSearch() {
         sessionStorage.setItem('response_data', JSON.stringify(response_data));
         sessionStorage.setItem('response_single', JSON.stringify(response_single));
         sessionStorage.setItem('response_feature', JSON.stringify(response_feature));
+        sessionStorage.setItem('user_id', JSON.stringify(user_id));
 
   
-        const url = `/artist_page?artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}&user_id=${encodedUserId}`;
+        const url = `/artist_page?artist=${encodedName}&artistImg=${encodedImg}&artistID=${encodedID}`;
         window.location.href = url;
     }
 

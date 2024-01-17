@@ -18,30 +18,42 @@ import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { styled, alpha } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
+import { purple } from '@mui/material/colors';
 
 export default function UserNav(){
     // const access_token = sessionStorage.getItem('access_token');
     // sessionStorage.setItem("access_token", access_token);
     const user_id = sessionStorage.getItem('user_id');
     sessionStorage.setItem("user_id",JSON.parse(user_id));
+    console.log(user_id)
 
     const navigate = useNavigate();
     const artistSearchClick = () => {
-        navigate("/artist_search?user_id="+user_id)
+      navigate("/artist_search")
     }
     const homeClick = () => {
-        navigate("/user_dashboard?user_id="+user_id)
+      navigate("/user_dashboard")
     }
     const discoverClick = () => {
-      sessionStorage.clear();
       navigate("/discover")
-  }
+    }
     const handleLogout = () => {
         sessionStorage.clear();
         localStorage.clear();
         navigate("/")
     }
+    const theme = createTheme({
+      palette: {
+        primary: {
+          main: '#1DB954',
+        },
+        secondary: {
+          main: '#1DB954',
+        },
+      },
+    });
     return(
         //   <Navbar expand="lg" className="bg-body-tertiary justify-content-between" data-bs-theme="dark" >
         //   <Container>
@@ -62,7 +74,8 @@ export default function UserNav(){
         //     </Navbar.Collapse>
         //   </Container>
         // </Navbar>
-        <Box sx={{ flexGrow: 1 }}>
+        <ThemeProvider theme={theme}>
+        <Box color = "secondary" className = "user-dash" sx={{ flexGrow: 1 }}>
           <AppBar position="static">
             <Toolbar>
               <IconButton
@@ -79,19 +92,12 @@ export default function UserNav(){
                 Notified
               </Typography>
               <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                  <Button
-                    onClick = {discoverClick}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    releases
+                  <Button onClick = {discoverClick} sx={{ my: 2, color: 'white', display: 'block' }}>
+                    Releases
                   </Button>
-                  <Button
-                    onClick={artistSearchClick}
-                    sx={{color: 'white', display: 'block' }}
-                  >
+                  <Button onClick={artistSearchClick} sx={{color: 'white', display: 'block' }}>
                     <SearchIcon />
                   </Button>
-
               </Box>
 
 
@@ -113,6 +119,7 @@ export default function UserNav(){
             </Toolbar>
           </AppBar>
         </Box>
+        </ThemeProvider>
     )
 }
 

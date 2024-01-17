@@ -1,7 +1,7 @@
 .html, body{
   background-color: var(--Grey-0, #FFFFFF0A);/* #282c34*/
   /* font-family: "Monomaniac One", monospace; */
-  font-family: "Circular Spotify Text",;
+  font-family: "Circular Spotify Text" !important;
   color: white;
 
 }

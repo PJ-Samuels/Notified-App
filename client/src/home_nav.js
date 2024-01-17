@@ -1,5 +1,5 @@
 import React from "react";
-// import './css/ho_nav.css';
+// import './css/home_nav.css';
 import { useNavigate } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -54,7 +54,7 @@ export default function HomeNav(){
     //     </Navbar.Collapse>
     //   </Container>
     // </Navbar>
-            <Box sx={{ flexGrow: 1 }}>
+        <Box className = "bg-body-tertiary"sx={{ flexGrow: 1 }}>
           <AppBar position="static">
             <Toolbar>
               <IconButton
