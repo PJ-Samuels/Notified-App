@@ -1,9 +1,9 @@
 .html, body{
     color: white !important;
-    font-family: "Circular Spotify Text" !important;
+    /* font-family: "Circular Spotify Text" !important; */
 }
 .user_nav{
-    background-color: green;
+    background-color: black;
 }
 .container{
     padding: 0;
@@ -16,6 +16,6 @@
 
 }
 .user-dash{
-    color: green !important;
+    color: black !important;
     background-color: #111112 !important;
 }

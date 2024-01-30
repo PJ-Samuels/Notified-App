@@ -1,10 +1,11 @@
 import React from "react";
 import { useEffect , useState} from "react";
 // import {useNavigate} from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './css/user_dashboard.css'
 
 export default function UserDashboard() {
-  // const navigate = useNavigate();
   const [artists, setArtists] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [data, setData] = useState([]);
@@ -20,8 +21,6 @@ export default function UserDashboard() {
     var user_id = params.get('user_id');
     var expiresInSeconds = params.get('expiration_time');
     const expirationTime = new Date().getTime() + expiresInSeconds * 1000;
-    // console.log(expirationTime)
-    // console.log(expireatioIn)
     setExpirationTime(new Date(expirationTime));
     setUserId(user_id);
     if(!user_id){
@@ -69,8 +68,6 @@ export default function UserDashboard() {
         return false;
       }
       const currentTime = (Date.now()/1000)
-      // console.log("curr time",currentTime)
-      // console.log("expr time",expiration_time.getTime())
       if(currentTime >= expiration_time.getTime()){
         console.log("expired")
         return true;
@@ -78,7 +75,6 @@ export default function UserDashboard() {
       else{
         return false;
       }
-      // return currentTime >= expiration_time.getTime();
     };
   
     const refreshAccessToken = async () => {
@@ -121,9 +117,23 @@ export default function UserDashboard() {
     console.log(url)
     window.location.href = url;
   }
+  const showToast = () => {
+    console.log("toast")
+    toast("This is a success message!", {})
+  }
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(`http://localhost:5000/api/banners?user_id=${user_id}`);
+      const data = await response.json();
+      toast(data[0], {});
+    };
+    fetchData();
+
+  },[]);
 
   return( 
     <div>
+      <ToastContainer />
       <h1>Your Dashboard</h1>
       <h2>Subscribed Artists</h2>
       <div className = "artists">
@@ -146,6 +156,7 @@ export default function UserDashboard() {
       </div>
       <h2>Discover</h2>
       <h3>Coming Soon!</h3>
+
     </div>
   );
 }

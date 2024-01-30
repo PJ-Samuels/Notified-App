@@ -81,11 +81,6 @@ export default function HomeNav(){
                     FAQ
                   </Button>
               </Box>
-
-
-
-
-
               <Button color="inherit" onClick={handleLogin} >Login</Button>
             </Toolbar>
           </AppBar>

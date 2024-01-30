@@ -283,7 +283,16 @@ app.get('/api/notification', (req, res) => {
     res.json(result.rows);
   });
 });
+app.get('/api/banners', (req, res) => {
+  const user_id = req.query.user_id;
+  const notifications = pool.query('SELECT * FROM "Notifications" WHERE user_id = $1 AND created_at > NOW() - interval \'1 hour\'', [user_id], (err, result) => {
+    if (result && result.rowCount > 0) {
+      res.json(result.rows);
+    }
+    res.json(['no new releases']);
 
+  })
+});
 
 app.get('/api/refresh_token', function(req, res) {
   var refresh_token = req.query.refresh_token;
@@ -320,10 +329,11 @@ function sendEmail(bool, latest_release, artist_name, release_img, email){
       html: `<p>${artist_name} just Released a new album: ${latest_release}</p><img src="${imageUrl}" alt="Album Cover" />`,
     };
     transporter.sendMail(mailOptions, (error, info) => {
-      res.send('Email sent successfully.');
+        console.log('Email sent successfully.');
     });  
   }
   else {
+    console.log("email is ",email)
     const mailOptions = {
       from: 'pjsamuels3@gmail.com',
       to: email,
@@ -331,9 +341,8 @@ function sendEmail(bool, latest_release, artist_name, release_img, email){
       html: `There are no new releases from your subscribed artists.`
     };
     transporter.sendMail(mailOptions, (error, info) => {
-      res.send('Email sent successfully.');
-    });  
-
+        console.log('Email sent successfully.');
+    });
   }
 }
 
@@ -377,11 +386,19 @@ cron.schedule(cronSchedule, () => {
                 pool.query('SELECT user_id FROM "Subscribed_Artists" WHERE artist_id = $1', [artist_id], (err, result) => {
                   const users = result.rows;
                   for (let i = 0; i < users.length; i++) {
-                    // console.log("user_id",users[i].user_id)
-                    const email = pool.query('SELECT email FROM "Users" WHERE id = $1', [users[i].user_id], (err, result) => {});
-                    pool.query('INSERT INTO "Notifications" (user_id, artist_id, artist_name, release_img, latest_release) VALUES ($1, $2, $3, $4, $5)', [users[i].user_id,artist_id,artist_name,release_img,latest_release], (err, result) => {
-                      console.log("Notification added")
-                      sendEmail(true, latest_release, artist_name, release_img, email);
+                    console.log("user",users[i].user_id)
+                    pool.query('SELECT email FROM "Users" WHERE id = $1', [users[i].user_id], (err, result) => {
+                      if (err) {
+                        console.error('Error executing query:', err);
+                        return;
+                      }
+                      const email = result.rows[0].email;
+                      console.log('User email:', email);
+
+                      pool.query('INSERT INTO "Notifications" (user_id, artist_id, artist_name, release_img, latest_release) VALUES ($1, $2, $3, $4, $5)', [users[i].user_id,artist_id,artist_name,release_img,latest_release], (err, result) => {
+                        console.log("Notification added")
+                        sendEmail(true, latest_release, artist_name, release_img, email);
+                      });
                     });
                   }
                 })
@@ -389,7 +406,6 @@ cron.schedule(cronSchedule, () => {
             }
             else{
               console.log("No new releases");
-              sendEmail(false);
             }
           })
           .catch(error => {
