@@ -4,10 +4,10 @@ const request = require('request');
 const querystring = require('querystring')
 const bodyParser = require('body-parser');
 const app = express();
-const config = require('./config.js');
 const pool = require('./db.js');
-var client_id = config.CLIENT_ID;
-var client_secret = config.CLIENT_SECRET;
+require('dotenv').config();
+var client_id = process.env.CLIENT_ID;
+var client_secret = process.env.CLIENT_SECRET;
 var redirect_uri = 'http://localhost:5000/api/callback';
 const {Pool}= require('pg');
 const cron = require('node-cron');
