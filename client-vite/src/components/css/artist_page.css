@@ -1,0 +1,69 @@
+
+.artist_header{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.albums, .singles, .features{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.album_card, .single_card,.feature_card{
+    overflow-x: none; 
+    display: inline-block;
+    margin-right: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+    padding: 10px; 
+    position: center;
+    /* background-color: #f2f2f2;
+    width: 250px; */
+    text-align: center;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+h2{
+    text-align: center;
+}
+
+.not_implemented{
+    color: black !important;
+    text-align: center;
+}
+.album_card a{
+    color: white !important;
+}
+.notifications{
+    padding-left: 70px;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important; /* Center items horizontally within the column */
+    text-align: center !important; 
+}
+.notifications {
+    align-items: center !important; /* Center the toggle buttons horizontally */
+    padding-bottom: 20px !important;
+}
+.toggle{
+    padding-bottom: 5px!important;
+}
+.notifications a{
+    color: white !important;
+    padding-top: 10px !important;
+    /* display: flex;
+    flex-direction: column; */
+}
+
+.submitter{
+    padding-top: 10px !important;
+}
+.section {
+    display: flex !important;
+    align-items: center !important; /* Align vertically */
+}

@@ -34,7 +34,7 @@ var generateRandomString = function(length) {
 
 app.use(cors(
   {
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:5173',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     headers: 'Content-Type',
   }
@@ -127,12 +127,12 @@ app.post('/api/signup', async (req, res) => {
     (err, result) => {
       if (err) {
         console.error(err);
-        return res.redirect('http://localhost:3000/signup')
+        return res.redirect('http://localhost:5173/signup')
       }
 
       if (result.rows.length > 0) {
         console.log("User already exists");
-        return res.redirect('http://localhost:3000/signup')
+        return res.redirect('http://localhost:5173/signup')
       }
       pool.query(
         'INSERT INTO "Users" (username, email, password) VALUES ($1, $2, $3) RETURNING id',
@@ -140,7 +140,7 @@ app.post('/api/signup', async (req, res) => {
         (err, result) => {
           if (err) {
             console.error(err);
-            return res.redirect('http://localhost:3000/signup')
+            return res.redirect('http://localhost:5173/signup')
           }
 
           const user_id = result.rows[0].id;
@@ -233,7 +233,7 @@ app.get('/api/callback', function(req, res) {
           return token;
         };
         const stayloggedIntoken = generateToken(user_id);
-        res.redirect(`http://localhost:3000/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time},&stayloggedIntoken=${stayloggedIntoken}`);
+        res.redirect(`http://localhost:5173/user_dashboard?accesstoken=${access_token}&refreshtoken=${refresh_token}&user_id=${user_id}&expiration_time=${expiration_time},&stayloggedIntoken=${stayloggedIntoken}`);
       }
     });
   }
